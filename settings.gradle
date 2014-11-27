@@ -1,0 +1,1 @@
+include ':issues', ':addons:preferences', ':library', ':demo', ':addons:slider', 'Notey'

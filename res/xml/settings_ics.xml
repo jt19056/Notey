@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="@string/general"
+        android:key="pref_key_general_settings">
+
+        <ListPreference android:title="@string/notifClick"
+            android:summary="@string/notifClickSummary"
+            android:key="clickNotif"
+            android:defaultValue="edit"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues" />
+        <ListPreference android:title="@string/priority"
+            android:summary="@string/prioritySummary_ics"
+            android:key="pref_priority"
+            android:defaultValue="normal"
+            android:entries="@array/priorityArray"
+            android:entryValues="@array/priorityValues"
+            android:enabled="false"/>
+        <CheckBoxPreference android:key="pref_expand"
+            android:title="@string/expandNotifs"
+            android:summary="@string/expandNotifsSummary_ics"
+            android:defaultValue="false"
+            android:enabled="false"/>
+        <CheckBoxPreference android:key="pref_swipe"
+            android:title="@string/swipeNotifs"
+            android:summary="@string/swipeNotifsSummary"
+            android:defaultValue="true" />
+        <CheckBoxPreference android:key="pref_enter"
+            android:title="@string/enterToSend"
+            android:summary="@string/enterToSendSummary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+
+    <!--<PreferenceCategory-->
+        <!--android:title="Theme"-->
+        <!--android:key="pref_key_theme_settings">-->
+
+        <!--<CheckBoxPreference android:key="cb_key_theme"-->
+            <!--android:title="Dark Theme"-->
+            <!--android:defaultValue="false" />-->
+    <!--</PreferenceCategory>-->
+
+</PreferenceScreen>
