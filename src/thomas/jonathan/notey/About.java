@@ -152,7 +152,7 @@ public class About extends PreferenceActivity {
 
         //read the text file. bold the version nums
         while ((str=in.readLine()) != null) {
-            if(str.contains("v1") || str.contains("v2")){
+            if(str.contains("1.") || str.contains("2.")){
                 String tempString = str;
                 str = "<b>" + tempString + "</b>";
             }

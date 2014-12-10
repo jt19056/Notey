@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +18,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,32 +43,60 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends Activity implements OnClickListener {
-    final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
-    Integer[] imageIconDatabase = {R.drawable.ic_check_grey600_36dp, R.drawable.ic_warning_grey600_36dp, R.drawable.ic_edit_grey600_36dp, R.drawable.ic_star_grey600_36dp, R.drawable.ic_whatshot_grey600_36dp};
-    NotificationManager nm;
-    ImageButton ib1, ib2, ib3, ib4, ib5, btn, menu_btn;
-    public EditText et;
-    String[] spinnerPositionArray = {"0", "1", "2", "3", "4"};
-    Spinner spinner;
-    TextView mainTitle;
-    PopupMenu mPopupMenu;
-    int imageButtonNumber = 1, spinnerLocation = 0, id = (int) (Math.random() * 10000), etLineCount, priority = Notification.PRIORITY_DEFAULT;
-    boolean pref_expand, pref_swipe, impossible_to_delete = false, pref_enter;
-    String clickNotif, pref_priority, noteTitle;
-    NoteyNote notey;
-    MySQLiteHelper db = new MySQLiteHelper(this);
-    RelativeLayout relativeLayout;
+    public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
+    private static final int REQUEST_CODE = 1234;
+    private Integer[] imageIconDatabase = {R.drawable.ic_check_grey600_36dp, R.drawable.ic_warning_grey600_36dp, R.drawable.ic_edit_grey600_36dp, R.drawable.ic_star_grey600_36dp, R.drawable.ic_whatshot_grey600_36dp};
+    private NotificationManager nm;
+    private ImageButton ib1, ib2, ib3, ib4, ib5, send_btn, menu_btn;
+    private EditText et;
+    private String[] spinnerPositionArray = {"0", "1", "2", "3", "4"};
+    private Spinner spinner;
+    private TextView mainTitle;
+    private PopupMenu mPopupMenu;
+    private int imageButtonNumber = 1, spinnerLocation = 0, id = (int) (Math.random() * 10000), priority;
+    private boolean pref_expand, pref_swipe, impossible_to_delete = false, pref_enter, pref_voice, pref_share_action;
+    private String clickNotif, pref_priority, noteTitle;
+    private NoteyNote notey;
+    public MySQLiteHelper db = new MySQLiteHelper(this);
+    private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity_dialog);
 
-        notey = new NoteyNote(); //create a new Notey
+        notey = new NoteyNote(); //create a new Notey object
 
+//        Field[] ID_Fields = R.drawable.class.getFields();
+//        int[] resArray = new int[ID_Fields.length];
+//        for(int i = 0; i < ID_Fields.length; i++)
+//            try {
+//                resArray[i] = ID_Fields[i].getInt(null);
+//            } catch (IllegalArgumentException e) {
+//                // TODO Auto-generated catch block
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//
+//        for(int i=0; i<resArray.length; i++){
+//            String name = getResources().getResourceEntryName(resArray[i]);
+//            writeToLog(Integer.toString(resArray[i]) + " - " + name);
+//        }
+
+        initializeSettings();
         initializeGUI();
         setLayout();
+        checkLongPressVoiceInput();
 
         //menu popup
         mPopupMenu = new PopupMenu(this, menu_btn);
@@ -91,26 +121,9 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         });
 
+        checkForAppUpdate(); // restore notifications after app update
+
         checkForAnyIntents(); //checking for intents of edit button clicks or received shares
-
-        /* restore notifications after app update */
-        int versionCode = -1;
-        try { //get current version num
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            versionCode = pInfo.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-
-        //checks the current version code with the one stored in shared prefs. if they are different, then there was an update, so restore notifications
-        if (versionCode != sharedPref.getInt("VERSION_CODE", -1)) {
-            Intent localIntent = new Intent(this, NotificationBootService.class);
-            localIntent.putExtra("action", "boot");
-            startService(localIntent);
-        }
-        //update version code in shared prefs
-        sharedPref.edit().putInt("VERSION_CODE", versionCode).apply();
 
         //button click listener. for Enter key and Menu key
         et.setOnKeyListener(new View.OnKeyListener() {
@@ -122,7 +135,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     pref_enter = sp.getBoolean("pref_enter", true);
                     // enter to send, or new line
                     if (pref_enter)
-                        btn.performClick();
+                        send_btn.performClick();
                     else et.append("\n");
                     return true;
                 }
@@ -278,14 +291,28 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         // else if the send button is pressed
         else if (v.getId() == R.id.btn) {
-            initializeSettings();
-
             //check if user has made it not possible to remove notifications.
             // (this is a fail-safe in case they got out of the settings menu by pressing the 'home' key or some other way)
-            if (!clickNotif.equals("remove") && !pref_swipe && !pref_expand) {
+            if ((!clickNotif.equals("remove") && !clickNotif.equals("info")) && !pref_swipe && !pref_expand) {
                 Toast.makeText(getApplicationContext(), getString(R.string.impossibleToDeleteAtSend), Toast.LENGTH_SHORT).show();
                 impossible_to_delete = true;
             } else impossible_to_delete = false;
+
+            //if empty and long press for voice input is false, go ahead with voice input
+            if(et.getText().toString().equals("") && !pref_voice){
+                PackageManager pm = getPackageManager();
+                List<ResolveInfo> activities = pm.queryIntentActivities(
+                        new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+                if (activities.size() == 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_voice_input), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    startVoiceRecognitionActivity();
+                }
+            }
+            else if (et.getText().toString().equals("") && pref_voice){ //text is empty but longpress is enabled
+                Toast.makeText(getApplicationContext(), getString(R.string.hold_to_record), Toast.LENGTH_SHORT).show();
+            }
 
             //if textbox isn't empty and it is possible to delete notifs, continue and create notification
             if (!et.getText().toString().equals("") && !impossible_to_delete) {
@@ -333,6 +360,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 notey.setImgBtnNum(imageButtonNumber);
                 notey.setSpinnerLoc(spinnerLocation);
                 notey.setTitle(noteTitle);
+                notey.setIconName(getResources().getResourceEntryName(d));
 
                 //does notey exist in database? if yes-update. if no-add new notey.
                 if (db.checkIfExist(id)) db.updateNotey(notey);
@@ -341,18 +369,40 @@ public class MainActivity extends Activity implements OnClickListener {
                 //intents for expandable notifications
                 PendingIntent piDismiss = createOnDismissedIntent(this, id);
                 PendingIntent piEdit = createEditIntent(note, noteTitle);
+                PendingIntent piShare = createShareIntent(note);
+
+                // set expandable notification buttons
 
                 Bitmap bm;
                 //big white icons are un-seeable on lollipop, have a null LargeIcon if that's the case
-                if (CURRENT_ANDROID_VERSION >= 21 && (d == R.drawable.ic_check_white_36dp
-                        || d == R.drawable.ic_warning_white_36dp || d == R.drawable.ic_edit_white_36dp
-                        || d == R.drawable.ic_star_white_36dp || d == R.drawable.ic_whatshot_white_36dp)) {
+                if(CURRENT_ANDROID_VERSION >= 21 && notey.getIconName().contains("white_36dp")) {
                     bm = null;
                 } else bm = BitmapFactory.decodeResource(getResources(), d);
 
                 //build the notification!
                 Notification n;
-                if (pref_expand && CURRENT_ANDROID_VERSION >= 16) { //jelly bean and above with expandable notifs settings allowed
+                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16) { //jelly bean and above with expandable notifs settings allowed && share action button is enabled
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setSmallIcon(d)
+                            .setLargeIcon(bm)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(note))
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(true)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit) //edit button on notification
+                            .addAction(R.drawable.ic_share_white_24dp,
+                                    getString(R.string.share), piShare) // share button
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss) //remove button
+                            .build();
+                }
+                // same as above, but without share action button
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16) {
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -367,9 +417,10 @@ public class MainActivity extends Activity implements OnClickListener {
                             .addAction(R.drawable.ic_edit_white_24dp,
                                     getString(R.string.edit), piEdit) //edit button on notification
                             .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button on notification
+                                    getString(R.string.remove), piDismiss) //remove button
                             .build();
-                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) { //not expandable, but still able to set priority
+                }
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) { //not expandable, but still able to set priority
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -410,19 +461,29 @@ public class MainActivity extends Activity implements OnClickListener {
         et.getLayoutParams().height = spinnerHeight; //set the row's height to that of the spinner's + 10dp
 
         //resizing the window when more/less text is added
-        final float twentypixels = convertDpToPixel((float) 20, this);
-        final float origHeight = relativeLayout.getLayoutParams().height;
+        final int origHeight = relativeLayout.getLayoutParams().height;
 
-        //when text is added or deleted, count the num rows of text there are and adjust the size of the textbox accordingly.
+        final RelativeLayout relativeLayoutCopy = relativeLayout;
+        final EditText editTextCopy = et;
+
+        //when text is added or deleted, count the num lines of text there are and adjust the size of the textbox accordingly.
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                etLineCount = et.getLineCount();
-                if (etLineCount > 1)
-                    et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-                else et.getLayoutParams().height = spinnerHeight;
+                if(et.getText().toString().equals(""))
+                    send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
+                else send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
 
-                int newHeight = ((int) twentypixels * (etLineCount - 1)) + (int) origHeight;
-                relativeLayout.getLayoutParams().height = newHeight;
+                if (et.getLineCount() > 1) {
+                    et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                    relativeLayout.getLayoutParams().height = et.getLayoutParams().height;
+                }
+                else {
+                    et.setLayoutParams(editTextCopy.getLayoutParams());
+                    relativeLayout.setLayoutParams(relativeLayoutCopy.getLayoutParams());
+                    int a = et.getLayoutParams().height;
+                    int b = relativeLayout.getLayoutParams().height;
+                    int c = 1;
+                }
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { /*do nothing*/  }
@@ -460,14 +521,49 @@ public class MainActivity extends Activity implements OnClickListener {
             //resize window for amount of text
             et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
             relativeLayout.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+
+            //clicking on notifications kill them. this will restore all the notifcations
+            Intent localIntent = new Intent(this, NotificationBootService.class);
+            localIntent.putExtra("action", "boot");
+            startService(localIntent);
         } else if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(i); // Handle text being sent
                 //resize window for amount of text
                 et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                et.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 relativeLayout.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
             }
         }
+    }
+
+    private void checkForAppUpdate(){
+        int versionCode = -1;
+        try { //get current version num
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionCode = pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        //checks the current version code with the one stored in shared prefs. if they are different, then there was an update, so restore notifications
+        if (versionCode != sharedPref.getInt("VERSION_CODE", -1)) {
+            //if on before v2.0.4, change the on click notifcation setting to the info screen
+            if(sharedPref.getInt("VERSION_CODE", -1) <= 14){
+
+                addIconNamesToDB();
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("clickNotif", "info");
+                editor.commit();
+            }
+            Intent localIntent = new Intent(this, NotificationBootService.class);
+            localIntent.putExtra("action", "boot");
+            startService(localIntent);
+        }
+        //update version code in shared prefs
+        sharedPref.edit().putInt("VERSION_CODE", versionCode).apply();
     }
 
     private void initializeGUI() {
@@ -488,7 +584,7 @@ public class MainActivity extends Activity implements OnClickListener {
         ib4.setBackgroundColor(Color.TRANSPARENT);
         ib5.setBackgroundColor(Color.TRANSPARENT);
 
-        btn = (ImageButton) findViewById(R.id.btn); //send button
+        send_btn = (ImageButton) findViewById(R.id.btn); //send button
         menu_btn = (ImageButton) findViewById(R.id.menuButton);
 
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -501,7 +597,7 @@ public class MainActivity extends Activity implements OnClickListener {
         ib3.setOnClickListener(this);
         ib4.setOnClickListener(this);
         ib5.setOnClickListener(this);
-        btn.setOnClickListener(this);
+        send_btn.setOnClickListener(this);
         menu_btn.setOnClickListener(this);
 
         impossible_to_delete = false; //set setting for unable to delete notifications to false, will be checked before pressing send
@@ -531,7 +627,9 @@ public class MainActivity extends Activity implements OnClickListener {
             pref_expand = false;
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", true);
         }
-        clickNotif = sharedPreferences.getString("clickNotif", "edit"); //notification click action
+        clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
+        pref_voice = sharedPreferences.getBoolean("pref_voice", false);
+        pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
     }
 
     private PendingIntent createOnDismissedIntent(Context context, int notificationId) {
@@ -550,11 +648,32 @@ public class MainActivity extends Activity implements OnClickListener {
         editIntent.putExtra("editLoc", spinnerLocation);
         editIntent.putExtra("editButton", imageButtonNumber);
         editIntent.putExtra("editTitle", title);
+
         return PendingIntent.getActivity(getApplicationContext(), id, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    private PendingIntent createInfoScreenIntent(String note, String title){
+        Intent infoIntent = new Intent(this, InfoScreenActivity.class);
+        infoIntent.putExtra("infoNotificationID", id);
+        infoIntent.putExtra("infoNote", note);
+        infoIntent.putExtra("infoLoc", spinnerLocation);
+        infoIntent.putExtra("infoButton", imageButtonNumber);
+        infoIntent.putExtra("infoTitle", title);
+        return PendingIntent.getActivity(getApplicationContext(), id, infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private PendingIntent createShareIntent(String note){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, note);
+        sendIntent.setType("text/plain");
+        return PendingIntent.getActivity(this, id, sendIntent, 0);
+    }
+
     private PendingIntent onNotifClickPI(String clickNotif, String note, String title) {
-        if (clickNotif.equals("edit")) {
+        if (clickNotif.equals("info")) {
+            return createInfoScreenIntent(note, title);
+        } else if (clickNotif.equals("edit")) {
             return createEditIntent(note, title);
         } else if (clickNotif.equals("remove")) {
             return createOnDismissedIntent(this, id);
@@ -660,6 +779,132 @@ public class MainActivity extends Activity implements OnClickListener {
         float px = dp * (metrics.densityDpi / 160f);
         return px;
     }
+
+    private void startVoiceRecognitionActivity(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speak_now));
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+
+    // Handles the results from the voice recognition activity.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
+        {
+            // get the voice input and put it into the text field
+            ArrayList<String> textMatchList = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (!textMatchList.isEmpty()) {
+                String input = textMatchList.get(0);
+                et.setText(input);
+                et.setSelection(et.getText().length());
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void checkLongPressVoiceInput(){
+        if(pref_voice){ //if long press for voice input is true
+            send_btn.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if(et.getText().toString().equals("")) { //if text is empty, go ahead with voice input
+                        PackageManager pm = getPackageManager();
+                        List<ResolveInfo> activities = pm.queryIntentActivities(
+                                new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+                        if (activities.size() == 0) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.no_voice_input), Toast.LENGTH_SHORT).show();
+                        } else {
+                            startVoiceRecognitionActivity();
+                        }
+                    }
+                    return true;
+                }
+            });
+        }
+        else send_btn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+            }
+        });
+    }
+
+    public void writeToLog(String data) {
+        FileOutputStream fos;
+        try {
+            final File dir = new File("/sdcard/Android/data/thomas.jonathan.notey/");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            final File myFile = new File(dir, "logs.txt");
+
+            if (!myFile.exists()) {
+                myFile.createNewFile();
+            }
+
+            String seperator = "...\n";
+            fos = new FileOutputStream(myFile, true);
+            fos.write(data.getBytes());
+            fos.write(seperator.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /* changes were made from v2.0.3 to v2.0.4. this fudged up the icon numbers. a new column in the
+    *   database was created called 'iconName'.  This converts to old icon's ints to the new ints and writes
+    *   their proper name to the database.  Notey now uses iconName to set the icon to prevent such a thing
+    *   from happening again.
+    */
+    private void addIconNamesToDB(){
+        List<NoteyNote> allNoteys = db.getAllNoteys();
+        int newIconInt;
+        String newIconName;
+        for(NoteyNote n : allNoteys){
+            if(n.getIcon() >= 2130837510 && n.getIcon() <= 2130837512){
+                newIconInt = n.getIcon() - 6;
+                newIconName = getResources().getResourceEntryName(newIconInt);
+                n.setIconName(newIconName);
+            }
+            else if(n.getIcon() >= 2130837513 && n.getIcon() <= 2130837519){
+                newIconInt = n.getIcon() - 5;
+                newIconName = getResources().getResourceEntryName(newIconInt);
+                n.setIconName(newIconName);
+            }
+            else if(n.getIcon() >= 2130837520 && n.getIcon() <= 2130837522){
+                newIconInt = n.getIcon() - 3;
+                newIconName = getResources().getResourceEntryName(newIconInt);
+                n.setIconName(newIconName);
+            }
+            else if(n.getIcon() >= 2130837523 && n.getIcon() <= 2130837528){
+                newIconInt = n.getIcon() - 2;
+                newIconName = getResources().getResourceEntryName(newIconInt);
+                n.setIconName(newIconName);
+            }
+            else if(n.getIcon() >= 2130837530 && n.getIcon() <= 2130837547){
+                newIconInt = n.getIcon() + 2;
+                newIconName = getResources().getResourceEntryName(newIconInt);
+                n.setIconName(newIconName);
+            }
+            else n.setIconName(getResources().getResourceEntryName(R.drawable.ic_check_white_36dp)); //else default to white check
+
+            db.updateNotey(n);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        initializeSettings();
+        checkLongPressVoiceInput();
+        super.onResume();
+    }
+
 }
 
 

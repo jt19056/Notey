@@ -21,9 +21,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_SPINNER_LOC = "spinnerLoc";
     private static final String KEY_IMG_BTN_NUM = "imgBtnNum";
     private static final String KEY_TITLE = "title";
+    private static final String KEY_ICON_NAME = "iconName";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_NOTE,KEY_ICON,KEY_SPINNER_LOC,KEY_IMG_BTN_NUM,KEY_TITLE};
-    private static final int DATABASE_VERSION = 2;
+    private static final String[] COLUMNS = {KEY_ID,KEY_NOTE,KEY_ICON,KEY_SPINNER_LOC,KEY_IMG_BTN_NUM,KEY_TITLE,KEY_ICON_NAME};
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "notey.db";
 
     public MySQLiteHelper(Context context) {
@@ -38,16 +39,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 "icon INTEGER," +
                 "spinnerLoc INTEGER," +
                 "imgBtnNum INTEGER, " +
-                "title TEXT )";
+                "title TEXT, " +
+                "iconName TEXT )";
         db.execSQL(CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        try {
-            db.execSQL("ALTER TABLE NoteyTable ADD COLUMN title TEXT"); //add the 'title' column if on old version of db. (version 1 currently)
-        } catch (SQLiteException e){
-            e.printStackTrace();
+        if(newVersion<=2) {
+            try {
+                db.execSQL("ALTER TABLE NoteyTable ADD COLUMN title TEXT"); //add the 'title' column if on old version of db
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
+        }
+        if(newVersion<=3) {
+            try {
+                db.execSQL("ALTER TABLE NoteyTable ADD COLUMN iconName TEXT"); //add the 'iconName' column if on old version of db
+            } catch (SQLiteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -61,6 +72,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_SPINNER_LOC, notey.getSpinnerLoc());
         values.put(KEY_IMG_BTN_NUM, notey.getImgBtnNum());
         values.put(KEY_TITLE, notey.getTitle());
+        values.put(KEY_ICON_NAME, notey.getIconName());
 
         db.insert(TABLE, // table
                 null, //nullColumnHack
@@ -95,6 +107,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         notey.setSpinnerLoc(cursor.getInt(3));
         notey.setImgBtnNum(cursor.getInt(4));
         notey.setTitle(cursor.getString(5));
+        notey.setIconName(cursor.getString(6));
 
         return notey;
     }
@@ -118,6 +131,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 notey.setSpinnerLoc(cursor.getInt(3));
                 notey.setImgBtnNum(cursor.getInt(4));
                 notey.setTitle(cursor.getString(5));
+                notey.setIconName(cursor.getString(6));
 
                 noteyList.add(notey);
             } while (cursor.moveToNext());
@@ -136,6 +150,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         values.put(KEY_SPINNER_LOC, notey.getSpinnerLoc());
         values.put(KEY_IMG_BTN_NUM, notey.getImgBtnNum());
         values.put(KEY_TITLE, notey.getTitle());
+        values.put(KEY_ICON_NAME, notey.getIconName());
 
         //update row
         int i = db.update(TABLE, //table

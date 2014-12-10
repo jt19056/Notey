@@ -1,28 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Notification click-->
     <string-array name="listArray">
+        <item>@string/show_info_screen</item>
         <item>@string/edit</item>
         <item>@string/remove</item>
         <item>@string/doNothing</item>
     </string-array>
-
     <string-array name="listValues">
+        <item>info</item>
         <item>edit</item>
         <item>remove</item>
         <item>nothing</item>
     </string-array>
 
+    <!-- Priority setting-->
     <string-array name="priorityArray">
         <item>@string/priorityHigh</item>
         <item>@string/normal</item>
         <item>@string/priorityLow</item>
         <item>@string/priorityMinimum</item>
     </string-array>
-
     <string-array name="priorityValues">
         <item>high</item>
         <item>normal</item>
         <item>low</item>
         <item>minimum</item>
+    </string-array>
+
+    <!-- Dashclock icons-->
+    <string-array name="dashclock_icon_array">
+        <item>@string/check</item>
+        <item>@string/warning</item>
+        <item>@string/edit</item>
+        <item>@string/star</item>
+        <item>@string/flame</item>
+        <item>@string/top_icon</item>
+    </string-array>
+    <string-array name="dashclock_icon_values">
+        <item>check</item>
+        <item>warning</item>
+        <item>edit</item>
+        <item>star</item>
+        <item>whatshot</item>
+        <item>topIcon</item>
     </string-array>
 </resources>

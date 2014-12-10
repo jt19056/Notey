@@ -2,22 +2,27 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version">2.0.3</string>
-    <string name="app_name">Notey</string>
+    <string name="version" translatable="false">2.0.4.1</string>
+    <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
     <string name="menu">Menu</string>
     <string name="edit">Edit</string>
     <string name="remove">Remove</string>
+    <string name="no_voice_input">Voice input is not available.</string>
+    <string name="speak_now">Speak now</string>
+    <string name="hold_to_record">Hold to record</string>
     <string name="impossibleToDeleteAtSend">You have made it impossible to remove this Notey. Please go into the settings and fix this.</string>
 
     <!-- Settings strings -->
     <string name="general">General</string>
+    <string name="other">Other</string>
     <string name="notey_settings">\tNotey Settings</string>
     <string name="settings">Settings</string>
     <string name="notifClick">Notification Click Action</string>
     <string name="notifClickSummary">What happens when a notification is pressed.</string>
     <string name="doNothing">Do nothing</string>
+    <string name="show_info_screen">Show info screen</string>
     <string name="priority">Priority</string>
     <string name="prioritySummary">Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
     <string name="prioritySummary_ics">Android 4.1+ only. Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
@@ -33,6 +38,10 @@
     <string name="enterToSend">Enter to Send</string>
     <string name="enterToSendSummary">If checked, pressing the enter key will send notifications. If unchecked, pressing will create a new line.</string>
     <string name="impossibleToDelete">You have made it impossible to remove any Noteys. Please change a setting to make this possible before exiting.</string>
+    <string name="long_press_for_voice">Long press for voice input</string>
+    <string name="long_press_for_voice_summary">Prevents accidental launching of voice input. Long press on microphone button to activate voice.</string>
+    <string name="share_button">Share Button</string>
+    <string name="share_button_summary">Adds the Share button to the expandable notifications.</string>
 
 
     <!-- About strings -->
@@ -44,10 +53,34 @@
     <string name="opensourceSummary">License details for open source software.</string>
     <string name="verNum">Version Number</string>
     <string name="contact">Contact</string>
-    <string name="email">jt19056@gmail.com</string>
+    <string name="email" translatable="false">jt19056@gmail.com</string>
     <string name="rate">Rate</string>
     <string name="rateSummary">Hope you enjoy the app!</string>
     <string name="sendemail">Send email...</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
+
+    <!-- DashClock -->
+    <string name="dashclock_description">Displays your current reminders.</string>
+    <string name="reminders">Reminders</string>
+    <string name="icon">Icon</string>
+    <string name="icon_summary">Icon to be displayed on DashClock Widget.</string>
+    <string name="top_icon">Your oldest note\'s icon</string>
+    <string name="notey_extension_settings">Notey Extension Settings</string>
+
+    <!-- Icons -->
+    <string name="check">Check</string>
+    <string name="warning">Warning</string>
+    <string name="star">Star</string>
+    <string name="flame">Flame</string>
+
+    <!-- Info Screen Activity -->
+    <string name="text_copied">Text copied to clipboard.</string>
+    <string name="go_back">Go back</string>
+    <string name="copy">Copy</string>
+    <string name="bad_url">Sorry, the URL could not be displayed.</string>
+
+    <!-- Other -->
+    <string name="undo">Undo</string>
+    <string name="share">Share</string>
 
 </resources>

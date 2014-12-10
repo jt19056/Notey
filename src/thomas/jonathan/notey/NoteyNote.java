@@ -8,6 +8,7 @@ public class NoteyNote {
     int spinnerLoc;
     int imgBtnNum;
     String title;
+    String iconName;
 
     public int getId() {
         return id;
@@ -55,5 +56,13 @@ public class NoteyNote {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getIconName() {
+        return iconName;
+    }
+
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 }
