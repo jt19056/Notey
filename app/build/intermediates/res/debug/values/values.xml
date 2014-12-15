@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/array.xml -->
+    <eat-comment/>
+    <string-array name="dashclock_icon_array">
+        <item>@string/check</item>
+        <item>@string/warning</item>
+        <item>@string/edit</item>
+        <item>@string/star</item>
+        <item>@string/flame</item>
+        <item>@string/top_icon</item>
+    </string-array>
+    <string-array name="dashclock_icon_values">
+        <item>check</item>
+        <item>warning</item>
+        <item>edit</item>
+        <item>star</item>
+        <item>whatshot</item>
+        <item>topIcon</item>
+    </string-array>
+    <string-array name="listArray">
+        <item>@string/show_info_screen</item>
+        <item>@string/edit</item>
+        <item>@string/remove</item>
+        <item>@string/doNothing</item>
+    </string-array>
+    <string-array name="listValues">
+        <item>info</item>
+        <item>edit</item>
+        <item>remove</item>
+        <item>nothing</item>
+    </string-array>
+    <string-array name="priorityArray">
+        <item>@string/priorityHigh</item>
+        <item>@string/normal</item>
+        <item>@string/priorityLow</item>
+        <item>@string/priorityMinimum</item>
+    </string-array>
+    <string-array name="priorityValues">
+        <item>high</item>
+        <item>normal</item>
+        <item>low</item>
+        <item>minimum</item>
+    </string-array>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <color name="ampm_text_color">#8c8c8c</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <color name="black">#FF000000</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <color name="blue">#ff33b5e5</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <color name="blue300">#64B5F6</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <color name="calendar_header">#ff999999</color>
+    <color name="circle_background">#fff2f2f2</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <color name="dark_blue">#1565C0</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <color name="darker_blue">#ff0099cc</color>
+    <color name="date_picker_text_normal">#ff999999</color>
+    <color name="date_picker_view_animator">#fff2f2f2</color>
+    <color name="done_text_color_disabled">#ffcccccc</color>
+    <color name="done_text_color_normal">#ff333333</color>
+    <color name="line_background">#ffcccccc</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <color name="material_blue">#2196F3</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <color name="numbers_text_color">#8c8c8c</color>
+    <color name="transparent_black">#7F000000</color>
+    <color name="white">#ffffffff</color>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <dimen name="ampm_label_size">16sp</dimen>
+    <dimen name="ampm_left_padding">6dip</dimen>
+    <dimen name="date_picker_component_width">270dip</dimen>
+    <dimen name="date_picker_header_height">30dip</dimen>
+    <dimen name="date_picker_header_text_size">14dip</dimen>
+    <dimen name="date_picker_view_animator_height">270dip</dimen>
+    <dimen name="day_number_select_circle_radius">16dip</dimen>
+    <dimen name="day_number_size">16sp</dimen>
+    <dimen name="done_label_size">14sp</dimen>
+    <dimen name="extra_time_label_margin">-30dp</dimen>
+    <dimen name="header_height">96dip</dimen>
+    <dimen name="minimum_margin_sides">48dip</dimen>
+    <dimen name="minimum_margin_top_bottom">24dip</dimen>
+    <dimen name="month_day_label_text_size">10sp</dimen>
+    <dimen name="month_label_size">16sp</dimen>
+    <dimen name="month_list_item_header_height">50dip</dimen>
+    <dimen name="month_select_circle_radius">45dip</dimen>
+    <dimen name="picker_dimen">270dip</dimen>
+    <dimen name="selected_calendar_layout_height">155dip</dimen>
+    <dimen name="selected_date_day_size">75dip</dimen>
+    <dimen name="selected_date_month_size">30dip</dimen>
+    <dimen name="selected_date_year_size">30dip</dimen>
+    <dimen name="separator_padding">4dip</dimen>
+    <dimen name="time_label_size">60sp</dimen>
+    <dimen name="year_label_height">64dip</dimen>
+    <dimen name="year_label_text_size">22dip</dimen>
+    <item name="animator" type="id">false</item>
+    <item name="date_picker_day" type="id">false</item>
+    <item name="date_picker_header" type="id">false</item>
+    <item name="date_picker_month" type="id">false</item>
+    <item name="date_picker_month_and_day" type="id">false</item>
+    <item name="date_picker_year" type="id">false</item>
+    <item name="day_picker_selected_date_layout" type="id">false</item>
+    <item name="done" type="id">false</item>
+    <item name="month_text_view" type="id">false</item>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="about">About</string>
+    <string name="about_actionbar">\tAbout</string>
+    <string name="alarm">Alarm</string>
+    <string name="alarm_deleted">Alarm has been deleted.</string>
+    <string name="alarm_set_for">Alarm set for: </string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <item format="float" name="ampm_circle_radius_multiplier" type="string">0.19</item>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name" translatable="false">Notey</string>
+    <string name="bad_url">Sorry, the URL could not be displayed.</string>
+    <string name="cancel">Cancel</string>
+    <string name="changelog">Changelog</string>
+    <string name="changelogSummary">All the changes made since the beginning.</string>
+    <string name="check">Check</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <item format="float" name="circle_radius_multiplier" type="string">0.82</item>
+    <item format="float" name="circle_radius_multiplier_24HourMode" type="string">0.85</item>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="contact">Contact</string>
+    <string name="copy">Copy</string>
+    <string name="dashclock_description">Displays your current reminders.</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="day_of_week_label_typeface" translatable="false">sans-serif</string>
+    <string name="day_picker_description">Month grid of days</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="delete">Delete</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="deleted_key"><ns1:g example="4" id="key">%1$s</ns1:g> deleted</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="display">Display</string>
+    <string name="doNothing">Do nothing</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="done_label">Done</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="edit">Edit</string>
+    <string name="email" translatable="false">jt19056@gmail.com</string>
+    <string name="enterToSend">Enter to Send</string>
+    <string name="enterToSendSummary">If checked, pressing the enter key will send notifications. If unchecked, pressing will create a new line.</string>
+    <string name="expandNotifs">Expandable Notifications</string>
+    <string name="expandNotifsSummary">Allow notifications to be expandable.</string>
+    <string name="expandNotifsSummary_ics">Android 4.1+ only. Allow notifications to be expandable.</string>
+    <string name="flame">Flame</string>
+    <string name="go_back">Go back</string>
+    <string name="hidden_alarm_row">Hidden Alarm Row</string>
+    <string name="hidden_alarm_row_summary">Press the top bar to show it.</string>
+    <string name="hold_to_record">Hold to record</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="hour_picker_description">Hours circular slider</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="icon">Icon</string>
+    <string name="icon_summary">Icon to be displayed on DashClock Widget.</string>
+    <string name="impossibleToDelete">You have made it impossible to remove any Noteys. Please change a setting to make this possible before exiting.</string>
+    <string name="impossibleToDeleteAtSend">You have made it impossible to remove this Notey. Please go into the settings and fix this.</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="item_is_selected">%1$s selected</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="long_press_for_voice">Long press for voice input</string>
+    <string name="long_press_for_voice_summary">Long press on microphone button to activate voice.</string>
+    <string name="menu">Menu</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="minute_picker_description">Minutes circular slider</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="no_alarm_set">No alarm set.</string>
+    <string name="no_voice_input">Voice input is not available.</string>
+    <string name="normal">Normal</string>
+    <string name="notey_extension_settings">Notey Extension Settings</string>
+    <string name="notey_settings">\tNotey Settings</string>
+    <string name="notifClick">Notification Click Action</string>
+    <string name="notifClickSummary">What happens when a notification is pressed.</string>
+    <string name="notifications">Notifications</string>
+    <string name="null_date">Sat, Jan 1, 2000</string>
+    <string name="null_time">12:00 AM</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <item format="float" name="numbers_radius_multiplier_inner" type="string">0.60</item>
+    <item format="float" name="numbers_radius_multiplier_normal" type="string">0.81</item>
+    <item format="float" name="numbers_radius_multiplier_outer" type="string">0.83</item>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="opensource">Open Source Licenses</string>
+    <string name="opensourceSummary">License details for open source software.</string>
+    <string name="other">Other</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
+    <string name="priority">Priority</string>
+    <string name="priorityHigh">High - Noteys always at the top of notification tray</string>
+    <string name="priorityLow">Low - Noteys at the bottom of notification tray</string>
+    <string name="priorityMinimum">Minimum - Hides the icon from the status bar and keeps Noteys at the bottom</string>
+    <string name="prioritySummary">Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
+    <string name="prioritySummary_ics">Android 4.1+ only. Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="radial_numbers_typeface" translatable="false">sans-serif</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="rate">Rate</string>
+    <string name="rateSummary">Hope you enjoy the app!</string>
+    <string name="reminders">Reminders</string>
+    <string name="remove">Remove</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="sans_serif" translatable="false">sans-serif</string>
+    <string name="select_day">Select month and day</string>
+    <string name="select_hours">Select hours</string>
+    <string name="select_minutes">Select minutes</string>
+    <string name="select_year">Select year</string>
+    <item format="float" name="selection_radius_multiplier" type="string">0.16</item>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="sendemail">Send email...</string>
+    <string name="set">Set</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="share_button">Share Button</string>
+    <string name="share_button_summary">Adds the Share button to the expandable notifications.</string>
+    <string name="show_info_screen">Show info screen</string>
+    <string name="speak_now">Speak now</string>
+    <string name="star">Star</string>
+    <string name="swipeNotifs">Swipe to Remove</string>
+    <string name="swipeNotifsSummary">Allow notifications to be deleted by swiping.</string>
+    <string name="text_copied">Text copied to clipboard.</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <item format="float" name="text_size_multiplier_inner" type="string">0.14</item>
+    <item format="float" name="text_size_multiplier_normal" type="string">0.17</item>
+    <item format="float" name="text_size_multiplier_outer" type="string">0.11</item>
+    <string name="time_placeholder" translatable="false">--</string>
+    <string name="time_separator" translatable="false">:</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="title">Title</string>
+    <string name="top_icon">Your oldest note\'s icon</string>
+    <string name="undo">Undo</string>
+    <string name="verNum">Version Number</string>
+    <string name="version" translatable="false">2.1</string>
+    <string name="warning">Warning</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <string name="year_picker_description">Year list</string>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <style name="CustomActionBarTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/material_blue</item>
+    </style>
+    <style name="MySettingsTheme" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
+    <eat-comment/>
+    <style name="ampm_label">
+        <item name="android:textSize">@dimen/ampm_label_size</item>
+        <item name="android:textColor">@color/ampm_text_color</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="day_of_week_label_condensed"/>
+    <style name="time_label">
+        <item name="android:textSize">@dimen/time_label_size</item>
+        <item name="android:textColor">@color/numbers_text_color</item>
+    </style>
+</resources>

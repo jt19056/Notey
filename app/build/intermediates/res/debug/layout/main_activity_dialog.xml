@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue">
+
+        <TextView
+            android:id="@+id/mainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/app_name"
+            android:textColor="@android:color/white"
+            android:textIsSelectable="false"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/menuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_action_overflow_white" />
+    </RelativeLayout>
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_top"
+        android:layout_centerHorizontal="true"
+        android:background="#616161">
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:src="@drawable/ic_check_white_36dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:src="@drawable/ic_check_yellow_36dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:src="@drawable/ic_check_blue_36dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:src="@drawable/ic_check_green_36dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:src="@drawable/ic_check_red_36dp" />
+    </TableRow>
+
+    <RelativeLayout
+        android:id="@+id/layout_middle"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tableRow1"
+        android:paddingBottom="2dp"
+        android:paddingTop="5dp"
+        android:animateLayoutChanges="true">
+
+
+        <EditText
+            android:id="@+id/editText_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:hint="@string/title"
+            android:maxLength="15"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:textColorHint="#9E9E9E"
+            android:textSelectHandle="@drawable/text_handler_24dp"
+            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
+            android:textSelectHandleRight="@drawable/text_handler_right_24dp" />
+
+        <ImageButton
+            android:id="@+id/alarm_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="5dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_alarm_add_grey600_36dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/layout_middle"
+        android:background="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/layout_middle"
+        android:layout_marginTop="55dp"
+        android:layout_marginBottom="5dp"
+        android:animateLayoutChanges="true">
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="2dp" />
+
+        <ImageButton
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="5dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_mic_grey600_36dp" />
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_toLeftOf="@id/btn"
+            android:layout_toRightOf="@id/spinner1"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:maxLines="15"
+            android:textSelectHandle="@drawable/text_handler_24dp"
+            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
+            android:textSelectHandleRight="@drawable/text_handler_right_24dp">
+
+            <requestFocus />
+        </EditText>
+
+    </RelativeLayout>
+
+</RelativeLayout><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/layout/main_activity_dialog.xml -->

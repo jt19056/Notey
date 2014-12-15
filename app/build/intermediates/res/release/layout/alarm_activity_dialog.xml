@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/alarm_layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_blue">
+
+        <TextView
+            android:id="@+id/alarm_mainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/alarm"
+            android:textColor="@android:color/white"
+            android:textIsSelectable="false"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/alarm_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_delete_white_24dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/alarm_set_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alarm_layout_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="@string/no_alarm_set"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <LinearLayout
+        android:id="@+id/alarm_date_and_time_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarm_set_tv"
+        android:layout_marginTop="15dp">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:text="@string/null_date"
+            android:background="?android:selectableItemBackground"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:text="@string/null_time"
+            android:background="?android:selectableItemBackground"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:text="" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alarm_bottom_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarm_date_and_time_layout"
+        android:layout_marginTop="15dp">
+
+        <Button
+            android:id="@+id/alarm_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:text="@string/picker_cancel"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/alarm_set_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:text="@string/set"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</RelativeLayout><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/layout/alarm_activity_dialog.xml -->

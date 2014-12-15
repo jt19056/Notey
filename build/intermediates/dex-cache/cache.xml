@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\dashclock-api-r2.0-d4a697dfa3c2bdce9caccf93c5932006d2bcf93e.jar"
+        jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\libs\dashclock-api-r2.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="7e5decd5bbd057c1a2903be64bfe6f725603cc72"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\library-2.4.0-078fd6ebc184e76086591531a1fe466e6c71b32b.jar"
+        jar="C:\Users\Jon\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\classes-4e181a8f3c6ba3981ff3ee32ec5cce7207842d10.jar"
+        jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\exploded-aar\com.github.flavienlaurent.datetimepicker\library\0.0.2\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="2fc859b7abb78d29169f6a582b45cbe1f3f1a4cc"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\joda-time-2.6-b1ef37d70bbcb8bf2eacbe3f4e5cc8f06227da0f.jar"
+        jar="C:\Users\Jon\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.6\5015880733b0bc0ce813a3ed5601064c1d413671\joda-time-2.6.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="5015880733b0bc0ce813a3ed5601064c1d413671"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d5f4ba58c17db5d9f9e5ed2e619897676c9d2cd4.jar"
+        jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-cfa01484788ad87e4f294088ab1191c6eb0faec0.jar"
+        jar="C:\Program Files (x86)\Android sdk\sdk\extras\android\m2repository\com\android\support\support-annotations\21.0.3\support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\classes-3bb1d6b9d55946558b7e818c41380bf3a365f78c.jar"
+        jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8"/>
+    <item
+        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\easyandroidanimationslibrary-v0.5-7f00937b6080343fc0550c888e0f59048d47b6ec.jar"
+        jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\libs\easyandroidanimationslibrary-v0.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="81d390299222db75e62708400b299080d122b28b"/>
+
+</pre-dex-items>
