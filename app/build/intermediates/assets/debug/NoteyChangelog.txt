@@ -1,6 +1,9 @@
-2.1 - [12/09/14]
-• Added a fourth row. Option to make it always visible or hidden with a toggle press to show.
+2.1b2 - [??/??/14]
+• Alarms! - Set the date and time for when you want to be reminded of your note.
+• Added a fourth row. Option to make it always visible or hidden with a toggle press to show. (Default is always show)
 • Some animations.
+
+** Two new permissions: VIBRATE and WAKE_LOCK.  These are used for the alarm to vibrate and turn your screen on.  Both are options when setting your alarm reminder.
 
 2.0.4.1 - [12/09/14]
 • Fix for crash.

@@ -1,5 +1,6 @@
 package thomas.jonathan.notey;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -47,7 +48,6 @@ import android.widget.Toast;
 
 import com.easyandroidanimations.library.ScaleInAnimation;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,11 +62,12 @@ public class MainActivity extends Activity implements OnClickListener {
     private EditText et, et_title;
     private String[] spinnerPositionArray = {"0", "1", "2", "3", "4"};
     private Spinner spinner;
-    private TextView mainTitle;
     private PopupMenu mPopupMenu;
     private int imageButtonNumber = 1, spinnerLocation = 0, id = (int) (Math.random() * 10000), priority;
     private boolean pref_expand, pref_swipe, impossible_to_delete = false, pref_enter, pref_voice, pref_share_action, pref_hide_middle_layout, layout_middle_is_shown, settings_activity_flag;
-    private String clickNotif, pref_priority, noteTitle, alarm_time = "";
+    private String clickNotif;
+    private String noteTitle;
+    private String alarm_time = "";
     private NoteyNote notey;
     public MySQLiteHelper db = new MySQLiteHelper(this);
     private RelativeLayout layout_bottom, layout_top, layout_middle;
@@ -195,7 +196,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+                // do nothing
             }
         });
     }
@@ -286,9 +287,10 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         else if (v.getId() == R.id.alarm_btn) {
             Intent i = new Intent(this, AlarmActivity.class);
+            i.putExtra("alarm_id", id);
 
             // if alarm is set, pass the alarm time to the next activity
-            if(!alarm_time.equals("")) {
+            if(alarm_time != null && !alarm_time.equals("")) {
                 i.putExtra("alarm_set_time", alarm_time);
                 i.putExtra("alarm_pending_intent", alarmPendingIntent);
             }
@@ -332,8 +334,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 Toast.makeText(getApplicationContext(), getString(R.string.hold_to_record), Toast.LENGTH_SHORT).show();
             }
 
-            //if either textbox has text and it is possible to delete notifs, continue and create notification
-            if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete) {
+            // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
+            boolean alarmTimeIsGreaterThanCurrentTime;
+            if(alarm_time == null || alarm_time.equals(""))
+                alarmTimeIsGreaterThanCurrentTime = true;
+            else alarmTimeIsGreaterThanCurrentTime = Long.valueOf(alarm_time) > System.currentTimeMillis();
+
+            //if either textbox has text AND it is possible to delete notifs AND if current time is less than alarm time, then set the alarm, continue and create notification
+            if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && alarmTimeIsGreaterThanCurrentTime) {
                 int d; //the icon for the notification
 
                 //get the icon
@@ -387,25 +395,31 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 //add alarm to db and set it
                 String noteForNotification = note;  // use a temp string to add the alarm info to the notification
-                if(!alarm_time.equals("")){
+                if(alarm_time != null && !alarm_time.equals("")){  //if alarm time is valid, and if we are not in and editIntent
                     notey.setAlarm(alarm_time); // add to db
 
-                    // add the alarm info to the notification
+                    // add the alarm date/time to the notification
                     Date date = new Date(Long.valueOf(alarm_time));
                     noteForNotification += "\n"+ getString(R.string.alarm) + ": " +  AlarmActivity.format_date.format(date) + " " + AlarmActivity.format_time.format(date);
 
-                    // intent for reciever to launch info screen when alarm goes off
+                    // intent for alarm service to launch
                     Intent myIntent = new Intent(this, AlarmService.class);
                     Bundle bundle = new Bundle();
                     bundle.putInt("alarmID", id);
                     myIntent.putExtras(bundle);
-                   // myIntent.putExtra("alarmID", id);
-                    alarmPendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     //set alarm
                     AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC, Long.valueOf(alarm_time), alarmPendingIntent);
+                    alarmPendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    alarmManager.cancel(alarmPendingIntent); // cancel any alarm that might already exist
+
+                    // check the sharedPrefs for the check box to wake up the device
+                    if(PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), alarmPendingIntent);
+                    else alarmManager.set(AlarmManager.RTC, Long.valueOf(alarm_time), alarmPendingIntent);
                 }
+
 
                 //does notey exist in database? if yes-update. if no-add new notey.
                 if (db.checkIfExist(id)) db.updateNotey(notey);
@@ -488,6 +502,10 @@ public class MainActivity extends Activity implements OnClickListener {
                 nm.notify(id, n);
                 finish();
             }
+            // alarm time has past, show toast
+            else if(!alarmTimeIsGreaterThanCurrentTime){
+                Toast.makeText(getApplicationContext(), getString(R.string.alarm_not_set), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -513,7 +531,7 @@ public class MainActivity extends Activity implements OnClickListener {
         //when text is added or deleted, count the num lines of text there are and adjust the size of the textbox accordingly.
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                if(et.getText().toString().equals("")) {
+                if(et.getText().toString().equals("") && et_title.getText().toString().equals("")) { //if both note and title are blank, set to mic
                     new ScaleInAnimation(send_btn).setDuration(250).animate();
                     send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
 
@@ -534,8 +552,10 @@ public class MainActivity extends Activity implements OnClickListener {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if(before == 0 && start == 0) {
-                    new ScaleInAnimation(send_btn).setDuration(250).animate();
-                    send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
+                    if(!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())) { //switch it to the send icon if not already
+                        new ScaleInAnimation(send_btn).setDuration(250).animate();
+                        send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
+                    }
                 }
             }
         });
@@ -543,7 +563,7 @@ public class MainActivity extends Activity implements OnClickListener {
         // title text change listener to switch icon
         et_title.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                if(et_title.getText().toString().equals("")) {
+                if(et_title.getText().toString().equals("") && et.getText().toString().equals("")) {
                     new ScaleInAnimation(send_btn).setDuration(250).animate();
                     send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
 
@@ -555,8 +575,10 @@ public class MainActivity extends Activity implements OnClickListener {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if(before == 0 && start == 0) {
-                    new ScaleInAnimation(send_btn).setDuration(250).animate();
-                    send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
+                    if(!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())){
+                        new ScaleInAnimation(send_btn).setDuration(250).animate();
+                        send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
+                    }
                 }
             }
         });
@@ -585,13 +607,20 @@ public class MainActivity extends Activity implements OnClickListener {
             spinnerLocation = editLoc;
             imageButtonNumber = editBtn;
             noteTitle = editTitle;
-            et_title.setText(noteTitle);
+            if(!noteTitle.equals(getString(R.string.app_name))) //if title is not Notey, then display it
+                et_title.setText(noteTitle);
             et_title.setSelection(et_title.getText().length());
             alarm_time = editAlarm;
             alarmPendingIntent = editAlarmPI;
 
+            //if alarm is not empty AND has past, remove alarm
+            if(alarm_time != null && !alarm_time.equals("")){
+                if(Long.valueOf(alarm_time) < System.currentTimeMillis())
+                    alarm_time = "";
+            }
+
             // switch alarm button icon to show an alarm is set
-            if(!alarm_time.equals("")) {
+            if(alarm_time != null && !alarm_time.equals("")) {
                new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
             }
@@ -608,7 +637,7 @@ public class MainActivity extends Activity implements OnClickListener {
             Intent localIntent = new Intent(this, NotificationBootService.class);
             localIntent.putExtra("action", "boot");
             startService(localIntent);
-        } else if (Intent.ACTION_SEND.equals(action) && type != null) {
+        } else if ((Intent.ACTION_SEND.equals(action) || action.equals("com.google.android.gm.action.AUTO_SEND")) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(i); // Handle text being sent
                 //resize window for amount of text
@@ -638,7 +667,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("clickNotif", "info");
-                editor.commit();
+                editor.apply();
             }
             Intent localIntent = new Intent(this, NotificationBootService.class);
             localIntent.putExtra("action", "boot");
@@ -690,7 +719,7 @@ public class MainActivity extends Activity implements OnClickListener {
         impossible_to_delete = false; //set setting for unable to delete notifications to false, will be checked before pressing send
 
         //set textviews and change font
-        mainTitle = (TextView) findViewById(R.id.mainTitle);
+        TextView mainTitle = (TextView) findViewById(R.id.mainTitle);
         et = (EditText) findViewById(R.id.editText1);
         et_title = (EditText) findViewById(R.id.editText_title);
 
@@ -700,13 +729,14 @@ public class MainActivity extends Activity implements OnClickListener {
         mainTitle.setTypeface(font);
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         if (CURRENT_ANDROID_VERSION >= 16) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
 
-            pref_priority = sharedPreferences.getString("pref_priority", "normal");
+            String pref_priority = sharedPreferences.getString("pref_priority", "normal");
             if (pref_priority.equals("high")) priority = Notification.PRIORITY_MAX;
             else if (pref_priority.equals("low"))
                 priority = Notification.PRIORITY_LOW;
@@ -724,17 +754,16 @@ public class MainActivity extends Activity implements OnClickListener {
         //show middle layout settings
         pref_hide_middle_layout = sharedPreferences.getBoolean("pref_hide_middle_layout", false);
 
-        if(pref_hide_middle_layout) layout_middle_is_shown = false;
-        else layout_middle_is_shown = true;
+        layout_middle_is_shown = !pref_hide_middle_layout;
     }
 
     private PendingIntent createOnDismissedIntent(Context context, int notificationId) {
         //we want to signal the NotificationDismiss receiver for removing notifications
         Intent intent = new Intent(context, NotificationDismiss.class);
         intent.putExtra("NotificationID", notificationId);
+        intent.putExtra("alarmPendingIntent", alarmPendingIntent);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context.getApplicationContext(), notificationId, intent, 0);
-        return pendingIntent;
+        return PendingIntent.getBroadcast(context.getApplicationContext(), notificationId, intent, 0);
     }
 
     private PendingIntent createEditIntent(String note, String title){
@@ -875,8 +904,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * (metrics.densityDpi / 160f);
-        return px;
+        return dp * (metrics.densityDpi / 160f);
     }
 
     private void startVoiceRecognitionActivity(){
@@ -910,7 +938,7 @@ public class MainActivity extends Activity implements OnClickListener {
             alarm_time = data.getExtras().getString("alarm_time", "");
 
             // switch alarm button icon to show an alarm is set. also show toast
-            if(!alarm_time.equals("")) {
+            if(alarm_time != null && !alarm_time.equals("")) {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
 
@@ -1063,8 +1091,7 @@ public class MainActivity extends Activity implements OnClickListener {
     protected void onResume() {
         super.onResume();
         // if alarmactivity is called don't reset the ui, otherwise do
-        if(!settings_activity_flag) { /* do nothing */ }
-        else{
+        if (settings_activity_flag) {
             initializeSettings();
             checkLongPressVoiceInput();
             setupMiddleRow();

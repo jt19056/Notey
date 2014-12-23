@@ -20,12 +20,6 @@
         revision="20.0.0"
         sha1="2fc859b7abb78d29169f6a582b45cbe1f3f1a4cc"/>
     <item
-        dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\joda-time-2.6-b1ef37d70bbcb8bf2eacbe3f4e5cc8f06227da0f.jar"
-        jar="C:\Users\Jon\.gradle\caches\modules-2\files-2.1\joda-time\joda-time\2.6\5015880733b0bc0ce813a3ed5601064c1d413671\joda-time-2.6.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="5015880733b0bc0ce813a3ed5601064c1d413671"/>
-    <item
         dex="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-d5f4ba58c17db5d9f9e5ed2e619897676c9d2cd4.jar"
         jar="C:\Users\Jon\Dropbox\My Documents\android\Notey21\app\build\intermediates\exploded-aar\com.android.support\support-v4\21.0.3\libs\internal_impl-21.0.3.jar"
         jumboMode="false"

@@ -41,6 +41,7 @@
         android:clickable="false"
         android:onClick="onClick"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:layout_below="@id/info_layout_top"/>
 
     <LinearLayout
@@ -65,7 +66,10 @@
             android:textSize="20sp"
             android:layout_weight="2"
             android:clickable="false"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:gravity="center"
+            android:scrollbars="vertical"
+            android:maxLines="15"/>
 
         <Button
             android:layout_width="wrap_content"

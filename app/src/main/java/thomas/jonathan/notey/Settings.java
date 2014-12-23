@@ -77,12 +77,6 @@ public class Settings extends PreferenceActivity {
 
     @Override
     public void onBackPressed() { //hardware or software back button on the phone
-
-        if (impossible_to_delete) {
-            //disables back button if unable to delete notifcations
-        } else {
-            //allow back button
-            super.onBackPressed();
-        }
+        if (!impossible_to_delete) super.onBackPressed(); //allow back button
     }
 }

@@ -1,23 +1,21 @@
 package thomas.jonathan.notey;
 
+import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +40,30 @@ public class NotificationBootService extends IntentService {
         intentType = intent.getExtras().getString("action");
 
         if (intentType == null) return;
-        if (intentType.compareTo("boot") == 0) {
+
+        //loop through noteys and re-create the alarms
+        if (intentType.equals("boot_alarm")) {
+            for (NoteyNote n : allNoteys) {
+                if (n.getAlarm() != null) {
+                    // intent for service to launch info screen when alarm goes off
+                    Intent myIntent = new Intent(this, AlarmService.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("alarmID", n.getId());
+                    myIntent.putExtras(bundle);
+
+                    PendingIntent alarmPendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    //set alarm
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    // check the sharedPrefs for the check box to wake up the device
+                    if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                    else
+                        alarmManager.set(AlarmManager.RTC, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                }
+            }
+        } else if (intentType.equals("boot")) {
 
             //Settings stuff
             initializeSettings();
@@ -52,23 +73,18 @@ public class NotificationBootService extends IntentService {
                 PendingIntent piEdit = createEditIntent(n);
                 PendingIntent piShare = createShareIntent(n);
 
-                if (n.getTitle() != null) { /*do nothing*/}  //for users on < v2.0.3, they didn't have 'title' column in db
-                else {
+                //for users on < v2.0.3, they didn't have 'title' column in db
+                if (n.getTitle() == null) {
                     n.setTitle(getString(R.string.app_name));
                     db.updateNotey(n);
                 }
 
+
                 noteString = n.getNote(); //temp note text to display alarm
-                if(n.getAlarm() != null){
+                if (n.getAlarm() != null) {
                     Date date = new Date(Long.valueOf(n.getAlarm()));
-
-                    noteString += "\n"+ getString(R.string.alarm) + ": " +  AlarmActivity.format_date.format(date.getTime()) + " " + AlarmActivity.format_time.format(date.getTime());
-
-//                    Intent myIntent = new Intent(this, AlarmReceiver.class);
-//                    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, myIntent,0);
-//
-//                    AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-//                    alarmManager.set(AlarmManager.RTC, alarm_time, pendingIntent);
+                    // add the alarm info to the notification
+                    noteString += "\n" + getString(R.string.alarm) + ": " + AlarmActivity.format_date.format(date) + " " + AlarmActivity.format_time.format(date);
                 }
 
                 //converts the iconName to int. if there isn't an iconName, default to check white
@@ -160,6 +176,7 @@ public class NotificationBootService extends IntentService {
         stopSelf();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         if (CURRENT_ANDROID_VERSION >= 16) {
@@ -185,8 +202,7 @@ public class NotificationBootService extends IntentService {
     private PendingIntent createOnDismissedIntent(int notificationId) {
         Intent intent = new Intent(this, NotificationDismiss.class);
         intent.putExtra("NotificationID", notificationId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), notificationId, intent, 0);
-        return pendingIntent;
+        return PendingIntent.getBroadcast(getApplicationContext(), notificationId, intent, 0);
     }
 
     private PendingIntent createEditIntent(NoteyNote n) {

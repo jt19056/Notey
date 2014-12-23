@@ -4,13 +4,16 @@ package thomas.jonathan.notey;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,19 +29,24 @@ import java.util.Date;
 public class AlarmActivity extends FragmentActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public static final String DATEPICKER_TAG = "datepicker", TIMEPICKER_TAG = "timepicker";
     private final Calendar calendar = Calendar.getInstance();
-    private TextView alarm_set_tv, date_tv, time_tv, alarm_mainTitle;
-    private Button set_btn, cancel_btn;
-    private ImageButton alarm_delete;
+    private TextView date_tv;
+    private TextView time_tv;
     private int year, month, day, hour, minute;
     private PendingIntent alarmPendingIntent;
     public static final SimpleDateFormat format_date = new SimpleDateFormat("EEE, MMM dd, yyyy"), format_time = new SimpleDateFormat("hh:mm a");
-    private DatePickerDialog datePickerDialog;
-    private TimePickerDialog timePickerDialog;
+    private CheckBox vibrate_cb, wake_cb;
+    SharedPreferences sharedPref;
+    private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarm_activity_dialog);
+
+        Intent i = getIntent();
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        id = i.getExtras().getInt("alarm_id", -1);
 
         if (savedInstanceState != null) {
             DatePickerDialog dpd = (DatePickerDialog) getSupportFragmentManager().findFragmentByTag(DATEPICKER_TAG);
@@ -58,21 +66,28 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-        alarm_set_tv = (TextView) findViewById(R.id.alarm_set_tv);
+        TextView alarm_set_tv = (TextView) findViewById(R.id.alarm_set_tv);
         date_tv = (TextView) findViewById(R.id.date_tv);
         time_tv = (TextView) findViewById(R.id.time_tv);
-        alarm_mainTitle = (TextView) findViewById(R.id.alarm_mainTitle);
-        set_btn = (Button) findViewById(R.id.alarm_set_btn);
-        cancel_btn = (Button) findViewById(R.id.alarm_cancel_btn);
-        alarm_delete = (ImageButton) findViewById(R.id.alarm_delete);
+        TextView alarm_mainTitle = (TextView) findViewById(R.id.alarm_mainTitle);
+        Button set_btn = (Button) findViewById(R.id.alarm_set_btn);
+        Button cancel_btn = (Button) findViewById(R.id.alarm_cancel_btn);
+        ImageButton alarm_delete = (ImageButton) findViewById(R.id.alarm_delete);
+        vibrate_cb = (CheckBox) findViewById(R.id.alarm_vibrate);
+        wake_cb = (CheckBox) findViewById(R.id.alarm_wake);
 
-        Typeface font = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
-        alarm_set_tv.setTypeface(font);
-        date_tv.setTypeface(font);
-        time_tv.setTypeface(font);
-        alarm_mainTitle.setTypeface(font);
-        set_btn.setTypeface(font);
-        cancel_btn.setTypeface(font);
+        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
+        Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
+        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "ROBOTO-BOLD.ttf");
+
+        alarm_set_tv.setTypeface(roboto_bold);
+        date_tv.setTypeface(roboto_reg);
+        time_tv.setTypeface(roboto_reg);
+        alarm_mainTitle.setTypeface(roboto_light);
+        set_btn.setTypeface(roboto_light);
+        cancel_btn.setTypeface(roboto_light);
+        vibrate_cb.setTypeface(roboto_light);
+        wake_cb.setTypeface(roboto_light);
 
         date_tv.setOnClickListener(this);
         time_tv.setOnClickListener(this);
@@ -89,9 +104,14 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         };
         alarm_delete.setOnLongClickListener(listener);
 
+        // if id is valid. also checks the sharedprefs if the user is editing the alarm
+        if(id != -1 && sharedPref.getBoolean("vibrate" + Integer.toString(id), true))
+            vibrate_cb.setChecked(true);
+        if(id != -1 && sharedPref.getBoolean("wake" + Integer.toString(id), true))
+            wake_cb.setChecked(true);
+
 
         Date date = new Date();
-        Intent i = getIntent();
 
         // if an alarm is already set, show the set alarm date/time. also show the delete button
         if(i.hasExtra("alarm_set_time")) {
@@ -120,14 +140,14 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     public void onClick(View view) {
 
         if (view.getId() == R.id.date_tv) {
-            datePickerDialog = DatePickerDialog.newInstance(this, year, month, day, true);
+            DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day, true);
             datePickerDialog.setVibrate(true);
             datePickerDialog.setYearRange(1985, 2028);
             datePickerDialog.setCloseOnSingleTapDay(false);
             datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
 
         } else if (view.getId() == R.id.time_tv) {
-            timePickerDialog = TimePickerDialog.newInstance(this, hour , minute , false, false);
+            TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, false, false);
             timePickerDialog.setVibrate(true);
             timePickerDialog.setCloseOnSingleTapMinute(false);
             timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
@@ -136,11 +156,16 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             calendar.set(year, month, day, hour, minute); //set the calendar for the new alarm time
 
             // send the time (in milliseconds) back to MainActivity to set alarm if the user creates the notey
-            Intent output = new Intent();
-            output.putExtra("alarm_time", Long.toString(calendar.getTimeInMillis()));
-            long tim = calendar.getTimeInMillis();
-            String tim1000 = Long.toString(calendar.getTimeInMillis());
-            setResult(RESULT_OK, output);
+
+            if(System.currentTimeMillis() < calendar.getTimeInMillis()) { //if set time is greater than current time, then set the alarm
+                Intent output = new Intent();
+                output.putExtra("alarm_time", Long.toString(calendar.getTimeInMillis()));
+                setResult(RESULT_OK, output);
+
+                saveSettings();
+            }
+            else Toast.makeText(getApplicationContext(), getString(R.string.alarm_not_set), Toast.LENGTH_SHORT).show();
+
 
             finish();
         }
@@ -160,6 +185,19 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             finish();
         }
 
+    }
+
+    //save the checkboxes and settings. create a new sharedpref for each alarm, this is using the id as an identifier for the alarmService.
+    private void saveSettings(){
+
+        if(id != -1){
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putBoolean("vibrate" + Integer.toString(id), vibrate_cb.isChecked());
+            editor.putBoolean("wake" + Integer.toString(id), wake_cb.isChecked());
+
+            editor.apply();
+        }
     }
 
 

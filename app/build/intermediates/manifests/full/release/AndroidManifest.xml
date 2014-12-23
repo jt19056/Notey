@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="thomas.jonathan.notey"
-    android:versionCode="22"
+    android:versionCode="26"
     android:versionName="@string/version" >
- <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -41,8 +42,12 @@
         <receiver
             android:name="thomas.jonathan.notey.AlarmReceiver"
             android:enabled="true"
-            android:exported="false" />
-/>
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name="thomas.jonathan.notey.DashClock"
             android:icon="@drawable/ic_launcher_dashclock"
@@ -77,8 +82,11 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+                <action android:name="com.google.android.gm.action.AUTO_SEND" />
+                <action android:name="com.google.android.voicesearch.action.AUTO_SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.google.android.voicesearch.SELF_NOTE" />
 
                 <data android:mimeType="text/plain" />
             </intent-filter>

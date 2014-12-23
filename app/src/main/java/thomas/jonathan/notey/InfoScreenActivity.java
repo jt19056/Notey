@@ -2,62 +2,32 @@ package thomas.jonathan.notey;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.speech.RecognizerIntent;
-import android.support.v4.app.NotificationCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 // Toast.makeText(getApplicationContext(), "**", Toast.LENGTH_SHORT).show();
 public class InfoScreenActivity extends Activity implements OnClickListener {
     public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
-    private TextView noteText, titleText;
+    private TextView noteText;
     private ImageButton menu_btn, back_btn, edit_btn, copy_btn, share_btn, delete_btn;
     private PopupMenu mPopupMenu;
     private int imageButtonNumber, spinnerLocation, id;
@@ -67,6 +37,8 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_activity_dialog);
+
+        AlarmService.releaseWakeUpWakelock(); // release the wakelock which turns on the device
 
         initializeGUI();
     }
@@ -79,7 +51,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         else if (view.getId() == R.id.info_edit_button) {
             Intent editIntent = new Intent(this, MainActivity.class);
             editIntent.putExtra("editNotificationID", id);
-            editIntent.putExtra("editNote", noteText.getText());
+            editIntent.putExtra("editNote", noteText.getText().toString());
             editIntent.putExtra("editLoc", spinnerLocation);
             editIntent.putExtra("editButton", imageButtonNumber);
             editIntent.putExtra("editTitle", noteTitle);
@@ -153,7 +125,8 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         Intent i = this.getIntent();
 
         noteText = (TextView) findViewById(R.id.info_text);
-        titleText = (TextView) findViewById(R.id.info_title_text);
+        noteText.setMovementMethod(new ScrollingMovementMethod());
+        TextView titleText = (TextView) findViewById(R.id.info_title_text);
         TextView mainTitle = (TextView) findViewById(R.id.info_mainTitle);
 
         if (i.hasExtra("infoNotificationID")) {
@@ -172,9 +145,23 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
             noteText.setText(infoNote);
 
+            //only show note if it's not empty
+            if(infoNote.equals("")) {
+                noteText.setVisibility(View.GONE);
+            }
+            else{
+                noteText.setVisibility(View.VISIBLE);
+                noteText.setText(infoNote);
+            }
+
             //only show title if it's not equal to "Notey"
-            if(!infoTitle.equals(getString(R.string.app_name)))
+            if(infoTitle.equals(getString(R.string.app_name)) || infoTitle.equals("")) {
+                titleText.setVisibility(View.GONE);
+            }
+            else{
+                titleText.setVisibility(View.VISIBLE);
                 titleText.setText(infoTitle);
+            }
 
             for(String s : internetStrings)
                 if(noteText.getText().toString().toLowerCase().contains(s)) {
@@ -242,10 +229,11 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         });
 
         //set font
-        Typeface font = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
-        noteText.setTypeface(font);
-        titleText.setTypeface(font);
-        mainTitle.setTypeface(font);
+        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
+        Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
+        noteText.setTypeface(roboto_light);
+        titleText.setTypeface(roboto_reg);
+        mainTitle.setTypeface(roboto_light);
     }
 
     private void setupLongClickListeners(){
@@ -297,6 +285,8 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         restoreNotifications();
+
+        NotificationDismiss.clearNotificationLED(this);
     }
 
     @Override
@@ -304,16 +294,6 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-    }
-
-    //hardware button click listener. for Menu key
-    public boolean onKeyUp(View v, int keyCode, KeyEvent event) {
-        //if hardware menu button, activate the menu button at the top of the app.
-        if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                (keyCode == KeyEvent.KEYCODE_MENU)) {
-            menu_btn.performClick();
-        }
-        return false;
     }
 }
 

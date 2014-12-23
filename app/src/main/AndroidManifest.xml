@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="thomas.jonathan.notey"
-    android:versionCode="22"
+    android:versionCode="26"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
-    <uses-permission android:name="android.permission.VIBRATE"></uses-permission>
-    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -26,11 +25,15 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".NotificationDismiss" android:enabled="true" android:exported="false" ></receiver>
+        <receiver android:name=".NotificationDismiss" android:enabled="true" android:exported="false" />
         <service android:name=".NotificationBootService" android:enabled="true"/>
 
         <service android:name=".AlarmService" android:enabled="true" />
-        <receiver android:name=".AlarmReceiver" android:enabled="true" android:exported="false" ></receiver>/>
+        <receiver android:name=".AlarmReceiver" android:enabled="true" android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service android:name=".DashClock"
             android:icon="@drawable/ic_launcher_dashclock"
@@ -55,7 +58,10 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+                <action android:name="com.google.android.gm.action.AUTO_SEND" />
+                <action android:name="com.google.android.voicesearch.action.AUTO_SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.google.android.voicesearch.SELF_NOTE" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>

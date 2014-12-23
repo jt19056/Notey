@@ -42,17 +42,17 @@ https://github.com/2359media/EasyAndroidAnimations
 
 
 
-• BetterPickers
+• DateTimePicker
 
-https://github.com/derekbrameyer/android-betterpickers
+https://github.com/flavienlaurent/datetimepicker
 
-Copyright 2013 Derek Brameyer
+Copyright 2013 Flavien Laurent (DatePicker) edisonw (TimePicker)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-   http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,7 +62,7 @@ limitations under the License.
 
 
 
-• Roboto-Light.ttf
+• Roboto Fonts
 
 Christian Robertson
 Apache License, version 2.0

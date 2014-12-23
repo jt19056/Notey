@@ -124,6 +124,7 @@
     <string name="about_actionbar">\tAbout</string>
     <string name="alarm">Alarm</string>
     <string name="alarm_deleted">Alarm has been deleted.</string>
+    <string name="alarm_not_set">Alarm not set. You chose a time in the past!</string>
     <string name="alarm_set_for">Alarm set for: </string>
     <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
     <eat-comment/>
@@ -174,7 +175,7 @@
     <string name="flame">Flame</string>
     <string name="go_back">Go back</string>
     <string name="hidden_alarm_row">Hidden Alarm Row</string>
-    <string name="hidden_alarm_row_summary">Press the top bar to show it.</string>
+    <string name="hidden_alarm_row_summary">Expandable alarm row. Press the top bar to toggle.</string>
     <string name="hold_to_record">Hold to record</string>
     <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
     <eat-comment/>
@@ -269,7 +270,9 @@
     <string name="top_icon">Your oldest note\'s icon</string>
     <string name="undo">Undo</string>
     <string name="verNum">Version Number</string>
-    <string name="version" translatable="false">2.1</string>
+    <string name="version" translatable="false">2.1b3</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="wake_device">Wake Device</string>
     <string name="warning">Warning</string>
     <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values/values.xml -->
     <eat-comment/>

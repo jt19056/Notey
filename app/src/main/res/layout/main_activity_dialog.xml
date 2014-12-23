@@ -88,23 +88,6 @@
         android:paddingTop="5dp"
         android:animateLayoutChanges="true">
 
-
-        <EditText
-            android:id="@+id/editText_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:ems="10"
-            android:hint="@string/title"
-            android:maxLength="15"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:scrollbars="horizontal"
-            android:textColorHint="#9E9E9E"
-            android:textSelectHandle="@drawable/text_handler_24dp"
-            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
-            android:textSelectHandleRight="@drawable/text_handler_right_24dp" />
-
         <ImageButton
             android:id="@+id/alarm_btn"
             android:layout_width="wrap_content"
@@ -116,6 +99,27 @@
             android:layout_marginRight="5dp"
             android:background="?android:selectableItemBackground"
             android:src="@drawable/ic_alarm_add_grey600_36dp" />
+
+        <EditText
+            android:id="@+id/editText_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/alarm_btn"
+            android:layout_toStartOf="@id/alarm_btn"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:ems="10"
+            android:hint="@string/title"
+            android:maxLength="20"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:scrollbars="horizontal"
+            android:textColorHint="#9E9E9E"
+            android:textSelectHandle="@drawable/text_handler_24dp"
+            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
+            android:textSelectHandleRight="@drawable/text_handler_right_24dp" />
+
+
 
     </RelativeLayout>
 

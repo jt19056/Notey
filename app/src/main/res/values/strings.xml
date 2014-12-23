@@ -45,7 +45,7 @@
     <string name="share_button">Share Button</string>
     <string name="share_button_summary">Adds the Share button to the expandable notifications.</string>
     <string name="hidden_alarm_row">Hidden Alarm Row</string>
-    <string name="hidden_alarm_row_summary">Press the top bar to show it.</string>
+    <string name="hidden_alarm_row_summary">Expandable alarm row. Press the top bar to toggle.</string>
 
 
     <!-- About strings -->
@@ -93,6 +93,9 @@
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="wake_device">Wake Device</string>
+    <string name="alarm_not_set">Alarm not set. You chose a time in the past!</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>

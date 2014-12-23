@@ -35,7 +35,7 @@
         <CheckBoxPreference android:key="pref_hide_middle_layout"
             android:title="@string/hidden_alarm_row"
             android:summary="@string/hidden_alarm_row_summary"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -1,5 +1,7 @@
-2.1 - [12/09/14]
-• Added a fourth row. Option to make it always visible or hidden with a toggle press to show.
+﻿2.1 - [12/19/14]
+• Alarms! - Set the date and time for when you want to be reminded of your note.
+• Added a new row for the alarm and title. Option in the Settings to make it always visible or hidden with a toggle press to show. (Default is always show)
+• Google Search voice actions. Say: "OK Google..., take a note" or "OK Google..., note to self" in the Google Now/Search app.
 • Some animations.
 
 2.0.4.1 - [12/09/14]
