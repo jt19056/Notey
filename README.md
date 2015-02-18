@@ -32,7 +32,7 @@ Write yourself a notification reminder and send it to the status bar and notific
 
 
 
-<b><u>Notey Pro</u></b>
+<b>Notey Pro:</b>
 
 • Alarm sounds.
 
@@ -55,7 +55,7 @@ This (http://imgur.com/a/uhpS4#0) is not a bug and unfortunately there is nothin
 
 
 
-Permission Explanations:
+<b>Permission Explanations:</b>
 
 RECEIVE_BOOT_COMPLETED - Restore notifications after device reboot.
 
