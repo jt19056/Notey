@@ -56,10 +56,15 @@ This (http://imgur.com/a/uhpS4#0) is not a bug and unfortunately there is nothin
 
 
 Permission Explanations:
+
 RECEIVE_BOOT_COMPLETED - Restore notifications after device reboot.
+
 VIBRATE - Vibrate when the alarm goes off.*  
+
 WAKE_LOCK - Turn on screen when alarm goes off.*
+
 BILLING - Upgrade to Notey Pro for additional features.
+
 *(Vibrate and screen on are options when setting your alarm for each note)
 
 
