@@ -1,7 +1,7 @@
 # Notey
 ![alt tag](https://cloud.githubusercontent.com/assets/5198078/6241824/0f47dee0-b6f2-11e4-9686-20265d7a9446.png)
 
-Write yourself a notification reminder and send it to the status bar and notification tray where your note will be until you choose to swipe it away. 
+Write yourself a reminder and send it to the status bar and notification tray where your note will be until you choose to swipe it away. 
 
  
  
