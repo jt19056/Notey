@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <RelativeLayout
+        android:id="@+id/info_layout_top"
+        android:layout_width="fill_parent"
+        android:layout_height = "wrap_content"
+        android:background="@color/blue_500">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:id="@+id/info_mainTitle"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="25sp"
+            android:textIsSelectable="false"
+            android:textColor="@android:color/white"/>
+
+        <ImageButton
+            android:id="@+id/info_menuButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_overflow_white"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"
+            android:background="?android:selectableItemBackgroundBorderless"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/info_linear_layout"
+        android:layout_below="@id/info_layout_top"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info_imageView"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:id="@+id/info_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/info_note_text"
+                android:layout_below="@id/info_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:maxLines="15"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                />
+
+            <TextView
+                android:id="@+id/info_alarm_text"
+                android:layout_below="@id/info_note_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:maxLines="1"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    <TableRow
+        android:id="@+id/info_layout_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/info_linear_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        >
+
+        <ImageButton
+            android:id="@+id/info_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back_grey600_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="20"/>
+        <ImageButton
+            android:id="@+id/info_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_grey600_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="20"/>
+        <ImageButton
+            android:id="@+id/info_copy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_content_copy_grey600_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="20"/>
+        <ImageButton
+            android:id="@+id/info_share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_share_grey600_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="20"/>
+        <ImageButton
+            android:id="@+id/info_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_delete_grey600_24dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:layout_weight="20"/>
+    </TableRow>
+
+</RelativeLayout><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/layout-v21/info_activity_dialog.xml -->

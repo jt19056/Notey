@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/values-v19/styles.xml -->
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/values-v19/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
         <!--
@@ -16,7 +16,7 @@
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
     <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/material_blue</item>
+        <item name="android:background">@color/blue_500</item>
     </style>
     <style name="MySettingsTheme" parent="android:Theme.Holo.Light">
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>

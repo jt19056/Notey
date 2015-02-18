@@ -1,14 +1,17 @@
 <resources>
     <style name="AppBaseTheme" parent="android:Theme.Material.Light.Dialog.NoActionBar">
-        <item name="android:colorPrimary">@color/material_blue</item>
-        <item name="android:colorPrimaryDark">@color/dark_blue</item>
-        <item name="android:colorAccent">@color/material_blue</item>
-        <item name="android:navigationBarColor">@color/material_blue</item>
+        <item name="android:colorAccent">@color/blue_500</item>
+        <item name="android:colorPrimary">@color/blue_500</item>
+        <item name="android:colorPrimaryDark">@color/blue_700</item>
+        <item name="android:navigationBarColor">@color/blue_500</item>
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="md_positive_color">@color/pink_a200</item>
+        <item name="md_neutral_color">@color/pink_a200</item>
+        <item name="md_negative_color">@color/pink_a200</item>
     </style>
 
     <style name="CustomActionBarTheme"
@@ -19,16 +22,16 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/material_blue</item>
+        <item name="android:background">@color/blue_500</item>
     </style>
 
     <style name="MySettingsTheme" parent="android:Theme.Material.Light">
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <item name="android:colorPrimary">@color/material_blue</item>
-        <item name="android:colorPrimaryDark">@color/dark_blue</item>
-        <item name="android:colorAccent">@color/material_blue</item>
-        <item name="android:navigationBarColor">@color/material_blue</item>
+        <item name="android:colorPrimary">@color/blue_500</item>
+        <item name="android:colorPrimaryDark">@color/blue_700</item>
+        <item name="android:colorAccent">@color/blue_500</item>
+        <item name="android:navigationBarColor">@color/blue_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>

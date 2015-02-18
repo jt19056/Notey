@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.1</string>
+    <string name="version" translatable="false">2.2a8</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -12,33 +12,32 @@
     <string name="no_voice_input">Voice input is not available.</string>
     <string name="speak_now">Speak now</string>
     <string name="hold_to_record">Hold to record</string>
-    <string name="impossibleToDeleteAtSend">You have made it impossible to remove this Notey. Please go into the settings and fix this.</string>
+    <string name="impossibleToDeleteAtSend">You have made it impossible to remove this note. Please go into the settings and fix this.</string>
     <string name="title">Title</string>
+    <string name="quick_note">Add new note</string>
 
     <!-- Settings strings -->
     <string name="notifications">Notifications</string>
     <string name="display">Display</string>
     <string name="other">Other</string>
-    <string name="notey_settings">\tNotey Settings</string>
+    <string name="notey_settings">Settings</string>
     <string name="settings">Settings</string>
     <string name="notifClick">Notification Click Action</string>
     <string name="notifClickSummary">What happens when a notification is pressed.</string>
     <string name="doNothing">Do nothing</string>
-    <string name="show_info_screen">Show info screen</string>
+    <string name="show_info_screen">Show Info Screen</string>
     <string name="priority">Priority</string>
-    <string name="prioritySummary">Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
-    <string name="prioritySummary_ics">Android 4.1+ only. Where the notifications will be placed in the tray compared to other apps\' notifications.</string>
+    <string name="prioritySummary">Where the notifications will be placed compared to other apps\' notifications.</string>
     <string name="priorityHigh">High - Noteys always at the top of notification tray</string>
     <string name="normal">Normal</string>
-    <string name="priorityLow">Low - Noteys at the bottom of notification tray</string>
+    <string name="priorityLow">Low - Noteys at the bottom</string>
     <string name="priorityMinimum">Minimum - Hides the icon from the status bar and keeps Noteys at the bottom</string>
     <string name="expandNotifs">Expandable Notifications</string>
     <string name="expandNotifsSummary">Allow notifications to be expandable.</string>
-    <string name="expandNotifsSummary_ics">Android 4.1+ only. Allow notifications to be expandable.</string>
     <string name="swipeNotifs">Swipe to Remove</string>
     <string name="swipeNotifsSummary">Allow notifications to be deleted by swiping.</string>
     <string name="enterToSend">Enter to Send</string>
-    <string name="enterToSendSummary">If checked, pressing the enter key will send notifications. If unchecked, pressing will create a new line.</string>
+    <string name="enterToSendSummary">If unchecked, pressing Enter will create a new line.</string>
     <string name="impossibleToDelete">You have made it impossible to remove any Noteys. Please change a setting to make this possible before exiting.</string>
     <string name="long_press_for_voice">Long press for voice input</string>
     <string name="long_press_for_voice_summary">Long press on microphone button to activate voice.</string>
@@ -46,11 +45,17 @@
     <string name="share_button_summary">Adds the Share button to the expandable notifications.</string>
     <string name="hidden_alarm_row">Hidden Alarm Row</string>
     <string name="hidden_alarm_row_summary">Expandable alarm row. Press the top bar to toggle.</string>
+    <string name="shortcut">Notification Shortcut</string>
+    <string name="shortcut_summary">Create new notes directly from the notification tray.</string>
+    <string name="icons">Icons</string>
+    <string name="icons_summary">Select which icons to choose from.</string>
+    <string name="please_select_at_least_one">Please select at least one icon before continuing.</string>
+    <string name="misc">Misc.</string>
+    <string name="pro_options">Pro Options</string>
 
 
     <!-- About strings -->
     <string name="about">About</string>
-    <string name="about_actionbar">\tAbout</string>
     <string name="changelog">Changelog</string>
     <string name="changelogSummary">All the changes made since the beginning.</string>
     <string name="opensource">Open Source Licenses</string>
@@ -60,7 +65,7 @@
     <string name="email" translatable="false">jt19056@gmail.com</string>
     <string name="rate">Rate</string>
     <string name="rateSummary">Hope you enjoy the app!</string>
-    <string name="sendemail">Send email...</string>
+    <string name="sendemail">Send email…</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
 
     <!-- DashClock -->
@@ -76,6 +81,10 @@
     <string name="warning">Warning</string>
     <string name="star">Star</string>
     <string name="flame">Flame</string>
+    <string name="heart">Heart</string>
+    <string name="smile">Smile</string>
+    <string name="note">Note</string>
+    <string name="shopping_cart">Shopping cart</string>
 
     <!-- Info Screen Activity -->
     <string name="text_copied">Text copied to clipboard.</string>
@@ -94,11 +103,32 @@
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="vibrate">Vibrate</string>
-    <string name="wake_device">Wake Device</string>
+    <string name="wake_screen">Wake Screen</string>
     <string name="alarm_not_set">Alarm not set. You chose a time in the past!</string>
+    <string name="sound">Sound: </string>
+    <string name="select_sound">Select reminder sound</string>
+    <string name="does_not_repeat">Does not repeat</string>
+    <string name="repeat_every">"Repeat every "</string>
+    <string name="minutes">" minutes"</string>
+    <string name="minute">" minute"</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>
     <string name="share">Share</string>
+    <string name="none">None</string>
+    <string name="no_thanks">No Thanks</string>
+    <string name="ok">OK</string>
+    <string name="no">No</string>
+
+    <!-- Pro -->
+    <string name="go_pro">Upgrade to Pro</string>
+    <string name="thank_you_for_pro">Thank you for upgrading to Pro!</string>
+    <string name="thank_you_for_contribution">Thank you for your contribution and upgrading to Pro!</string>
+    <string name="pro_plus_tip">Pro + Tip</string>
+    <string name="pro_only">Pro Only</string>
+    <string name="pro">Pro</string>
+    <string name="not_a_pro">Pro features disabled.</string>
+    <string name="yes_a_pro">Pro features enabled.</string>
+    <string name="tip">Tip</string>
 
 </resources>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:key="pref_open_source_licenses"
-        android:title="@string/opensource"
-        android:summary="@string/opensourceSummary"/>
-
     <Preference android:key="pref_changelog"
         android:title="@string/changelog"
         android:summary="@string/changelogSummary"/>
+
+    <Preference android:key="pref_open_source_licenses"
+        android:title="@string/opensource"
+        android:summary="@string/opensourceSummary"/>
 
     <Preference android:key="pref_contact"
         android:title="@string/contact"
@@ -16,8 +16,10 @@
         android:title="@string/rate"
         android:summary="@string/rateSummary"/>
 
+    <Preference android:key="pref_pro"
+        android:title="@string/pro"/>
+
     <Preference android:key="pref_ver_num"
         android:title="@string/verNum"
-        android:summary="@string/version"
-        android:selectable="false" />
+        android:summary="@string/version"/>
 </PreferenceScreen>

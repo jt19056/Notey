@@ -8,4 +8,4 @@
     <include layout="@layout/date_picker_view_animator" />
     <View android:background="@color/line_background" android:layout_width="fill_parent" android:layout_height="1.0dip" />
     <include layout="@layout/date_picker_done_button" />
-</LinearLayout><!-- From: file:/C:/Users/f.laurent/dev/perso/github/datetimepicker/datetimepicker-library/res/layout-sw600dp/date_picker_dialog.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/layout-sw600dp/date_picker_dialog.xml -->
+</LinearLayout><!-- From: file:/C:/Users/f.laurent/dev/perso/github/datetimepicker/datetimepicker-library/res/layout-sw600dp/date_picker_dialog.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/layout-sw600dp/date_picker_dialog.xml -->

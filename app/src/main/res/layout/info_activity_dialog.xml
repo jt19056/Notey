@@ -6,7 +6,7 @@
         android:id="@+id/info_layout_top"
         android:layout_width="fill_parent"
         android:layout_height = "wrap_content"
-        android:background="@color/material_blue">
+        android:background="@color/blue_500">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,52 +31,75 @@
             android:background="?android:selectableItemBackground"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/info_title_text"
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textSize="20sp"
-        android:clickable="false"
-        android:onClick="onClick"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:layout_below="@id/info_layout_top"/>
+        android:orientation="horizontal"
+        android:id="@+id/info_linear_layout"
+        android:layout_below="@id/info_layout_top"
+        >
 
-    <LinearLayout
-        android:id="@+id/info_layout_middle"
-        android:layout_width="fill_parent"
-        android:layout_height = "wrap_content"
-        android:layout_below="@id/info_title_text" >
-
-        <Button
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"/>
+            android:id="@+id/info_imageView"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
 
-        <TextView
-            android:id="@+id/info_text"
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textSize="20sp"
-            android:layout_weight="2"
-            android:clickable="false"
-            android:onClick="onClick"
-            android:gravity="center"
-            android:scrollbars="vertical"
-            android:maxLines="15"/>
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginRight="10dp">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"/>
+            <TextView
+                android:id="@+id/info_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/info_note_text"
+                android:layout_below="@id/info_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:maxLines="15"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                />
+
+            <TextView
+                android:id="@+id/info_alarm_text"
+                android:layout_below="@id/info_note_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:maxLines="1"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -84,7 +107,7 @@
         android:id="@+id/info_layout_bottom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/info_layout_middle"
+        android:layout_below="@+id/info_linear_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"

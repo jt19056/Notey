@@ -23,13 +23,15 @@ public class NotificationDismiss extends BroadcastReceiver {
         //cancel the alarm pending intent
         PendingIntent alarmPendingIntent = (PendingIntent) paramIntent.getExtras().get("alarmPendingIntent");
         if (alarmPendingIntent != null) {
-            AlarmManager alarmManager = (AlarmManager) paramContext.getSystemService(paramContext.ALARM_SERVICE);
+            AlarmManager alarmManager = (AlarmManager) paramContext.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(alarmPendingIntent);
 
-            // remove the no longer needed sharedprefs. just to clear up space
+            // remove the no longer needed sharedprefs
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(paramContext).edit();
             editor.remove("vibrate" + Integer.toString(id)).apply();
             editor.remove("wake" + Integer.toString(id)).apply();
+            editor.remove("sound" + Integer.toString(id)).apply();
+            editor.remove("repeat" + Integer.toString(id)).apply();
 
             clearNotificationLED(paramContext);
         }
@@ -38,20 +40,16 @@ public class NotificationDismiss extends BroadcastReceiver {
             notey = db.getNotey(id);
             db.deleteNotey(notey);
 
-            nm = (NotificationManager) paramContext.getSystemService(paramContext.NOTIFICATION_SERVICE);
+            nm = (NotificationManager) paramContext.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.cancel(id);
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        } catch (CursorIndexOutOfBoundsException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
+        } catch (SQLiteException | CursorIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
     }
 
     public static void clearNotificationLED(Context paramContext) {
-        NotificationManager nm = (NotificationManager) paramContext.getSystemService(paramContext.NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) paramContext.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(AlarmService.LED_NOTIFICATION_ID);
     }
 }

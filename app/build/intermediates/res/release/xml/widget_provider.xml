@@ -1,0 +1,8 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="146dip"
+    android:minHeight="146dip"
+    android:updatePeriodMillis="0"
+    android:initialLayout="@layout/widget"
+    android:autoAdvanceViewId="@+id/words"
+    android:resizeMode="vertical"
+    /><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/xml/widget_provider.xml -->

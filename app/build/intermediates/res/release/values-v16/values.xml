@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-v16/values.xml -->
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-v16/values.xml -->
     <eat-comment/>
     <string name="day_of_week_label_typeface">sans-serif-light</string>
     <style name="day_of_week_label_condensed">

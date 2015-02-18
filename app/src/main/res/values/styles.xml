@@ -18,9 +18,12 @@
     </style>
 
     <color name="black">#FF000000</color>
-    <color name="material_blue">#2196F3</color>
-    <color name="dark_blue">#1565C0</color>
-    <color name="blue300">#64B5F6</color>
+    <color name="blue_100">#BBDEFB</color>
+    <color name="blue_300">#64B5F6</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="blue_700">#1976D2</color>
+    <color name="grey_600">#757575</color>
+    <color name="pink_a200">#FF4081</color>
 
 
     <style name="CustomActionBarTheme"
@@ -31,14 +34,12 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/material_blue</item>
+        <item name="android:background">@color/blue_500</item>
     </style>
 
     <style name="MySettingsTheme" parent="android:Theme.Holo.Light">
         <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
-
-
 
 </resources>

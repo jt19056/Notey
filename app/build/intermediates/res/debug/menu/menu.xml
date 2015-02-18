@@ -3,10 +3,13 @@
     
     <item android:id="@+id/settings"
         android:title="@string/settings"
-        ></item>
+        />
+    <item android:id="@+id/go_pro"
+        android:title="@string/go_pro"
+        />
     <item android:id="@+id/about"
         android:title="@string/about"
-        ></item>
+        />
 
 </menu>
-<!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/menu/menu.xml -->
+<!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/menu/menu.xml -->

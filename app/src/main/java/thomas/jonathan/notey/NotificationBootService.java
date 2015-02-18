@@ -22,14 +22,16 @@ import java.util.List;
 /* This service is used to restore all the notifications stored in the database*/
 public class NotificationBootService extends IntentService {
     final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
-    int priority;
+    int priority, repeatTime = 0;
     boolean pref_expand, pref_swipe, pref_share_action;
     String clickNotif, intentType, pref_priority, noteString;
+    PendingIntent alarmPendingIntent;
 
     public NotificationBootService() {
         super("NotificationService");
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onStart(Intent intent, int startId) {
         MySQLiteHelper db = new MySQLiteHelper(this);
@@ -51,22 +53,48 @@ public class NotificationBootService extends IntentService {
                     bundle.putInt("alarmID", n.getId());
                     myIntent.putExtras(bundle);
 
-                    PendingIntent alarmPendingIntent = PendingIntent.getService(this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                   alarmPendingIntent = PendingIntent.getService(this, n.getId(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     //set alarm
                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                    repeatTime = sp.getInt("repeat" + n.getId(), 0);
 
-                    // check the sharedPrefs for the check box to wake up the device
-                    if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), alarmPendingIntent);
-                    else
-                        alarmManager.set(AlarmManager.RTC, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                    //set repeating alarm or set regular alarm
+                    if (repeatTime != 0) {
+                        // check the sharedPrefs for the check box to wake up the device
+                        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
+                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), repeatTime * 1000 * 60, alarmPendingIntent);
+                        else
+                            alarmManager.setRepeating(AlarmManager.RTC, Long.valueOf(n.getAlarm()), repeatTime * 1000 * 60, alarmPendingIntent);
+                    } else { //set regualar alarm
+                        // check the sharedPrefs for the check box to wake up the device
+                        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                        else
+                            alarmManager.set(AlarmManager.RTC, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                    }
                 }
             }
         } else if (intentType.equals("boot")) {
 
             //Settings stuff
             initializeSettings();
+
+            //show shortcut notification if settings say so
+            if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("pref_shortcut", false)) {
+                Notification n = new NotificationCompat.Builder(this)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText(getString(R.string.quick_note))
+                        .setSmallIcon(R.drawable.ic_launcher_dashclock)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
+                        .setOngoing(true)
+                        .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                        .setAutoCancel(false)
+                        .setPriority(Notification.PRIORITY_MIN)
+                        .build();
+                nm.notify(MainActivity.SHORTCUT_NOTIF_ID, n);
+            }
 
             for (NoteyNote n : allNoteys) {
                 PendingIntent piDismiss = createOnDismissedIntent(n.getId());
@@ -79,13 +107,18 @@ public class NotificationBootService extends IntentService {
                     db.updateNotey(n);
                 }
 
-
                 noteString = n.getNote(); //temp note text to display alarm
                 if (n.getAlarm() != null) {
                     Date date = new Date(Long.valueOf(n.getAlarm()));
                     // add the alarm info to the notification
-                    noteString += "\n" + getString(R.string.alarm) + ": " + AlarmActivity.format_date.format(date) + " " + AlarmActivity.format_time.format(date);
+                    noteString += "\n" + getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date);
                 }
+
+                String tickerText;  //if title is there, set ticker to title. otherwise set it to the note
+                if (n.getTitle().equals("") || n.getTitle().equals(getString(R.string.app_name)))
+                    tickerText = n.getNote();
+                else tickerText = n.getTitle();
+
 
                 //converts the iconName to int. if there isn't an iconName, default to check white
                 int ico;
@@ -111,13 +144,14 @@ public class NotificationBootService extends IntentService {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
+                            .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setLargeIcon(bm)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
                             .setOngoing(!pref_swipe)
-                            .setAutoCancel(true)
+                            .setAutoCancel(false)
                             .setPriority(priority)
                             .addAction(R.drawable.ic_edit_white_24dp,
                                     getString(R.string.edit), piEdit)
@@ -132,13 +166,14 @@ public class NotificationBootService extends IntentService {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
+                            .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setLargeIcon(bm)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
                             .setOngoing(!pref_swipe)
-                            .setAutoCancel(true)
+                            .setAutoCancel(false)
                             .setPriority(priority)
                             .addAction(R.drawable.ic_edit_white_24dp,
                                     getString(R.string.edit), piEdit)
@@ -150,12 +185,13 @@ public class NotificationBootService extends IntentService {
                 else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
+                            .setContentText(tickerText)
+                            .setTicker(n.getNote())
                             .setSmallIcon(ico)
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
                             .setOngoing(!pref_swipe)
-                            .setAutoCancel(true)
+                            .setAutoCancel(false)
                             .setPriority(priority)
                             .build();
                 }
@@ -164,10 +200,12 @@ public class NotificationBootService extends IntentService {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
+                            .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
                             .setDeleteIntent(piDismiss)
                             .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
                             .build();
                 }
                 nm.notify(n.getId(), notif);
@@ -184,12 +222,20 @@ public class NotificationBootService extends IntentService {
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
 
             pref_priority = sharedPreferences.getString("pref_priority", "normal");
-            if (pref_priority.equals("high")) priority = Notification.PRIORITY_MAX;
-            else if (pref_priority.equals("low"))
-                priority = Notification.PRIORITY_LOW;
-            else if (pref_priority.equals("minimum"))
-                priority = Notification.PRIORITY_MIN;
-            else priority = Notification.PRIORITY_DEFAULT;
+            switch (pref_priority) {
+                case "high":
+                    priority = Notification.PRIORITY_MAX;
+                    break;
+                case "low":
+                    priority = Notification.PRIORITY_LOW;
+                    break;
+                case "minimum":
+                    priority = Notification.PRIORITY_MIN;
+                    break;
+                default:
+                    priority = Notification.PRIORITY_DEFAULT;
+                    break;
+            }
 
         } else {
             pref_expand = false;
@@ -213,6 +259,8 @@ public class NotificationBootService extends IntentService {
         editIntent.putExtra("editButton", n.getImgBtnNum());
         editIntent.putExtra("editTitle", n.getTitle());
         editIntent.putExtra("editAlarm", n.getAlarm());
+        editIntent.putExtra("editRepeat", repeatTime);
+        editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
         return PendingIntent.getActivity(getApplicationContext(), n.getId(), editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -232,17 +280,22 @@ public class NotificationBootService extends IntentService {
         infoIntent.putExtra("infoButton", n.getImgBtnNum());
         infoIntent.putExtra("infoTitle", n.getTitle());
         infoIntent.putExtra("infoAlarm", n.getAlarm());
+        infoIntent.putExtra("infoRepeat", repeatTime);
+        infoIntent.putExtra("infoAlarmPendingIntent", alarmPendingIntent);
         return PendingIntent.getActivity(getApplicationContext(), n.getId(), infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent onNotifClickPI(String clickNotif, NoteyNote n) {
-        if (clickNotif.equals("info")) {
-            return createInfoScreenIntent(n);
-        } else if (clickNotif.equals("edit")) {
-            return createEditIntent(n);
-        } else if (clickNotif.equals("remove")) {
-            return createOnDismissedIntent(n.getId());
-        } else return null;
+        switch (clickNotif) {
+            case "info":
+                return createInfoScreenIntent(n);
+            case "edit":
+                return createEditIntent(n);
+            case "remove":
+                return createOnDismissedIntent(n.getId());
+            default:
+                return null;
+        }
     }
 
     @Override

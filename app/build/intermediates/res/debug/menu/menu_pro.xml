@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item android:id="@+id/settings"
+        android:title="@string/settings"
+        />
+    <item android:id="@+id/about"
+        android:title="@string/about"
+        />
+
+</menu>
+<!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/menu/menu_pro.xml -->

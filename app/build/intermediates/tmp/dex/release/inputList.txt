@@ -1,0 +1,14 @@
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\classes\release
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\support-annotations-21.0.3-147aa38208ae18ddb94ad45d7223a8177a116aa6.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\dashclock-api-r2.0-4a58fe2a1ca00778e55bfc0cf26bdd9aaf37f45b.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-c46f64fb7ec7d476fedb0f503e278ea86272d34c.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-c9d5aab0fd3756840b6fc94db2a27714f778a02c.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\jsr305-3.0.0-e0d51dee3d71cbb660c54eded107466d706d6ec0.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-27473573bc678228eaad43418ca1dc9f079ddfa4.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-1cfae6f0211b3a1d0b55ed39095fb88904afe657.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\easyandroidanimationslibrary-v0.5-9d6f25822c580da8d6b5856f6c31292240957e93.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-778fa98684252e89ab8a14547b9542f91a7c08d8.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\library-2.4.0-078fd6ebc184e76086591531a1fe466e6c71b32b.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\internal_impl-21.0.3-9afa77733e3d86c68cc495d226dc834dfa4788ef.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-e79c129862d0826ec71b9872c7059176b3fcfa33.jar
+C:\Users\Jon\Dropbox\My Documents\android\Notey2_2\app\build\intermediates\pre-dexed\release\classes-1cbf2cd7c810a75815c244b791ea3e2e24c1dc21.jar

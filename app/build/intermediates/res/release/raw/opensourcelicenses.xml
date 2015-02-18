@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<notices>
+    <notice>
+        <name>android-support-v4</name>
+        <copyright>Copyright (C) 2014 The Android Open Source Project</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Calligraphy</name>
+        <url>https://github.com/chrisjenx/Calligraphy</url>
+        <copyright>Copyright 2013 Christopher Jenkins</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>DashClock API</name>
+        <url>https://code.google.com/p/dashclock/</url>
+        <copyright>Copyright (C) 2013 Roman Nurik</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>DateTimePicker</name>
+        <url>https://github.com/flavienlaurent/datetimepicker</url>
+        <copyright>Copyright 2013 Flavien Laurent (DatePicker) edisonw (TimePicker)</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>DiscreteSeekBar</name>
+        <url>https://github.com/AnderWeb/discreteSeekBar</url>
+        <copyright>Copyright 2014 Gustavo Claramunt (Ander Webbs)</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>EasyAndroidAnimations</name>
+        <url>https://github.com/2359media/EasyAndroidAnimations</url>
+		<license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Google Play In-app Billing Version 3 API</name>
+        <url>http://developer.android.com/google/play/billing/index.html</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog </name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Material Dialogs</name>
+        <url>https://github.com/afollestad/material-dialogs</url>
+        <copyright>Copyright (c) 2014 Aidan Michael Follestad</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>Roboto Fonts</name>
+        <url>http://www.google.com/fonts/specimen/Roboto</url>
+        <copyright>Christian Robertson</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

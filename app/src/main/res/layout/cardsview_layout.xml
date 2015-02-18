@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_vew="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/widget_linear_layout"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/widget_imageView"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:id="@+id/widget_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/widget_note_text"
+                android:layout_below="@id/widget_title_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:textSize="20sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:scrollbars="vertical"
+                android:maxLines="15"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                />
+
+            <TextView
+                android:id="@+id/widget_alarm_text"
+                android:layout_below="@id/widget_note_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:maxLines="1"
+                android:background="?android:selectableItemBackground"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</CardView>

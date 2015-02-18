@@ -24,7 +24,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String KEY_ICON_NAME = "iconName";
     private static final String KEY_ALARM = "alarm";
 
-    private static final String[] COLUMNS = {KEY_ID,KEY_NOTE,KEY_ICON,KEY_SPINNER_LOC,KEY_IMG_BTN_NUM,KEY_TITLE,KEY_ICON_NAME,KEY_ALARM};
+    private static final String[] COLUMNS = {KEY_ID, KEY_NOTE, KEY_ICON, KEY_SPINNER_LOC, KEY_IMG_BTN_NUM, KEY_TITLE, KEY_ICON_NAME, KEY_ALARM};
     private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "notey.db";
 
@@ -36,7 +36,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TABLE = "CREATE TABLE NoteyTable ( " +
                 "id INTEGER PRIMARY KEY, " +
-                "note TEXT, "+
+                "note TEXT, " +
                 "icon INTEGER," +
                 "spinnerLoc INTEGER," +
                 "imgBtnNum INTEGER, " +
@@ -48,14 +48,14 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if(newVersion<=2) {
+        if (newVersion <= 2) {
             try {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN title TEXT"); //add the 'title' column if on old version of db
             } catch (SQLiteException e) {
                 e.printStackTrace();
             }
         }
-        if(newVersion<=3) {
+        if (newVersion <= 3) {
             try {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN iconName TEXT"); //add the 'iconName' column if on old version of db
             } catch (SQLiteException e) {
@@ -63,7 +63,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             }
         }
 
-        if(newVersion<=4) {
+        if (newVersion <= 4) {
             try {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN alarm TEXT"); //add the 'alarm' column if on old version of db
             } catch (SQLiteException e) {
@@ -72,7 +72,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void addNotey(NoteyNote notey){
+    public void addNotey(NoteyNote notey) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -92,7 +92,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public NoteyNote getNotey(int id){
+    public NoteyNote getNotey(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //cursor used to get query results of db
@@ -100,7 +100,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 db.query(TABLE, //table
                         COLUMNS, //column names
                         " id = ?", //selections
-                        new String[] { String.valueOf(id) }, //selections args
+                        new String[]{String.valueOf(id)}, //selections args
                         null, //group by
                         null, //having
                         null, //order by
@@ -125,7 +125,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     }
 
     public List<NoteyNote> getAllNoteys() {
-        List<NoteyNote> noteyList = new LinkedList<NoteyNote>();
+        List<NoteyNote> noteyList = new LinkedList<>();
         String query = "SELECT  * FROM " + TABLE;
 
         //get query
@@ -169,8 +169,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         //update row
         int i = db.update(TABLE, //table
                 values, // column/value
-                KEY_ID+" = ?", // selections
-                new String[] { String.valueOf(notey.getId()) }); //selection args
+                KEY_ID + " = ?", // selections
+                new String[]{String.valueOf(notey.getId())}); //selection args
         db.close();
         return i;
     }
@@ -179,8 +179,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete(TABLE, //table name
-                KEY_ID+" = ?",  // selections
-                new String[] { String.valueOf(notey.getId()) }); //selections args
+                KEY_ID + " = ?",  // selections
+                new String[]{String.valueOf(notey.getId())}); //selections args
         db.close();
     }
 
@@ -191,11 +191,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         try {
             cursor = db.query(TABLE, COLUMNS, KEY_ID + "=?",
                     new String[]{Integer.toString(id)}, null, null, null, null);
-        }catch (SQLiteException e) {
+        } catch (SQLiteException e) {
             e.printStackTrace();
         }
-            if (cursor.getCount() > 0) return true;
-            else return false;
+        return cursor.getCount() > 0;
 
     }
 }

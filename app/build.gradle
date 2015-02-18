@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "thomas.jonathan.notey"
@@ -18,7 +18,7 @@ android {
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -28,6 +28,11 @@ dependencies {
     compile 'com.android.support:support-v4:21.0+'
     compile files('libs/dashclock-api-r2.0.jar')
     compile files('libs/easyandroidanimationslibrary-v0.5.jar')
-    compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    compile 'com.afollestad:material-dialogs:0.6.3.0'
+    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
+    compile('de.psdev.licensesdialog:licensesdialog:1.6.0') {
+        exclude module: 'support-v4'
+    }
+    compile project(':discreteSeekBar')
 }

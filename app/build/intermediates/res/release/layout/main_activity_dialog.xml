@@ -7,7 +7,7 @@
         android:id="@+id/layout_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_blue">
+        android:background="@color/blue_500">
 
         <TextView
             android:id="@+id/mainTitle"
@@ -41,40 +41,39 @@
         android:layout_centerHorizontal="true"
         android:background="#616161">
 
-        <ImageButton
-            android:id="@+id/imageButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:src="@drawable/ic_check_white_36dp" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:src="@drawable/ic_check_yellow_36dp" />
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_white_36dp" />
 
-        <ImageButton
-            android:id="@+id/imageButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:src="@drawable/ic_check_blue_36dp" />
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_yellow_36dp" />
 
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:src="@drawable/ic_check_green_36dp" />
 
-        <ImageButton
-            android:id="@+id/imageButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="20"
-            android:src="@drawable/ic_check_red_36dp" />
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_blue_36dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_green_36dp" />
+
+
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_check_red_36dp"
+               />
     </TableRow>
 
     <RelativeLayout
@@ -84,9 +83,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tableRow1"
+        android:animateLayoutChanges="true"
         android:paddingBottom="2dp"
-        android:paddingTop="5dp"
-        android:animateLayoutChanges="true">
+        android:paddingTop="5dp">
 
         <ImageButton
             android:id="@+id/alarm_btn"
@@ -104,10 +103,10 @@
             android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/alarm_btn"
-            android:layout_toStartOf="@id/alarm_btn"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/alarm_btn"
+            android:layout_toStartOf="@id/alarm_btn"
             android:ems="10"
             android:hint="@string/title"
             android:maxLength="20"
@@ -117,8 +116,8 @@
             android:textColorHint="#9E9E9E"
             android:textSelectHandle="@drawable/text_handler_24dp"
             android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
-            android:textSelectHandleRight="@drawable/text_handler_right_24dp" />
-
+            android:textSelectHandleRight="@drawable/text_handler_right_24dp"
+            android:inputType="textCapSentences" />
 
 
     </RelativeLayout>
@@ -137,8 +136,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/layout_middle"
-        android:layout_marginTop="55dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="55dp"
         android:animateLayoutChanges="true">
 
         <Spinner
@@ -171,7 +170,7 @@
             android:layout_toLeftOf="@id/btn"
             android:layout_toRightOf="@id/spinner1"
             android:ems="10"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textCapSentences"
             android:maxLines="15"
             android:textSelectHandle="@drawable/text_handler_24dp"
             android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
@@ -182,4 +181,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/src/main/res/layout/main_activity_dialog.xml -->
+</RelativeLayout><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/src/main/res/layout/main_activity_dialog.xml -->

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-et/values.xml -->
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-et/values.xml -->
     <eat-comment/>
     <string msgid="3968620852217927702" name="day_picker_description">"Päevad kuu ruudustikus"</string>
     <string msgid="6908431551612331381" name="deleted_key">"<ns1:g id="KEY">%1$s</ns1:g> on kustutatud"</string>

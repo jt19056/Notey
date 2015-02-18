@@ -2,6 +2,7 @@ package thomas.jonathan.notey;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -20,19 +21,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Date;
 
 // Toast.makeText(getApplicationContext(), "**", Toast.LENGTH_SHORT).show();
 public class InfoScreenActivity extends Activity implements OnClickListener {
     public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
     private TextView noteText;
-    private ImageButton menu_btn, back_btn, edit_btn, copy_btn, share_btn, delete_btn;
+    private ImageButton back_btn;
+    private ImageButton edit_btn;
+    private ImageButton copy_btn;
+    private ImageButton share_btn;
+    private ImageButton delete_btn;
     private PopupMenu mPopupMenu;
-    private int imageButtonNumber, spinnerLocation, id;
+    private PendingIntent alarmPendingIntent;
+    private int imageButtonNumber, spinnerLocation, id, repeat_time;
     private String noteTitle, alarm_time = "";
-    private String[] internetStrings = new String[]{"www.",".com", "http://", "https://"};
+    private String[] internetStrings = new String[]{"www.", ".com", "http://", "https://"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +56,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     public void onClick(View view) {
         if (view.getId() == R.id.info_back_button) {
             finish();
-        }
-        else if (view.getId() == R.id.info_edit_button) {
+        } else if (view.getId() == R.id.info_edit_button) {
             Intent editIntent = new Intent(this, MainActivity.class);
             editIntent.putExtra("editNotificationID", id);
             editIntent.putExtra("editNote", noteText.getText().toString());
@@ -56,57 +64,43 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             editIntent.putExtra("editButton", imageButtonNumber);
             editIntent.putExtra("editTitle", noteTitle);
             editIntent.putExtra("editAlarm", alarm_time);
+            editIntent.putExtra("editRepeat", repeat_time);
+            editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
             startActivity(editIntent);
             finish();
-        }
-        else if (view.getId() == R.id.info_copy_button) {
+        } else if (view.getId() == R.id.info_copy_button) {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             ClipData clip = ClipData.newPlainText("label", noteText.getText());
             clipboard.setPrimaryClip(clip);
 
             Toast.makeText(getApplicationContext(), getString(R.string.text_copied), Toast.LENGTH_SHORT).show();
 
-        }
-        else if (view.getId() == R.id.info_share_button) {
+        } else if (view.getId() == R.id.info_share_button) {
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, noteText.getText());
+            sendIntent.putExtra(Intent.EXTRA_TEXT, noteText.getText().toString());
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
-        }
-        else if (view.getId() == R.id.info_delete_button) {
+        } else if (view.getId() == R.id.info_delete_button) {
             Intent intent = new Intent(this, NotificationDismiss.class);
             intent.putExtra("NotificationID", id);
             sendBroadcast(intent);
             finish();
-        }
-        else if (view.getId() == R.id.info_menuButton) {
-            menu_btn.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    menu_btn.setBackgroundColor(Color.TRANSPARENT);
-                }
-            }, 100);
+        } else if (view.getId() == R.id.info_menuButton) {
             mPopupMenu.show();
         }
         // if a web link, open it in the browser
-        else if(view.getId() == R.id.info_text){
-            noteText.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    menu_btn.setBackgroundColor(Color.TRANSPARENT);
-                }
-            }, 100);
+        else if (view.getId() == R.id.info_note_text) {
             String splitString[] = noteText.getText().toString().split("\\s");
             String url;
-            for(String s : splitString) {
+            for (String s : splitString) {
                 url = s.toLowerCase();
-                if(s.toLowerCase().startsWith("www.")) // add http:// to the beggining if it doesnt already
+                if (s.toLowerCase().startsWith("www.")) // add http:// to the beggining if it doesnt already
                     url = "http://" + s.toLowerCase();
-                if(!s.toLowerCase().startsWith("www.") && !s.toLowerCase().startsWith("http"))
+                if (!s.toLowerCase().startsWith("www.") && !s.toLowerCase().startsWith("http"))
                     url = "http://www." + s.toLowerCase();
-                if(s.endsWith(".")) // remove ending period if there is one
-                    url = url.substring(0, url.length()-1).toLowerCase();
+                if (s.endsWith(".")) // remove ending period if there is one
+                    url = url.substring(0, url.length() - 1).toLowerCase();
 
                 try {
                     Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(url));
@@ -117,6 +111,19 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 }
             }
             finish();
+        } else if (view.getId() == R.id.info_alarm_text) {
+            Intent editIntent = new Intent(this, MainActivity.class);
+            editIntent.putExtra("editNotificationID", id);
+            editIntent.putExtra("editNote", noteText.getText().toString());
+            editIntent.putExtra("editLoc", spinnerLocation);
+            editIntent.putExtra("editButton", imageButtonNumber);
+            editIntent.putExtra("editTitle", noteTitle);
+            editIntent.putExtra("editAlarm", alarm_time);
+            editIntent.putExtra("editRepeat", repeat_time);
+            editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
+            editIntent.putExtra("doEditAlarmActivity", true);
+            startActivity(editIntent);
+            finish();
         }
     }
 
@@ -124,10 +131,13 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     private void initializeGUI() {
         Intent i = this.getIntent();
 
-        noteText = (TextView) findViewById(R.id.info_text);
+        noteText = (TextView) findViewById(R.id.info_note_text);
+        TextView alarmText = (TextView) findViewById(R.id.info_alarm_text);
         noteText.setMovementMethod(new ScrollingMovementMethod());
         TextView titleText = (TextView) findViewById(R.id.info_title_text);
         TextView mainTitle = (TextView) findViewById(R.id.info_mainTitle);
+
+        ImageView imageView = (ImageView) findViewById(R.id.info_imageView);
 
         if (i.hasExtra("infoNotificationID")) {
             int infoID = i.getExtras().getInt("infoNotificationID");
@@ -136,39 +146,63 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             String infoNote = i.getExtras().getString("infoNote");
             String infoTitle = i.getExtras().getString("infoTitle");
             String infoAlarm = i.getExtras().getString("infoAlarm");
+            int infoRepeat = i.getExtras().getInt("infoRepeat");
+            PendingIntent infoAlarmPI = (PendingIntent) i.getExtras().get("infoAlarmPendingIntent");
 
             id = infoID;
             spinnerLocation = infoLoc;
             imageButtonNumber = infoBtn;
             noteTitle = infoTitle;
             alarm_time = infoAlarm;
+            repeat_time = infoRepeat;
+            alarmPendingIntent = infoAlarmPI;
 
             noteText.setText(infoNote);
 
             //only show note if it's not empty
-            if(infoNote.equals("")) {
+            if (infoNote.equals("")) {
                 noteText.setVisibility(View.GONE);
-            }
-            else{
+            } else {
                 noteText.setVisibility(View.VISIBLE);
                 noteText.setText(infoNote);
             }
 
-            //only show title if it's not equal to "Notey"
-            if(infoTitle.equals(getString(R.string.app_name)) || infoTitle.equals("")) {
-                titleText.setVisibility(View.GONE);
+            //only show alarm if it's not empty
+            if (infoAlarm == null || infoAlarm.equals("")) {
+                alarmText.setVisibility(View.GONE);
+                alarmText.setClickable(false);
+                alarmText.setOnClickListener(null);
+            } else {
+                alarmText.setVisibility(View.VISIBLE);
+                Date date = new Date(Long.valueOf(infoAlarm));
+                alarmText.setText(getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date));
+                alarmText.setClickable(true);
+                alarmText.setOnClickListener(this);
             }
-            else{
+
+            //show icon
+            MySQLiteHelper db = new MySQLiteHelper(this);
+            if (db.checkIfExist(infoID)) {
+                NoteyNote n = db.getNotey(infoID);
+                imageView.setImageResource(getResources().getIdentifier(n.getIconName(), "drawable", getPackageName()));
+                imageView.setBackgroundResource(R.drawable.circle);
+                imageView.setAlpha(0.5f);
+            }
+
+            //only show title if it's not equal to "Notey"
+            if (infoTitle.equals(getString(R.string.app_name)) || infoTitle.equals("")) {
+                titleText.setVisibility(View.GONE);
+            } else {
                 titleText.setVisibility(View.VISIBLE);
                 titleText.setText(infoTitle);
             }
 
-            for(String s : internetStrings)
-                if(noteText.getText().toString().toLowerCase().contains(s)) {
+            for (String s : internetStrings)
+                if (noteText.getText().toString().toLowerCase().contains(s)) {
                     noteText.setClickable(true);
 
                     //selectable background. Only for jelly bean and above
-                    if(CURRENT_ANDROID_VERSION >= 16) {
+                    if (CURRENT_ANDROID_VERSION >= 16) {
                         int[] attr = new int[]{android.R.attr.selectableItemBackground};
                         TypedArray ta = obtainStyledAttributes(attr);
                         Drawable draw = ta.getDrawable(0); //index zero
@@ -177,19 +211,18 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
                     noteText.setOnClickListener(this);
                     break;
-                }
-                else {
+                } else {
                     noteText.setClickable(false);
 
                     //off set the selectable background from above
-                    if(CURRENT_ANDROID_VERSION >= 16)
+                    if (CURRENT_ANDROID_VERSION >= 16)
                         noteText.setBackgroundColor(Color.TRANSPARENT);
                     noteText.setOnClickListener(null);
                 }
             restoreNotifications();
         }
 
-        menu_btn = (ImageButton) findViewById(R.id.info_menuButton);
+        ImageButton menu_btn = (ImageButton) findViewById(R.id.info_menuButton);
         back_btn = (ImageButton) findViewById(R.id.info_back_button);
         edit_btn = (ImageButton) findViewById(R.id.info_edit_button);
         copy_btn = (ImageButton) findViewById(R.id.info_copy_button);
@@ -203,12 +236,13 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         share_btn.setOnClickListener(this);
         delete_btn.setOnClickListener(this);
 
-        setupLongClickListeners(); // Long click listeners for the five buttons. All will display a toast the summarize their action to the user
+        setupLongClickListeners(); // Long click listeners for the five buttons. All will display a toast to summarize their action to the user
 
         //menu popup
         mPopupMenu = new PopupMenu(this, menu_btn);
         MenuInflater menuInflater = mPopupMenu.getMenuInflater();
-        menuInflater.inflate(R.menu.menu, mPopupMenu.getMenu());
+        mPopupMenu.getMenu().clear(); //clear the menu so list items aren't duplicated
+        menuInflater.inflate(R.menu.menu_pro, mPopupMenu.getMenu()); //default pro menu because I don't want to deal with the IAP in this class
 
         mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
@@ -236,7 +270,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         mainTitle.setTypeface(roboto_light);
     }
 
-    private void setupLongClickListeners(){
+    private void setupLongClickListeners() {
         back_btn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -275,7 +309,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     }
 
     //clicking on a notification kills it. this will restore it
-    private void restoreNotifications(){
+    private void restoreNotifications() {
         Intent localIntent = new Intent(this, NotificationBootService.class);
         localIntent.putExtra("action", "boot");
         startService(localIntent);

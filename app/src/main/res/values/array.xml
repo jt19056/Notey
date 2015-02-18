@@ -29,6 +29,40 @@
         <item>minimum</item>
     </string-array>
 
+    <!-- Icon picker-->
+    <string-array name="icon_picker_array">
+        <item>@string/check</item>
+        <item>@string/alarm</item>
+        <item>@string/edit</item>
+        <item>@string/heart</item>
+        <item>@string/note</item>
+        <item>@string/shopping_cart</item>
+        <item>@string/smile</item>
+        <item>@string/star</item>
+        <item>@string/warning</item>
+        <item>@string/flame</item>
+    </string-array>
+    <string-array name="icon_picker_values">
+        <item>check</item>
+        <item>alarm</item>
+        <item>edit</item>
+        <item>heart</item>
+        <item>note</item>
+        <item>shopping_cart</item>
+        <item>smile</item>
+        <item>star</item>
+        <item>warning</item>
+        <item>whatshot</item>
+    </string-array>
+    <string-array name="default_icons">
+        <item>check</item>
+        <item>warning</item>
+        <item>edit</item>
+        <item>star</item>
+        <item>whatshot</item>
+    </string-array>
+
+
     <!-- Dashclock icons-->
     <string-array name="dashclock_icon_array">
         <item>@string/check</item>

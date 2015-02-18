@@ -22,18 +22,18 @@ public class DashClock extends DashClockExtension {
         dashclock_icon = sharedPref.getString("pref_dashclock_icon", "check");
 
         // set icon
-        if(dashclock_icon.equals("check")) icon = R.drawable.ic_check_white_36dp;
-        else if(dashclock_icon.equals("warning")) icon = R.drawable.ic_warning_white_36dp;
-        else if(dashclock_icon.equals("edit")) icon = R.drawable.ic_edit_white_36dp;
-        else if(dashclock_icon.equals("star")) icon = R.drawable.ic_star_white_36dp;
-        else if(dashclock_icon.equals("whatshot")) icon = R.drawable.ic_whatshot_white_36dp;
+        if (dashclock_icon.equals("check")) icon = R.drawable.ic_check_white_36dp;
+        else if (dashclock_icon.equals("warning")) icon = R.drawable.ic_warning_white_36dp;
+        else if (dashclock_icon.equals("edit")) icon = R.drawable.ic_edit_white_36dp;
+        else if (dashclock_icon.equals("star")) icon = R.drawable.ic_star_white_36dp;
+        else if (dashclock_icon.equals("whatshot")) icon = R.drawable.ic_whatshot_white_36dp;
 
-        if(allNoteys.size() > 0) {
+        if (allNoteys.size() > 0) {
             String allNoteysString = "";
             for (NoteyNote n : allNoteys) {
                 allNoteysString += n.getNote() + "\n";
 
-                if(dashclock_icon.equals("topIcon")) icon = n.getIcon();
+                if (dashclock_icon.equals("topIcon")) icon = n.getIcon();
             }
 
             publishUpdate(new ExtensionData()
@@ -43,8 +43,7 @@ public class DashClock extends DashClockExtension {
                     .expandedTitle(allNoteys.size() + " " + getResources().getString(R.string.reminders))
                     .expandedBody(allNoteysString)
                     .clickIntent(new Intent(this, MainActivity.class)));
-        }
-        else publishUpdate(null);
+        } else publishUpdate(null);
 
     }
 

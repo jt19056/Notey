@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey21/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-sw600dp-land/values.xml -->
+    <!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.github.flavienlaurent.datetimepicker/library/0.0.2/res/values-sw600dp-land/values.xml -->
     <eat-comment/>
     <dimen name="ampm_label_size">21sp</dimen>
     <dimen name="ampm_left_padding">7dip</dimen>
