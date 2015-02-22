@@ -54,6 +54,7 @@ public class About extends PreferenceActivity {
 
         Preference openSourceLic = findPreference("pref_open_source_licenses");
         Preference changelogPref = findPreference("pref_changelog");
+        Preference githubPref = findPreference("pref_github");
         Preference contactPref = findPreference("pref_contact");
         Preference ratePref = findPreference("pref_rate");
         Preference proPref = findPreference("pref_pro");
@@ -92,6 +93,20 @@ public class About extends PreferenceActivity {
                 webView.loadUrl("file:///android_asset/NoteyChangelog.html");
                 md.show();
 
+                return false;
+            }
+        });
+
+        //'Contact' preference selection. send an email intent, setting the subject and the recipient
+        githubPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                Uri uri = Uri.parse(getResources().getString(R.string.github_url));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    startActivity(intent);
+                } catch (android.content.ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
                 return false;
             }
         });

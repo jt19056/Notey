@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2a8</string>
+    <string name="version" translatable="false">2.2b9</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -67,6 +67,9 @@
     <string name="rateSummary">Hope you enjoy the app!</string>
     <string name="sendemail">Send email…</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
+    <string name="github">GitHub</string>
+    <string name="githubSummary">Track development, create bug tickets, request features.</string>
+    <string name="github_url">https://github.com/jt19056/Notey</string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Displays your current reminders.</string>
