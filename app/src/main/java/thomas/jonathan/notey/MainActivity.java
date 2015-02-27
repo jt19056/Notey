@@ -8,8 +8,10 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -22,6 +24,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.NotificationCompat;
@@ -35,7 +39,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -53,6 +56,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.vending.billing.IInAppBillingService;
 import com.easyandroidanimations.library.ScaleInAnimation;
 
 import java.text.SimpleDateFormat;
@@ -72,7 +76,6 @@ import thomas.jonathan.notey.util.Purchase;
 
 public class MainActivity extends Activity implements OnClickListener {
     public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
-    public static final int SET_ALARM_REQUEST = 1;
     public static boolean justTurnedPro = false;
     public static boolean spinnerChanged = false;
     private static final int REQUEST_CODE = 1234;
@@ -126,11 +129,10 @@ public class MainActivity extends Activity implements OnClickListener {
         appContext = getApplicationContext();
 
         initializeSettings();
+        loadData();
         initializeGUI();
 
         setLayout();
-
-        doInAppBillingStuff();
 
         //menu popup
         mPopupMenu = new PopupMenu(this, menu_btn);
@@ -646,7 +648,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     layout_bottom.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 }
             }
-        }catch (CursorIndexOutOfBoundsException e){ //catches if the user deletes a note from the notfication tray while the info screen is active. then presses something on the info screen such as the alarm.
+        } catch (CursorIndexOutOfBoundsException e) { //catches if the user deletes a note from the notfication tray while the info screen is active. then presses something on the info screen such as the alarm.
             e.printStackTrace();
         }
     }
@@ -705,7 +707,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
-        //checks the current version code with the one stored in shared prefs. if they are different, then there was an update, so restore notifications
+        //checks the current version code with the one stored in shared prefs.
         if (versionCode != sharedPref.getInt("VERSION_CODE", -1)) {
             //if on before v2.0.4, change the on click notifcation setting to the info screen
             if (sharedPref.getInt("VERSION_CODE", -1) <= 14) {
@@ -716,6 +718,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 editor.putString("clickNotif", "info");
                 editor.apply();
             }
+
+            //always restore notifications
             Intent localIntent = new Intent(this, NotificationBootService.class);
             localIntent.putExtra("action", "boot");
             startService(localIntent);
@@ -977,7 +981,6 @@ public class MainActivity extends Activity implements OnClickListener {
             alarm_time = data.getExtras().getString("alarm_time", "");
             repeat_time = data.getExtras().getInt("repeat_time", 0);
 
-
             // switch alarm button icon to show an alarm is set. also show toast
             if ((alarm_time != null && !alarm_time.equals("")) || repeat_time != 0) {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
@@ -1022,6 +1025,12 @@ public class MainActivity extends Activity implements OnClickListener {
                         startActivity(intent);
                         break;
                     case R.id.go_pro:
+                        try {
+                            doInAppBillingStuff();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+                        }
                         MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
                                 .title(getResources().getString(R.string.go_pro))
                                 .customView(R.layout.webview_dialog_layout, false)
@@ -1033,14 +1042,24 @@ public class MainActivity extends Activity implements OnClickListener {
                                     public void onPositive(MaterialDialog dialog) {
                                         super.onPositive(dialog);
                                         Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO + TIP upgrade.");
-                                        mHelper.launchPurchaseFlow(MainActivity.this, SKU_TIP_VERSION, 10001, mPurchaseFinishedListener, payload);
+                                        try {
+                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_TIP_VERSION, 10001, mPurchaseFinishedListener, payload);
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
 
                                     @Override
                                     public void onNegative(MaterialDialog dialog) {
                                         super.onNegative(dialog);
                                         Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO upgrade.");
-                                        mHelper.launchPurchaseFlow(MainActivity.this, SKU_PRO_VERSION, 10001, mPurchaseFinishedListener, payload);
+                                        try {
+                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_PRO_VERSION, 10001, mPurchaseFinishedListener, payload);
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 })
                                 .build();
@@ -1209,16 +1228,16 @@ public class MainActivity extends Activity implements OnClickListener {
                 Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_pro), Toast.LENGTH_SHORT).show();
                 proVersionEnabled = true;
                 saveData();
-                //set up pro gui
                 setUpProGUI();
+                setUpSpinner();
             } else if (info.getSku().equals(SKU_TIP_VERSION)) {
                 Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
 
                 Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_contribution), Toast.LENGTH_SHORT).show();
                 proVersionEnabled = true;
                 saveData();
-                //set up pro gui
                 setUpProGUI();
+                setUpSpinner();
             }
         }
     };
