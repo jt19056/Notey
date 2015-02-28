@@ -605,7 +605,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 int editBtn = i.getExtras().getInt("editButton");
                 String editAlarm = i.getExtras().getString("editAlarm");
-                int editRepeat = i.getExtras().getInt("editRepeat", 0);
                 boolean doAlarmActivity = i.getExtras().getBoolean("doEditAlarmActivity", false);
                 PendingIntent editAlarmPI = (PendingIntent) i.getExtras().get("editAlarmPendingIntent");
 
@@ -619,7 +618,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     et_title.setText(noteTitle);
                 et_title.setSelection(et_title.getText().length());
                 alarm_time = editAlarm;
-                repeat_time = editRepeat;
+                repeat_time = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt("repeat" + Integer.toString(id), 0);
                 alarmPendingIntent = editAlarmPI;
 
                 // switch alarm button icon to show an alarm is set
