@@ -709,8 +709,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
         //checks the current version code with the one stored in shared prefs.
         if (versionCode != sharedPref.getInt("VERSION_CODE", -1)) {
-            //if on before v2.0.4, change the on click notifcation setting to the info screen
-            if (sharedPref.getInt("VERSION_CODE", -1) <= 14) {
+            //if on before v2.0.4 and not first install, change the on click notifcation setting to the info screen
+            if (sharedPref.getInt("VERSION_CODE", -1) <= 14 && sharedPref.getInt("VERSION_CODE", -1) != -1) {
 
                 addIconNamesToDB();
 
@@ -1100,34 +1100,41 @@ public class MainActivity extends Activity implements OnClickListener {
     *   This converts to old icon's ints to the new ints and writes their proper name to the database.
     */
     private void addIconNamesToDB() {
-        List<NoteyNote> allNoteys = db.getAllNoteys();
+        List<NoteyNote> allNoteys = null;
+        try {
+            allNoteys = db.getAllNoteys();
+        }catch(RuntimeException e){
+            e.printStackTrace();
+        }
         int newIconInt;
         String newIconName;
-        for (NoteyNote n : allNoteys) {
-            if (n.getIcon() >= 2130837510 && n.getIcon() <= 2130837512) {
-                newIconInt = n.getIcon() - 6;
-                newIconName = getResources().getResourceEntryName(newIconInt);
-                n.setIconName(newIconName);
-            } else if (n.getIcon() >= 2130837513 && n.getIcon() <= 2130837519) {
-                newIconInt = n.getIcon() - 5;
-                newIconName = getResources().getResourceEntryName(newIconInt);
-                n.setIconName(newIconName);
-            } else if (n.getIcon() >= 2130837520 && n.getIcon() <= 2130837522) {
-                newIconInt = n.getIcon() - 3;
-                newIconName = getResources().getResourceEntryName(newIconInt);
-                n.setIconName(newIconName);
-            } else if (n.getIcon() >= 2130837523 && n.getIcon() <= 2130837528) {
-                newIconInt = n.getIcon() - 2;
-                newIconName = getResources().getResourceEntryName(newIconInt);
-                n.setIconName(newIconName);
-            } else if (n.getIcon() >= 2130837530 && n.getIcon() <= 2130837547) {
-                newIconInt = n.getIcon() + 2;
-                newIconName = getResources().getResourceEntryName(newIconInt);
-                n.setIconName(newIconName);
-            } else
-                n.setIconName(getResources().getResourceEntryName(R.drawable.ic_check_white_36dp)); //else default to white check
+        if (allNoteys != null) {
+            for (NoteyNote n : allNoteys) {
+                if (n.getIcon() >= 2130837510 && n.getIcon() <= 2130837512) {
+                    newIconInt = n.getIcon() - 6;
+                    newIconName = getResources().getResourceEntryName(newIconInt);
+                    n.setIconName(newIconName);
+                } else if (n.getIcon() >= 2130837513 && n.getIcon() <= 2130837519) {
+                    newIconInt = n.getIcon() - 5;
+                    newIconName = getResources().getResourceEntryName(newIconInt);
+                    n.setIconName(newIconName);
+                } else if (n.getIcon() >= 2130837520 && n.getIcon() <= 2130837522) {
+                    newIconInt = n.getIcon() - 3;
+                    newIconName = getResources().getResourceEntryName(newIconInt);
+                    n.setIconName(newIconName);
+                } else if (n.getIcon() >= 2130837523 && n.getIcon() <= 2130837528) {
+                    newIconInt = n.getIcon() - 2;
+                    newIconName = getResources().getResourceEntryName(newIconInt);
+                    n.setIconName(newIconName);
+                } else if (n.getIcon() >= 2130837530 && n.getIcon() <= 2130837547) {
+                    newIconInt = n.getIcon() + 2;
+                    newIconName = getResources().getResourceEntryName(newIconInt);
+                    n.setIconName(newIconName);
+                } else
+                    n.setIconName(getResources().getResourceEntryName(R.drawable.ic_check_white_36dp)); //else default to white check
 
-            db.updateNotey(n);
+                db.updateNotey(n);
+            }
         }
     }
 
