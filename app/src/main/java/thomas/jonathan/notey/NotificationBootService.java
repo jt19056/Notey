@@ -68,11 +68,15 @@ public class NotificationBootService extends IntentService {
                         else
                             alarmManager.setRepeating(AlarmManager.RTC, Long.valueOf(n.getAlarm()), repeatTime * 1000 * 60, alarmPendingIntent);
                     } else { //set regualar alarm
-                        // check the sharedPrefs for the check box to wake up the device
-                        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), alarmPendingIntent);
-                        else
-                            alarmManager.set(AlarmManager.RTC, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+
+                        //if the alarm hasn't past then continue
+                        if(Long.valueOf(n.getAlarm()) > System.currentTimeMillis()) {
+                            // check the sharedPrefs for the check box to wake up the device
+                            if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(n.getId()), true))
+                                alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                            else
+                                alarmManager.set(AlarmManager.RTC, Long.valueOf(n.getAlarm()), alarmPendingIntent);
+                        }
                     }
                 }
             }
