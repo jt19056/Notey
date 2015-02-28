@@ -114,6 +114,9 @@
     <string name="repeat_every">"Repeat every "</string>
     <string name="minutes">" minutes"</string>
     <string name="minute">" minute"</string>
+    <string name="choose_alarm_type">"Choose Alarm Type"</string>
+    <string name="default_notification">"Default notification"</string>
+    <string name="default_ringtone">"Default ringtone"</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>
@@ -133,5 +136,6 @@
     <string name="not_a_pro">Pro features disabled.</string>
     <string name="yes_a_pro">Pro features enabled.</string>
     <string name="tip">Tip</string>
+    <string name="play_store_fail">Something went wrong trying to contact the Google Play Store.</string>
 
 </resources>

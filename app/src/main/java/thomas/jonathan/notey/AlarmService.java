@@ -58,15 +58,14 @@ public class AlarmService extends Service {
 
             //play sound?
             String alarm_uri = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sound" + Integer.toString(NoteID), "None");
+            Notification notif = null;
             if (alarm_uri != null && !alarm_uri.equals("")) {
                 Uri alert = Uri.parse(alarm_uri);
                 NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                Notification notif = new Notification();
+                notif = new Notification();
                 notif.sound = alert;
                 nm.notify(LED_SOUND_ID, notif);
             }
-
-            PendingIntent temp = createAlarmPI(n.getId());
 
             //intent for info screen popup
             Intent infoIntent = new Intent(this, InfoScreenActivity.class);
@@ -78,6 +77,7 @@ public class AlarmService extends Service {
             infoIntent.putExtra("infoAlarm", n.getAlarm());
             infoIntent.putExtra("infoRepeat", PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt("repeat" + Integer.toString(NoteID), 0));
             infoIntent.putExtra("infoAlarmPendingIntent", createAlarmPI(n.getId()));
+            infoIntent.putExtra("infoNotif", notif);
 
             //vibrate for two 250ms bursts if the checkbox was checked
             if (sharedPref.getBoolean("vibrate" + Integer.toString(NoteID), true)) {

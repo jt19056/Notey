@@ -62,6 +62,12 @@
         <item>whatshot</item>
     </string-array>
 
+    <string-array name="alarm_sound_picker_array">
+        <item>@string/none</item>
+        <item>@string/default_notification</item>
+        <item>@string/default_ringtone</item>
+    </string-array>
+
 
     <!-- Dashclock icons-->
     <string-array name="dashclock_icon_array">

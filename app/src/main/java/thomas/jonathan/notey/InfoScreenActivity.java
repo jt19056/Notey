@@ -2,6 +2,8 @@ package thomas.jonathan.notey;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -11,6 +13,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +45,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     private int imageButtonNumber, spinnerLocation, id, repeat_time;
     private String noteTitle, alarm_time = "";
     private String[] internetStrings = new String[]{"www.", ".com", "http://", "https://"};
+    private Notification notification;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,6 +152,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             String infoAlarm = i.getExtras().getString("infoAlarm");
             int infoRepeat = i.getExtras().getInt("infoRepeat");
             PendingIntent infoAlarmPI = (PendingIntent) i.getExtras().get("infoAlarmPendingIntent");
+            notification = (Notification) i.getExtras().get("infoNotif");
 
             id = infoID;
             spinnerLocation = infoLoc;
@@ -219,7 +224,6 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                         noteText.setBackgroundColor(Color.TRANSPARENT);
                     noteText.setOnClickListener(null);
                 }
-            restoreNotifications();
         }
 
         ImageButton menu_btn = (ImageButton) findViewById(R.id.info_menuButton);
@@ -308,19 +312,17 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         });
     }
 
-    //clicking on a notification kills it. this will restore it
-    private void restoreNotifications() {
-        Intent localIntent = new Intent(this, NotificationBootService.class);
-        localIntent.putExtra("action", "boot");
-        startService(localIntent);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        restoreNotifications();
-
+        //stop the led flashing
         NotificationDismiss.clearNotificationLED(this);
+
+        //stop the ringtone if there is one going off
+        if(notification != null){
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(AlarmService.LED_SOUND_ID);
+        }
     }
 
     @Override

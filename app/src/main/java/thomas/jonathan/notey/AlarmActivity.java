@@ -1,8 +1,8 @@
 package thomas.jonathan.notey;
 
 
-import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,7 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easyandroidanimations.library.ScaleInAnimation;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -45,7 +45,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private CheckBox vibrate_cb, wake_cb;
     SharedPreferences sharedPref;
     private int id;
-    private String chosenSound;
     private Uri alarm_uri;
 
     @Override
@@ -98,8 +97,8 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
-                repeatTime = value; //5 minute intervals
-                return value;
+                repeatTime = value * 5; //5 minute intervals
+                return value * 5;
             }
         });
 
@@ -108,9 +107,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             sound_tv.setEnabled(true);
             sound_tv.setClickable(true);
             sound_tv.setOnClickListener(this);
-            repeatTime = sharedPref.getInt("repeat" + Integer.toString(id), 0) / 5;
             seekBar.setThumbColor(getResources().getColor(R.color.blue_500), getResources().getColor(R.color.blue_500));
-            seekBar.setProgress(repeatTime);
         } else { //fade the icons if not pro
             sound_btn.setAlpha(0.3f);
             repeat_iv.setAlpha(0.3f);
@@ -156,16 +153,20 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             wake_cb.setChecked(true);
         if (id != -1) {
             String temp_string = sharedPref.getString("sound" + Integer.toString(id), getString(R.string.none));
-            Uri temp_uri = Uri.parse(temp_string);
-            Ringtone ringtone = RingtoneManager.getRingtone(this, temp_uri);
-            chosenSound = ringtone.getTitle(this);
-            if (chosenSound == null || chosenSound.equals(getString(R.string.none))) {
-                chosenSound = getString(R.string.none);
-                sound_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_volume_off_grey600_24dp));
-            } else
-                sound_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_volume_up_grey600_24dp));
+            alarm_uri = Uri.parse(temp_string);
 
-            sound_tv.setText(getString(R.string.sound) + " " + chosenSound);
+            if(temp_string.contains("notification")) {
+                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_notification));
+                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+            }
+            else if(temp_string.contains("ringtone")) {
+                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_ringtone));
+                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+            }
+            else {
+                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
+                sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
+            }
         }
 
         Date date = new Date();
@@ -174,7 +175,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         if (i.hasExtra("alarm_set_time")) {
             alarm_set_tv.setText(getString(R.string.alarm_set_for));
             date = new Date(Long.valueOf(i.getExtras().getString("alarm_set_time")));
-            repeatTime = i.getExtras().getInt("repeat_set_time", 0);
+            repeatTime = i.getExtras().getInt("repeat_set_time", 0)/5;
             alarm_delete.setVisibility(View.VISIBLE);
 
             alarmPendingIntent = (PendingIntent) i.getExtras().get("alarmPendingIntent");
@@ -249,12 +250,38 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             Toast.makeText(getApplicationContext(), getString(R.string.alarm_deleted), Toast.LENGTH_LONG).show();
             finish();
         } else if (view.getId() == R.id.alarm_sound) {
-            Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-            i.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
-            i.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.select_sound));
-            i.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, false);
-            i.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, alarm_uri);
-            startActivityForResult(i, ALARM_SOUND_REQUEST);
+            int sound;
+
+            //check if alarm sound is already set to have it pre-selected for the dialog
+            if(alarm_uri.toString().contains("notification")) sound = 1;
+            else if(alarm_uri.toString().contains("ringtone")) sound = 2;
+            else sound = 0;
+
+            new MaterialDialog.Builder(this)
+                    .title(R.string.choose_alarm_type)
+                    .items(R.array.alarm_sound_picker_array)
+                    .itemsCallbackSingleChoice(sound, new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                            //get which one the user selects and set the sound, text box, and button icon accordingly
+                            if(which == 1) {
+                                alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_notification));
+                                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                            }
+                            else if(which == 2) {
+                                alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_ringtone));
+                                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                            }
+                            else {
+                                alarm_uri = null;
+                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
+                                sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
+                            }
+                        }
+                    })
+                    .show();
         } else if (view.getId() == R.id.alarm_repeat_iv) {
             Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + repeatTime + getString(R.string.minutes), Toast.LENGTH_SHORT).show();
         }
@@ -280,28 +307,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         // Example of reattaching to the fragment
         super.onResume();
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //when returning from chosing sound, set the ringtone and appropriate icons
-        if (resultCode == Activity.RESULT_OK && requestCode == ALARM_SOUND_REQUEST) {
-            alarm_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            Ringtone ringtone = RingtoneManager.getRingtone(this, alarm_uri);
-            if (alarm_uri != null) chosenSound = ringtone.getTitle(this);
-            else chosenSound = getString(R.string.none);
-
-            if (chosenSound.equals(getString(R.string.none)))
-                sound_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_volume_off_grey600_24dp));
-            else {
-                sound_btn.setImageBitmap(null);
-                new ScaleInAnimation(sound_btn).setDuration(250).animate();
-                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
-            }
-            sound_tv.setText(getString(R.string.sound) + " " + chosenSound);
-        }
     }
 
     @Override
