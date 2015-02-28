@@ -506,6 +506,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .build();
                 }
                 nm.notify(id, n);
+                db.close();
                 finish();
             }
             // alarm time has past, show toast

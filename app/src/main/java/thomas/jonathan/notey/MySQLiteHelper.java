@@ -112,14 +112,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         //build the object
         NoteyNote notey = new NoteyNote();
-        notey.setId(Integer.parseInt(cursor.getString(0)));
-        notey.setNote(cursor.getString(1));
-        notey.setIcon(cursor.getInt(2));
-        notey.setSpinnerLoc(cursor.getInt(3));
-        notey.setImgBtnNum(cursor.getInt(4));
-        notey.setTitle(cursor.getString(5));
-        notey.setIconName(cursor.getString(6));
-        notey.setAlarm(cursor.getString(7));
+        if (cursor != null) {
+            notey.setId(Integer.parseInt(cursor.getString(0)));
+            notey.setNote(cursor.getString(1));
+            notey.setIcon(cursor.getInt(2));
+            notey.setSpinnerLoc(cursor.getInt(3));
+            notey.setImgBtnNum(cursor.getInt(4));
+            notey.setTitle(cursor.getString(5));
+            notey.setIconName(cursor.getString(6));
+            notey.setAlarm(cursor.getString(7));
+        }
+
+        if (cursor != null) cursor.close();
 
         return notey;
     }
@@ -149,6 +153,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 noteyList.add(notey);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return noteyList;
     }
 
@@ -194,7 +199,12 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         } catch (SQLiteException e) {
             e.printStackTrace();
         }
-        return cursor.getCount() > 0;
+        boolean exists;
+        exists = (cursor != null) && (cursor.getCount() > 0);
+
+        if (cursor != null) cursor.close();
+
+        return exists;
 
     }
 }
