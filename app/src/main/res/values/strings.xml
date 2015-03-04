@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2b9</string>
+    <string name="version" translatable="false">2.2b10</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -115,8 +115,8 @@
     <string name="minutes">" minutes"</string>
     <string name="minute">" minute"</string>
     <string name="choose_alarm_type">"Choose Alarm Type"</string>
-    <string name="default_notification">"Default notification"</string>
-    <string name="default_ringtone">"Default ringtone"</string>
+    <string name="notification_sound">"Notification sound"</string>
+    <string name="alarm_beep">"Alarm beep"</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>

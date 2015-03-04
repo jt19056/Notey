@@ -2,12 +2,11 @@ package thomas.jonathan.notey;
 
 
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -107,6 +106,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             sound_tv.setEnabled(true);
             sound_tv.setClickable(true);
             sound_tv.setOnClickListener(this);
+            sound_tv.setTextColor(Color.BLACK);
             seekBar.setThumbColor(getResources().getColor(R.color.blue_500), getResources().getColor(R.color.blue_500));
         } else { //fade the icons if not pro
             sound_btn.setAlpha(0.3f);
@@ -156,11 +156,11 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             alarm_uri = Uri.parse(temp_string);
 
             if(temp_string.contains("notification")) {
-                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_notification));
+                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.notification_sound));
                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
             }
-            else if(temp_string.contains("ringtone")) {
-                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_ringtone));
+            else if(temp_string.contains("alarm")) {
+                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.alarm_beep));
                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
             }
             else {
@@ -253,8 +253,9 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             int sound;
 
             //check if alarm sound is already set to have it pre-selected for the dialog
-            if(alarm_uri.toString().contains("notification")) sound = 1;
-            else if(alarm_uri.toString().contains("ringtone")) sound = 2;
+            if(alarm_uri == null) sound = 0;
+            else if(alarm_uri.toString().contains("notification")) sound = 1;
+            else if(alarm_uri.toString().contains("alarm")) sound = 2;
             else sound = 0;
 
             new MaterialDialog.Builder(this)
@@ -266,12 +267,12 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                             //get which one the user selects and set the sound, text box, and button icon accordingly
                             if(which == 1) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_notification));
+                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.notification_sound));
                                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
                             }
                             else if(which == 2) {
-                                alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.default_ringtone));
+                                alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                                sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.alarm_beep));
                                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
                             }
                             else {

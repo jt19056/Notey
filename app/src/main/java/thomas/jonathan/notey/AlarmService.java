@@ -10,6 +10,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -59,11 +63,13 @@ public class AlarmService extends Service {
             //play sound?
             String alarm_uri = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sound" + Integer.toString(NoteID), "None");
             Notification notif = null;
-            if (alarm_uri != null && !alarm_uri.equals("")) {
-                Uri alert = Uri.parse(alarm_uri);
+            if (alarm_uri != null && !alarm_uri.equals("") && !alarm_uri.equals("None")) {
+                Uri alert = Uri.parse("android.resource://thomas.jonathan.notey/" + R.raw.alarm_beep);
                 NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notif = new Notification();
                 notif.sound = alert;
+                notif.flags = Notification.FLAG_INSISTENT;
+
                 nm.notify(LED_SOUND_ID, notif);
             }
 
@@ -93,7 +99,7 @@ public class AlarmService extends Service {
             flashNotificationLED();
 
             stopSelf();
-        }catch (CursorIndexOutOfBoundsException e){ //after a user deletes a repeating alarm, it will try to call AlarmService (not sure why at the moment), but there's nothing in the database. this catches that and prevents the user from seeing any crash.
+        }catch (CursorIndexOutOfBoundsException e){ //*edit: fixed but kept just in case* after a user deletes a repeating alarm, it will try to call AlarmService (not sure why at the moment), but there's nothing in the database. this catches that and prevents the user from seeing any crash.
             Log.d(TAG, "CursorIndexOutOfBoundsException.  Repeating alarm deleted but AlarmService still trying to be called.");
             e.printStackTrace();
             stopSelf();

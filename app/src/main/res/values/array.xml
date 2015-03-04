@@ -64,8 +64,8 @@
 
     <string-array name="alarm_sound_picker_array">
         <item>@string/none</item>
-        <item>@string/default_notification</item>
-        <item>@string/default_ringtone</item>
+        <item>@string/notification_sound</item>
+        <item>@string/alarm_beep</item>
     </string-array>
 
 
