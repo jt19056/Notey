@@ -344,8 +344,8 @@ public class MainActivity extends Activity implements OnClickListener {
             boolean alarmTimeIsGreaterThanCurrentTime;
             alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
 
-            //if either textbox has text AND it is possible to delete notifs AND if current time is less than alarm time, then set the alarm, continue and create notification
-            if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && alarmTimeIsGreaterThanCurrentTime) {
+            //if either textbox has text AND it is possible to delete notifs AND (if current time is less than alarm time OR there is a repeating alarm), then set the alarm, continue and create notification
+            if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && (alarmTimeIsGreaterThanCurrentTime || repeat_time != 0)) {
 
                 String s = pref_icons.get(spinnerLocation);
 
