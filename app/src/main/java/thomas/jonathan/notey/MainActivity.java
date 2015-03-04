@@ -409,6 +409,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
                     //set repeating alarm or set regular alarm
                     if (repeat_time != 0) {
+
+                        //if alarm_time is old, set alarm_time to currTime+repeat_time to avoid alarm going off directly after user creates note
+                        if(!alarmTimeIsGreaterThanCurrentTime){
+                            alarm_time = Long.toString((System.currentTimeMillis() + (long) (repeat_time * 1000 * 60)));
+                        }
+
                         // check the sharedPrefs for the check box to wake up the device
                         if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
                             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), repeat_time * 1000 * 60, alarmPendingIntent);
