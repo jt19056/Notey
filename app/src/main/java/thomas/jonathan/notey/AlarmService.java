@@ -63,12 +63,20 @@ public class AlarmService extends Service {
             //play sound?
             String alarm_uri = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sound" + Integer.toString(NoteID), "None");
             Notification notif = null;
-            if (alarm_uri != null && !alarm_uri.equals("") && !alarm_uri.equals("None")) {
+            if (alarm_uri.contains("alarm_alert")) {
                 Uri alert = Uri.parse("android.resource://thomas.jonathan.notey/" + R.raw.alarm_beep);
                 NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notif = new Notification();
                 notif.sound = alert;
                 notif.flags = Notification.FLAG_INSISTENT;
+
+                nm.notify(LED_SOUND_ID, notif);
+            }
+            else if (alarm_uri.contains("notification_sound")) {
+                Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notif = new Notification();
+                notif.sound = alert;
 
                 nm.notify(LED_SOUND_ID, notif);
             }
