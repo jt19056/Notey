@@ -1,7 +1,7 @@
 # Notey
 ![alt tag](https://cloud.githubusercontent.com/assets/5198078/6241824/0f47dee0-b6f2-11e4-9686-20265d7a9446.png)
 
-Write yourself a reminder and send it to the status bar and notification tray where your note will be until you choose to swipe it away. 
+Write yourself a notification reminder and send it to the status bar and notification tray where your note will be until you decide to remove it. 
 
  
  
@@ -9,11 +9,11 @@ Write yourself a reminder and send it to the status bar and notification tray wh
 
 • Lightweight and fast.  
 
-• Simple and easy to use.  You can edit your notifications whenever you like.  
+• Simple and easy to use.  Edit your notifications whenever you like.  
 
-• Alarms - Set a time you would like to be reminded of your note.
+• Alarms - Set a time to be reminded of your note.
 
-• 5 different icons and 5 different color choices - make your important notes stand out from the rest. 
+• 5 different icons and 5 different color choices - make important notes stand out from the rest. 
 
 • DashClock Widget support.
 
@@ -34,7 +34,7 @@ Write yourself a reminder and send it to the status bar and notification tray wh
 
 <b>Notey Pro:</b>
 
-• Alarm sounds.
+• Alarm sounds - notifcation alert or continuous alarm beep.
 
 • Repeating alarms - repeat every x minutes for continuous reminders.
 
