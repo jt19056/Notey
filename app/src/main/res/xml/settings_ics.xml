@@ -19,17 +19,6 @@
             android:title="@string/swipeNotifs" />
     </PreferenceCategory>
 
-    <!--<PreferenceCategory-->
-        <!--android:key="pref_key_display_settings"-->
-        <!--android:title="@string/display">-->
-
-        <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="pref_hide_middle_layout"-->
-            <!--android:summary="@string/hidden_alarm_row_summary"-->
-            <!--android:title="@string/hidden_alarm_row" />-->
-    <!--</PreferenceCategory>-->
-
     <PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
@@ -40,11 +29,6 @@
             android:summary="@string/enterToSendSummary"
             android:title="@string/enterToSend" />
 
-        <!--<CheckBoxPreference-->
-            <!--android:defaultValue="false"-->
-            <!--android:key="pref_voice"-->
-            <!--android:summary="@string/long_press_for_voice_summary"-->
-            <!--android:title="@string/long_press_for_voice" />-->
     </PreferenceCategory>
 
     <PreferenceCategory
