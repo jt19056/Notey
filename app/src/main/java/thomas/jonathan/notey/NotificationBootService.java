@@ -189,8 +189,8 @@ public class NotificationBootService extends IntentService {
                 else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
-                            .setContentText(tickerText)
-                            .setTicker(n.getNote())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
