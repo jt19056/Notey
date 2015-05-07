@@ -785,6 +785,8 @@ public class MainActivity extends Activity implements OnClickListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
         if (CURRENT_ANDROID_VERSION >= 16) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
@@ -806,8 +808,18 @@ public class MainActivity extends Activity implements OnClickListener {
             pref_expand = false;
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", true);
         }
+
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
+
+        //if user is not a pro, disable pro features
+        if(!proVersionEnabled){
+            //set notification shortcut to false if it is set to true
+            if(sharedPreferences.getBoolean("pref_shortcut", false)) {
+                editor.putBoolean("pref_shortcut", false);
+                editor.apply();
+            }
+        }
 
         // Create new note shortcut in the notification tray
         boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);
@@ -821,7 +833,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
         //if no icons are selected, automatically select the default five. otherwise, get their selection
         if (selections == null || selections.size() == 0) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putStringSet("pref_icon_picker", new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_icons))));
             editor.apply();
             pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
