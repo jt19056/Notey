@@ -119,17 +119,17 @@ public class Settings extends PreferenceActivity {
                 MaterialDialog md = new MaterialDialog.Builder(Settings.this)
                         .title(getResources().getString(R.string.notifClick))
                         .items(getResources().getStringArray(R.array.listArray))
-                        .itemsCallbackSingleChoice(i, new MaterialDialog.ListCallback() {
+                        .itemsCallbackSingleChoice(i, new MaterialDialog.ListCallbackSingleChoice() {
 
                             @Override
-                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                                 String s = charSequence.toString().toLowerCase();
                                 if (s.equals("show info screen")) s = "info";
                                 if (s.equals("do nothing")) s = "nothing";
 
                                 editor.putString("clickNotif", s);
                                 editor.apply();
-
+                                return true;
                             }
                         })
                         .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
@@ -165,10 +165,10 @@ public class Settings extends PreferenceActivity {
                 MaterialDialog md = new MaterialDialog.Builder(Settings.this)
                         .title(getResources().getString(R.string.priority))
                         .items(getResources().getStringArray(R.array.priorityArray))
-                        .itemsCallbackSingleChoice(i, new MaterialDialog.ListCallback() {
+                        .itemsCallbackSingleChoice(i, new MaterialDialog.ListCallbackSingleChoice() {
 
                             @Override
-                            public void onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                            public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
                                 String s = charSequence.toString().toLowerCase();
 
                                 if (s.contains("high")) s = "high";
@@ -178,6 +178,7 @@ public class Settings extends PreferenceActivity {
 
                                 editor.putString("pref_priority", s);
                                 editor.apply();
+                                return true;
                             }
                         })
                         .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
@@ -237,9 +238,9 @@ public class Settings extends PreferenceActivity {
                         .title(getResources().getString(R.string.icons))
                         .items(getResources().getStringArray(R.array.icon_picker_array))
                         .positiveText(getResources().getString(R.string.ok))
-                        .itemsCallbackMultiChoice(setValues.toArray(new Integer[setValues.size()]), new MaterialDialog.ListCallbackMulti() {
+                        .itemsCallbackMultiChoice(setValues.toArray(new Integer[setValues.size()]), new MaterialDialog.ListCallbackMultiChoice() {
                             @Override
-                            public void onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+                            public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
                                 if (integers != null && integers.length > 0) {
                                     List<String> selectedValues = new ArrayList<>();
 
@@ -262,6 +263,7 @@ public class Settings extends PreferenceActivity {
                                     editor.putStringSet("pref_icon_picker", new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_icons))));
                                     editor.apply();
                                 }
+                                return true;
                             }
                         })
                         .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "thomas.jonathan.notey"
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 22
     }
 
     sourceSets {
@@ -29,13 +29,14 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0+'
-    compile files('libs/dashclock-api-r2.0.jar')
+    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.google.android.apps.dashclock:dashclock-api:+'
+    //compile files('libs/dashclock-api-r2.0.jar')
     compile files('libs/easyandroidanimationslibrary-v0.5.jar')
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
-    compile 'com.afollestad:material-dialogs:0.6.3.0'
-    compile 'uk.co.chrisjenx:calligraphy:2.0.1'
-    compile('de.psdev.licensesdialog:licensesdialog:1.6.0') {
+    compile 'com.afollestad:material-dialogs:0.7.3.2'
+    compile 'uk.co.chrisjenx:calligraphy:2.1.0'
+    compile('de.psdev.licensesdialog:licensesdialog:1.7.0') {
         exclude module: 'support-v4'
     }
     compile project(':discreteSeekBar')

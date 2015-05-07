@@ -8,6 +8,10 @@
         android:title="@string/opensource"
         android:summary="@string/opensourceSummary"/>
 
+    <Preference android:key="pref_github"
+        android:title="@string/github"
+        android:summary="@string/githubSummary"/>
+
     <Preference android:key="pref_contact"
         android:title="@string/contact"
         android:summary="@string/email"/>

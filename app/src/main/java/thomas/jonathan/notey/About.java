@@ -141,43 +141,6 @@ public class About extends PreferenceActivity {
             }
         });
 
-        // tap the version num x amount of times to activate the hidden password screen.  typing in the correct password will enable pro
-        verNumPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                if (!MainActivity.proVersionEnabled) //don't bother doing any of this if pro version is already enabled
-                    numTaps++;
-                if (numTaps == 15) {
-                    MaterialDialog hiddenDialog = new MaterialDialog.Builder(About.this)
-                            .title("")
-                            .customView(R.layout.hidden_pro_upgrade_screen, true)
-                            .positiveText(getString(R.string.ok))
-                            .positiveColorRes(R.color.blue_500)
-                            .callback(new MaterialDialog.ButtonCallback() {
-                                @Override
-                                public void onPositive(MaterialDialog hiddenDialog) {
-                                    String s = hiddenEditText.getText().toString();
-                                    if (s != null && s.equals("20mAlteSe02")) {
-                                        Toast.makeText(getApplicationContext(), "Pro version enabled :)", Toast.LENGTH_SHORT).show();
-                                        MainActivity.proVersionEnabled = true;
-                                        SharedPreferences.Editor spe = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-                                        spe.putBoolean("proVersionEnabled", MainActivity.proVersionEnabled);
-                                        spe.apply();
-                                        Log.d("AboutActivity", "Saved data: proVersionEnabled = " + String.valueOf(MainActivity.proVersionEnabled));
-
-                                        MainActivity.setUpProGUI();
-                                        MainActivity.justTurnedPro = true;
-                                    }
-                                }
-                            })
-                            .build();
-                    hiddenEditText = (EditText) hiddenDialog.getCustomView().findViewById(R.id.hiddenEditText);
-
-                    hiddenDialog.show();
-                }
-                return false;
-            }
-        });
-
         if (MainActivity.proVersionEnabled) {
             proPref.setSummary(getString(R.string.yes_a_pro));
         } else {

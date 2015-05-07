@@ -70,6 +70,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
+        db.close();
     }
 
     public void addNotey(NoteyNote notey) {
@@ -124,7 +125,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         }
 
         if (cursor != null) cursor.close();
-
+        db.close();
         return notey;
     }
 
@@ -153,6 +154,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 noteyList.add(notey);
             } while (cursor.moveToNext());
         }
+        db.close();
         cursor.close();
         return noteyList;
     }
@@ -203,8 +205,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         exists = (cursor != null) && (cursor.getCount() > 0);
 
         if (cursor != null) cursor.close();
+        db.close();
 
         return exists;
 
     }
+
+
 }

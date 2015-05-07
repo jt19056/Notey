@@ -261,9 +261,9 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             new MaterialDialog.Builder(this)
                     .title(R.string.choose_alarm_type)
                     .items(R.array.alarm_sound_picker_array)
-                    .itemsCallbackSingleChoice(sound, new MaterialDialog.ListCallback() {
+                    .itemsCallbackSingleChoice(sound, new MaterialDialog.ListCallbackSingleChoice() {
                         @Override
-                        public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                             //get which one the user selects and set the sound, text box, and button icon accordingly
                             if(which == 1) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -280,6 +280,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
                                 sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
                             }
+                            return true;
                         }
                     })
                     .show();

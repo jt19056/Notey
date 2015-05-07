@@ -5,4 +5,4 @@
     <item android:drawable="@drawable/md_item_selected_dark" android:state_pressed="true" />
     <item android:drawable="@drawable/md_transparent" />
 
-</selector><!-- From: file:/Users/aidanfollestad/Android%20Projects/MaterialDialogs/library/src/main/res/drawable/md_selector_dark.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.3.0/res/drawable/md_selector_dark.xml -->
+</selector><!-- From: file:/Users/afollestad/Projects/material-dialogs/library/src/main/res/drawable/md_selector_dark.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.7.3.2/res/drawable/md_selector_dark.xml -->

@@ -20,4 +20,4 @@
         android:layout_marginRight="@dimen/md_dialog_frame_margin"
         android:layout_marginEnd="@dimen/md_dialog_frame_margin" />
 
-</LinearLayout><!-- From: file:/Users/aidanfollestad/Android%20Projects/MaterialDialogs/library/src/main/res/layout/md_listitem.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.6.3.0/res/layout/md_listitem.xml -->
+</LinearLayout><!-- From: file:/Users/afollestad/Projects/material-dialogs/library/src/main/res/layout/md_listitem.xml --><!-- From: file:/C:/Users/Jon/Dropbox/My%20Documents/android/Notey2_2/app/build/intermediates/exploded-aar/com.afollestad/material-dialogs/0.7.3.2/res/layout/md_listitem.xml -->
