@@ -30,7 +30,7 @@
     </string-array>
 
     <!-- Icon picker-->
-    <string-array name="icon_picker_array">
+    <string-array name="pro_icons_array">
         <item>@string/check</item>
         <item>@string/alarm</item>
         <item>@string/edit</item>
@@ -42,7 +42,7 @@
         <item>@string/warning</item>
         <item>@string/flame</item>
     </string-array>
-    <string-array name="icon_picker_values">
+    <string-array name="pro_icons_values">
         <item>check</item>
         <item>alarm</item>
         <item>edit</item>

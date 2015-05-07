@@ -35,11 +35,6 @@
         android:key="pref_key_pro"
         android:title="@string/pro_options">
 
-        <Preference android:key="pref_icon_picker"
-            android:title="@string/icons"
-            android:summary="@string/icons_summary"
-            android:enabled="false"/>
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="false"

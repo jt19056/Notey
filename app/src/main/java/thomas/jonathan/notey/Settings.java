@@ -32,7 +32,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 public class Settings extends PreferenceActivity {
-    private Set<String> selections;
     private boolean impossible_to_delete = false;
     private SharedPreferences sharedPreferences;
 
@@ -59,10 +58,9 @@ public class Settings extends PreferenceActivity {
 
         initializeSettings();
 
+        //enable pro feature options
         if (MainActivity.proVersionEnabled) {
-            Preference pref_icon_picker = findPreference("pref_icon_picker");
             CheckBoxPreference pref_shortcut = (CheckBoxPreference) findPreference("pref_shortcut");
-            pref_icon_picker.setEnabled(true);
             pref_shortcut.setEnabled(true);
         }
 
@@ -83,12 +81,6 @@ public class Settings extends PreferenceActivity {
                 } else {
                     getActionBar().setHomeButtonEnabled(true);
                     impossible_to_delete = false;
-                }
-
-                //make sure at least one box is selected for the icons
-                selections = sharedPreferences.getStringSet("pref_icon_picker", null);
-                if (selections.size() < 1) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.please_select_at_least_one), Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -188,92 +180,6 @@ public class Settings extends PreferenceActivity {
                 return false;
             }
         });
-
-        //icon picker preference dialog
-        new AlertDialog.Builder(this);
-        findPreference("pref_icon_picker").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            public boolean onPreferenceClick(Preference preference) {
-                Set<String> selections = sharedPreferences.getStringSet("pref_icon_picker", null);
-                List<String> selectionsList = Arrays.asList(selections.toArray(new String[selections.size()]));
-                List<Integer> setValues = new ArrayList<>();
-
-                //get the list of which icons are selected to show them in the following dialog
-                for (int i = 0; i < selectionsList.size(); i++) {
-                    String string = selectionsList.get(i);
-                    switch (string) {
-                        case "check":
-                            setValues.add(0);
-                            break;
-                        case "alarm":
-                            setValues.add(1);
-                            break;
-                        case "edit":
-                            setValues.add(2);
-                            break;
-                        case "heart":
-                            setValues.add(3);
-                            break;
-                        case "note":
-                            setValues.add(4);
-                            break;
-                        case "shopping_cart":
-                            setValues.add(5);
-                            break;
-                        case "smile":
-                            setValues.add(6);
-                            break;
-                        case "star":
-                            setValues.add(7);
-                            break;
-                        case "warning":
-                            setValues.add(8);
-                            break;
-                        case "whatshot":
-                            setValues.add(9);
-                            break;
-                    }
-                }
-
-                MaterialDialog md = new MaterialDialog.Builder(Settings.this)
-                        .title(getResources().getString(R.string.icons))
-                        .items(getResources().getStringArray(R.array.icon_picker_array))
-                        .positiveText(getResources().getString(R.string.ok))
-                        .itemsCallbackMultiChoice(setValues.toArray(new Integer[setValues.size()]), new MaterialDialog.ListCallbackMultiChoice() {
-                            @Override
-                            public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
-                                if (integers != null && integers.length > 0) {
-                                    List<String> selectedValues = new ArrayList<>();
-
-                                    for (int i = 0; i < integers.length; i++) {
-                                        String str = charSequences[i].toString().toLowerCase();
-                                        if (str.equals("shopping cart")) str = "shopping_cart";
-                                        if (str.equals("flame")) str = "whatshot";
-
-                                        selectedValues.add(str);
-                                    }
-                                    Collections.sort(selectedValues);
-
-                                    //just make check first in the list
-                                    if (selectedValues.size() > 1 && selectedValues.get(1).equals("check")) {
-                                        Collections.swap(selectedValues, 1, 0);
-                                    }
-                                    editor.putStringSet("pref_icon_picker", new HashSet<>(selectedValues));
-                                    editor.apply();
-                                } else {
-                                    editor.putStringSet("pref_icon_picker", new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_icons))));
-                                    editor.apply();
-                                }
-                                return true;
-                            }
-                        })
-                        .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
-                        .build();
-                md.show();
-
-                MainActivity.spinnerChanged = true;
-                return false;
-            }
-        });
     }
 
     private void setUpFonts() {
@@ -303,7 +209,6 @@ public class Settings extends PreferenceActivity {
 
     private void initializeSettings() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        selections = sharedPreferences.getStringSet("pref_icon_picker", null);
     }
 
     @Override //back button in action bar to go close settings

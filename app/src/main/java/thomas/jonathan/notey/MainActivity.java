@@ -6,7 +6,6 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -22,7 +21,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.NotificationCompat;
@@ -126,7 +124,6 @@ public class MainActivity extends Activity implements OnClickListener {
         appContext = getApplicationContext();
 
         doInAppBillingStuff();
-
         initializeSettings();
         initializeGUI();
 
@@ -829,16 +826,8 @@ public class MainActivity extends Activity implements OnClickListener {
             nm.cancel(SHORTCUT_NOTIF_ID);
         }
 
-        Set<String> selections = sharedPreferences.getStringSet("pref_icon_picker", null);
-
-        //if no icons are selected, automatically select the default five. otherwise, get their selection
-        if (selections == null || selections.size() == 0) {
-            editor.putStringSet("pref_icon_picker", new HashSet<>(Arrays.asList(getResources().getStringArray(R.array.default_icons))));
-            editor.apply();
-            pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
-        } else pref_icons = Arrays.asList(selections.toArray(new String[selections.size()]));
+        pref_icons = Arrays.asList(getResources().getStringArray(R.array.pro_icons_values));
         Collections.sort(pref_icons);
-
         //just make check first in the list
         if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
             Collections.swap(pref_icons, 1, 0);
@@ -1258,10 +1247,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
     public static void setUpProGUI() {
         //make all the icons enabled initially
-        pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.icon_picker_values));
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(appContext).edit();
-        editor.putStringSet("pref_icon_picker", new HashSet<>(Arrays.asList(appContext.getResources().getStringArray(R.array.icon_picker_values))));
-        editor.apply();
+        pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
 
         //when upgrading to pro, adding more icons to the spinner alters the spinner location's number. this is to fix that
         MySQLiteHelper db = new MySQLiteHelper(appContext);
