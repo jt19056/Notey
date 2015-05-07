@@ -1,7 +1,5 @@
 package thomas.jonathan.notey;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -25,7 +23,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.NotificationCompat;
@@ -33,7 +30,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,7 +63,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import thomas.jonathan.notey.util.IabHelper;
 import thomas.jonathan.notey.util.IabResult;
@@ -112,6 +107,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
     /* in app billing variables */
     public static IabHelper mHelper;
+    public static IInAppBillingService mService;
+    public static ServiceConnection mServiceConn;
     public static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
     public static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
     public static boolean proVersionEnabled = false;
@@ -128,8 +125,9 @@ public class MainActivity extends Activity implements OnClickListener {
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
 
+        doInAppBillingStuff();
+
         initializeSettings();
-        loadData();
         initializeGUI();
 
         setLayout();
@@ -411,7 +409,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (repeat_time != 0) {
 
                         //if alarm_time is old, set alarm_time to currTime+repeat_time to avoid alarm going off directly after user creates note
-                        if(!alarmTimeIsGreaterThanCurrentTime){
+                        if (!alarmTimeIsGreaterThanCurrentTime) {
                             alarm_time = Long.toString((System.currentTimeMillis() + (long) (repeat_time * 1000 * 60)));
                         }
 
@@ -712,17 +710,19 @@ public class MainActivity extends Activity implements OnClickListener {
             e.printStackTrace();
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        int userVersion = sharedPref.getInt("VERSION_CODE", -1);
 
-        //checks the current version code with the one stored in shared prefs.
-        if (versionCode != sharedPref.getInt("VERSION_CODE", -1)) {
+        //checks the current version code with the one stored in shared prefs to determine if app has been updated
+        if (versionCode != userVersion) {
             //if on before v2.0.4 and not first install, change the on click notifcation setting to the info screen
-            if (sharedPref.getInt("VERSION_CODE", -1) <= 14 && sharedPref.getInt("VERSION_CODE", -1) != -1) {
-
+            if (userVersion <= 14 && userVersion != -1) {
                 addIconNamesToDB();
+                sharedPref.edit().putString("clickNotif", "info").apply();
+            }
 
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("clickNotif", "info");
-                editor.apply();
+            //remove proVersionEnabled sharedPref if coming from v2.2
+            if(userVersion == 41){
+                sharedPref.edit().remove("proVersionEnabled").apply();
             }
 
             //always restore notifications
@@ -806,8 +806,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
-
-        proVersionEnabled = sharedPreferences.getBoolean("proVersionEnabled", false);
 
         // Create new note shortcut in the notification tray
         boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);
@@ -1033,7 +1031,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     case R.id.go_pro:
                         try {
                             doInAppBillingStuff();
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
                         }
@@ -1050,7 +1048,7 @@ public class MainActivity extends Activity implements OnClickListener {
                                         Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO + TIP upgrade.");
                                         try {
                                             mHelper.launchPurchaseFlow(MainActivity.this, SKU_TIP_VERSION, 10001, mPurchaseFinishedListener, payload);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                             Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
                                         }
@@ -1062,7 +1060,7 @@ public class MainActivity extends Activity implements OnClickListener {
                                         Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO upgrade.");
                                         try {
                                             mHelper.launchPurchaseFlow(MainActivity.this, SKU_PRO_VERSION, 10001, mPurchaseFinishedListener, payload);
-                                        }catch (Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                             Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
                                         }
@@ -1109,7 +1107,7 @@ public class MainActivity extends Activity implements OnClickListener {
         List<NoteyNote> allNoteys = null;
         try {
             allNoteys = db.getAllNoteys();
-        }catch(RuntimeException e){
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
         int newIconInt;
@@ -1145,8 +1143,6 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void doInAppBillingStuff() {
-        loadData();
-
         // get public key which was generated from my Dev Play Account. This is split up for security reasons.
         String row3 = "kjbLj5687y153Ra3s64Mq+2ZZnWqEjY8PhDwEN2WNKhntBfBaRcGVD2FNpkcMeZdkv524e9O0VqJJCCLhyg9kil3Nx+h+pnbvtID5lwRIAbyPYbOn2xLXt";
         String row1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApuEWdJzuPhdnu28kyd+8/GwNCjTXfMXfBST5+LgFYaljmb0ah7Op8gULgOeLGo1OeK4oLfKAWw";
@@ -1188,25 +1184,19 @@ public class MainActivity extends Activity implements OnClickListener {
         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
             Log.d(TAG, "Query inventory finished.");
 
-            if (mHelper == null) {
-                return;
-            }
-
-            if (result.isFailure()) {
+            if (mHelper == null || result.isFailure()) {
                 return;
             }
 
             Log.d(TAG, "Query inventory was successful.");
             Purchase proVersion = inv.getPurchase(SKU_PRO_VERSION);
+            Purchase tipVersion = inv.getPurchase(SKU_TIP_VERSION);
 
-            if (proVersion != null && verifyDeveloperPayload(proVersion)) {
+            if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
                 proVersionEnabled = true;
-                saveData();
-            }
-
-            if (proVersionEnabled) {
-                saveData();
+                setUpProGUI();
                 setUpMenu();
+                setUpSpinner();
             }
 
             Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
@@ -1240,7 +1230,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_pro), Toast.LENGTH_SHORT).show();
                 proVersionEnabled = true;
-                saveData();
                 setUpProGUI();
                 setUpSpinner();
             } else if (info.getSku().equals(SKU_TIP_VERSION)) {
@@ -1248,7 +1237,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_contribution), Toast.LENGTH_SHORT).show();
                 proVersionEnabled = true;
-                saveData();
                 setUpProGUI();
                 setUpSpinner();
             }
@@ -1287,23 +1275,6 @@ public class MainActivity extends Activity implements OnClickListener {
         return true;
     }
 
-    //save the flag which states the user is now Pro
-    void saveData() {
-        SharedPreferences.Editor spe = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        spe.putBoolean("proVersionEnabled", proVersionEnabled);
-        spe.apply();
-        Log.d(TAG, "Saved data: proVersionEnabled = " + String.valueOf(proVersionEnabled));
-
-    }
-
-    // gets whether user is Pro
-    void loadData() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        proVersionEnabled = sp.getBoolean("proVersionEnabled", false);
-        Log.d(TAG, "Loaded data: proVersionEnabled = " + String.valueOf(proVersionEnabled));
-
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -1334,6 +1305,10 @@ public class MainActivity extends Activity implements OnClickListener {
         Log.d(TAG, "Destroying helper.");
         if (mHelper != null) mHelper.dispose();
         mHelper = null;
+
+        if (mService != null) {
+            unbindService(mServiceConn);
+        }
     }
 }
 
