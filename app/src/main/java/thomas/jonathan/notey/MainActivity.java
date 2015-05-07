@@ -124,6 +124,7 @@ public class MainActivity extends Activity implements OnClickListener {
         appContext = getApplicationContext();
 
         doInAppBillingStuff();
+
         initializeSettings();
         initializeGUI();
 
@@ -816,6 +817,18 @@ public class MainActivity extends Activity implements OnClickListener {
                 editor.putBoolean("pref_shortcut", false);
                 editor.apply();
             }
+
+            //set spinner icons back to default five
+            pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
+        }
+        else{
+            //enable all 10 spinner icons
+            pref_icons = Arrays.asList(getResources().getStringArray(R.array.pro_icons_values));
+            Collections.sort(pref_icons);
+            //just make check first in the list
+            if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
+                Collections.swap(pref_icons, 1, 0);
+            }
         }
 
         // Create new note shortcut in the notification tray
@@ -824,13 +837,6 @@ public class MainActivity extends Activity implements OnClickListener {
             buildShortcutNotification();
         } else {
             nm.cancel(SHORTCUT_NOTIF_ID);
-        }
-
-        pref_icons = Arrays.asList(getResources().getStringArray(R.array.pro_icons_values));
-        Collections.sort(pref_icons);
-        //just make check first in the list
-        if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
-            Collections.swap(pref_icons, 1, 0);
         }
     }
 
