@@ -58,9 +58,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import thomas.jonathan.notey.util.IabHelper;
 import thomas.jonathan.notey.util.IabResult;
@@ -110,6 +108,7 @@ public class MainActivity extends Activity implements OnClickListener {
     public static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
     public static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
     public static boolean proVersionEnabled = false;
+    public static boolean userWasAlreadyAPro = false;
     public static String payload = Integer.toString((int) (Math.random() * 1000000));
 
     @Override
@@ -720,11 +719,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 sharedPref.edit().putString("clickNotif", "info").apply();
             }
 
-            //remove proVersionEnabled sharedPref if coming from v2.2
-            if(userVersion == 41){
-                sharedPref.edit().remove("proVersionEnabled").apply();
-            }
-
             //always restore notifications
             Intent localIntent = new Intent(this, NotificationBootService.class);
             localIntent.putExtra("action", "boot");
@@ -809,6 +803,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
+
+        userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false);
 
         //if user is not a pro, disable pro features
         if(!proVersionEnabled){
@@ -926,7 +922,13 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void setImageButtonsBasedOffSpinnerSelection() {
-        String s = pref_icons.get(spinnerLocation);
+        String s;
+        try {
+            s = pref_icons.get(spinnerLocation);
+        }catch (IndexOutOfBoundsException e){
+            s = "check";
+            e.printStackTrace();
+        }
 
         if (s.equals("smile")) s = "mood";
         if (s.equals("heart")) s = "favorite";
@@ -1202,7 +1204,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
             if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
                 proVersionEnabled = true;
-                setUpProGUI();
+                if(!userWasAlreadyAPro) setUpProGUI(); //if user was already a pro, don't bother fixing the spinner locations
                 setUpMenu();
                 setUpSpinner();
             }

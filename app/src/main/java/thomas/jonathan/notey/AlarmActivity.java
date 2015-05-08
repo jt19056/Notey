@@ -265,17 +265,15 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                         @Override
                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                             //get which one the user selects and set the sound, text box, and button icon accordingly
-                            if(which == 1) {
+                            if (which == 1) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.notification_sound));
                                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
-                            }
-                            else if(which == 2) {
+                            } else if (which == 2) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.alarm_beep));
                                 sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
-                            }
-                            else {
+                            } else {
                                 alarm_uri = null;
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
                                 sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
@@ -283,6 +281,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                             return true;
                         }
                     })
+                    .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"))
                     .show();
         } else if (view.getId() == R.id.alarm_repeat_iv) {
             Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + repeatTime + getString(R.string.minutes), Toast.LENGTH_SHORT).show();

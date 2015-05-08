@@ -247,7 +247,7 @@ public class NotificationBootService extends IntentService {
             pref_expand = false;
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", true);
         }
-        clickNotif = sharedPreferences.getString("clickNotif", "edit");
+        clickNotif = sharedPreferences.getString("clickNotif", "info");
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
     }
 
