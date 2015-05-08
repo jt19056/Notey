@@ -49,8 +49,6 @@ Write yourself a notification reminder and send it to the status bar and notific
 
 • Re-open Notey after updates to restore your notifications.
 
-• Pro users who install Notey on multiple devices, steps to upgrade Notey without paying again: 1) open Notey. 2) click the menu. 3) click Upgrade to Pro. 4) click either Pro or Tip (whichever you purchased). 5) That's it! Enjoy.
-
 • For those on/upgrading to Android 5.0 Lollipop - "The system ignores all non-alpha channels in action icons and in the main notification icon. You should assume that these icons will be alpha-only. The system draws notification icons in white".
 http://developer.android.com/about/versions/android-5.0-changes.html#BehaviorNotifications
 This (http://imgur.com/a/uhpS4#0) is not a bug and unfortunately there is nothing I can do at the moment to change this.
