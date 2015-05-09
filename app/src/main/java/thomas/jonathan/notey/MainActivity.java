@@ -93,7 +93,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private String alarm_time = "";
     private int repeat_time = 0;
     private NoteyNote notey;
-    public MySQLiteHelper db = new MySQLiteHelper(this);
+    public final MySQLiteHelper db = new MySQLiteHelper(this);
     private RelativeLayout layout_bottom;
     private PendingIntent alarmPendingIntent;
     private static List<String> pref_icons;
@@ -121,6 +121,7 @@ public class MainActivity extends Activity implements OnClickListener {
         notey = new NoteyNote(); //create a new Notey object
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
+        pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons to default
 
         doInAppBillingStuff();
 
@@ -804,28 +805,7 @@ public class MainActivity extends Activity implements OnClickListener {
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
 
-        userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false);
-
-        //if user is not a pro, disable pro features
-        if(!proVersionEnabled){
-            //set notification shortcut to false if it is set to true
-            if(sharedPreferences.getBoolean("pref_shortcut", false)) {
-                editor.putBoolean("pref_shortcut", false);
-                editor.apply();
-            }
-
-            //set spinner icons back to default five
-            pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
-        }
-        else{
-            //enable all 10 spinner icons
-            pref_icons = Arrays.asList(getResources().getStringArray(R.array.pro_icons_values));
-            Collections.sort(pref_icons);
-            //just make check first in the list
-            if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
-                Collections.swap(pref_icons, 1, 0);
-            }
-        }
+        userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
 
         // Create new note shortcut in the notification tray
         boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);
@@ -1189,7 +1169,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
+    final IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
             Log.d(TAG, "Query inventory finished.");
@@ -1202,11 +1182,32 @@ public class MainActivity extends Activity implements OnClickListener {
             Purchase proVersion = inv.getPurchase(SKU_PRO_VERSION);
             Purchase tipVersion = inv.getPurchase(SKU_TIP_VERSION);
 
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
                 proVersionEnabled = true;
-                if(!userWasAlreadyAPro) setUpProGUI(); //if user was already a pro, don't bother fixing the spinner locations
+                //if user was already a pro, don't bother fixing the spinner locations
+                if(!userWasAlreadyAPro) setUpProGUI();
+
+                //still want to enable the pro icons
+                pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
+                Collections.sort(pref_icons);
+                //just make check first in the list
+                if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
+                    Collections.swap(pref_icons, 1, 0);
+                }
+
                 setUpMenu();
                 setUpSpinner();
+            }
+            else{ //if user is not a pro, disable pro features
+                //set notification shortcut to false if it is set to true
+                if(sharedPreferences.getBoolean("pref_shortcut", false)) {
+                    editor.putBoolean("pref_shortcut", false);
+                    editor.apply();
+                }
+                //set spinner icons back to default five
+                pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
             }
 
             Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
@@ -1215,7 +1216,7 @@ public class MainActivity extends Activity implements OnClickListener {
     };
 
     // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+    final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase info) {
             Log.d(TAG, "Purchase finished: " + result + ", purchase: " + info);
