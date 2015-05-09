@@ -121,7 +121,6 @@ public class MainActivity extends Activity implements OnClickListener {
         notey = new NoteyNote(); //create a new Notey object
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
-        pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons to default
 
         doInAppBillingStuff();
 
@@ -806,6 +805,8 @@ public class MainActivity extends Activity implements OnClickListener {
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
 
         userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
+
+        pref_icons = (proVersionEnabled) ? Arrays.asList(getResources().getStringArray(R.array.pro_icons_values)) : Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons list
 
         // Create new note shortcut in the notification tray
         boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);

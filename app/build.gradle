@@ -31,10 +31,9 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:22.1.1'
     compile 'com.google.android.apps.dashclock:dashclock-api:+'
-    //compile files('libs/dashclock-api-r2.0.jar')
     compile files('libs/easyandroidanimationslibrary-v0.5.jar')
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
-    compile 'com.afollestad:material-dialogs:0.7.3.2'
+    compile 'com.afollestad:material-dialogs:0.7.3.4'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile('de.psdev.licensesdialog:licensesdialog:1.7.0') {
         exclude module: 'support-v4'

@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2.0.1.b1</string>
+    <string name="version" translatable="false">2.2.1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -43,8 +43,6 @@
     <string name="long_press_for_voice_summary">Long press on microphone button to activate voice.</string>
     <string name="share_button">Share Button</string>
     <string name="share_button_summary">Adds the Share button to the expandable notifications.</string>
-    <string name="hidden_alarm_row">Hidden Alarm Row</string>
-    <string name="hidden_alarm_row_summary">Expandable alarm row. Press the top bar to toggle.</string>
     <string name="shortcut">Notification Shortcut</string>
     <string name="shortcut_summary">Create new notes directly from the notification tray.</string>
     <string name="icons">Icons</string>
@@ -99,7 +97,7 @@
     <string name="alarm">Alarm</string>
     <string name="no_alarm_set">No alarm set.</string>
     <string name="alarm_set_for">Alarm set for: </string>
-    <string name="alarm_deleted">Alarm has been deleted.</string>
+    <string name="alarm_deleted">Alarm deleted.</string>
     <string name="null_date">Sat, Jan 1, 2000</string>
     <string name="null_time">12:00 AM</string>
     <string name="set">Set</string>
