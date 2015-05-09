@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+        <ListPreference android:title="@string/icon"
+            android:summary="@string/icon_summary"
+            android:entries="@array/dashclock_pro_icon_array"
+            android:entryValues="@array/dashclock_pro_icon_values"
+            />
+</PreferenceScreen>
+

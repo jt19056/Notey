@@ -9,7 +9,10 @@ public class DashClockSettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings_dashclock);
+
+        if(MainActivity.proVersionEnabled)
+            addPreferencesFromResource(R.xml.settings_dashclock_pro);
+        else addPreferencesFromResource(R.xml.settings_dashclock);
 
         //show action bar
         getActionBar().setDisplayHomeAsUpEnabled(true);

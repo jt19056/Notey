@@ -19,7 +19,7 @@ public class DashClock extends DashClockExtension {
         int icon = R.drawable.ic_check_white_36dp; //default icon is white check
 
         // get icon from preferences
-        dashclock_icon = sharedPref.getString("pref_dashclock_icon", "check");
+        dashclock_icon = sharedPref.getString("pref_dashclock_icon", "topIcon");
 
         // set icon
         if (dashclock_icon.equals("check")) icon = R.drawable.ic_check_white_36dp;
@@ -27,6 +27,11 @@ public class DashClock extends DashClockExtension {
         else if (dashclock_icon.equals("edit")) icon = R.drawable.ic_edit_white_36dp;
         else if (dashclock_icon.equals("star")) icon = R.drawable.ic_star_white_36dp;
         else if (dashclock_icon.equals("whatshot")) icon = R.drawable.ic_whatshot_white_36dp;
+        else if (dashclock_icon.equals("alarm")) icon = R.drawable.ic_alarm_white_36dp;
+        else if (dashclock_icon.equals("heart")) icon = R.drawable.ic_favorite_white_36dp;
+        else if (dashclock_icon.equals("note")) icon = R.drawable.ic_note_add_white_36dp;
+        else if (dashclock_icon.equals("shopping_cart")) icon = R.drawable.ic_shopping_cart_white_36dp;
+        else if (dashclock_icon.equals("smile")) icon = R.drawable.ic_mood_white_36dp;
 
         if (allNoteys.size() > 0) {
             String allNoteysString = "";
