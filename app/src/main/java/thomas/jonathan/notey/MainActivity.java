@@ -87,7 +87,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
     private boolean editIntentFlag = false;
-    private boolean noteTextBoxHasFocus = false;
+    private boolean noteTextBoxHasFocus = true;
     private String clickNotif;
     private String noteTitle;
     private String alarm_time = "";
