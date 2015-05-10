@@ -128,14 +128,10 @@ public class NotificationBootService extends IntentService {
                 int ico;
                 try {
                     ico = getResources().getIdentifier(n.getIconName(), "drawable", getPackageName());
-                } catch (SQLiteException e) {
-                    ico = R.drawable.ic_check_white_36dp;
-                    e.printStackTrace();
                 } catch (Exception e) {
                     ico = R.drawable.ic_check_white_36dp;
                     e.printStackTrace();
                 }
-
 
                 Bitmap bm;
                 //big white icons are un-seeable on lollipop

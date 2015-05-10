@@ -57,6 +57,19 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        // wait a second then cancel the notification created to vibrate the device
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(AlarmService.VIBRATE_NOTIFICATION_ID);
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.info_back_button) {
             finish();

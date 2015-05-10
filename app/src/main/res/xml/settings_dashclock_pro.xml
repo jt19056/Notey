@@ -2,8 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
         <ListPreference android:title="@string/icon"
             android:summary="@string/icon_summary"
+            android:key="pref_dashclock_icon_pro"
+            android:defaultValue="topIcon"
             android:entries="@array/dashclock_pro_icon_array"
             android:entryValues="@array/dashclock_pro_icon_values"
             />
 </PreferenceScreen>
-

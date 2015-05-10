@@ -20,14 +20,17 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 
 public class AlarmService extends Service {
     final public static int LED_NOTIFICATION_ID = 0;
     final public static int LED_SOUND_ID = 1;
+    final public static int VIBRATE_NOTIFICATION_ID = 2;
     final private String TAG = "Notey_AlarmService";
     private static PowerManager.WakeLock wakeLock;
+    private NotificationManager nm;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -46,8 +49,9 @@ public class AlarmService extends Service {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        final MySQLiteHelper db = new MySQLiteHelper(this);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         Bundle extras = intent.getExtras();
         int NoteID = extras.getInt("alarmID");
@@ -65,7 +69,6 @@ public class AlarmService extends Service {
             Notification notif = null;
             if (alarm_uri.contains("alarm_alert")) {
                 Uri alert = Uri.parse("android.resource://thomas.jonathan.notey/" + R.raw.alarm_beep);
-                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notif = new Notification();
                 notif.sound = alert;
                 notif.flags = Notification.FLAG_INSISTENT;
@@ -74,7 +77,6 @@ public class AlarmService extends Service {
             }
             else if (alarm_uri.contains("notification_sound")) {
                 Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notif = new Notification();
                 notif.sound = alert;
 
@@ -95,9 +97,10 @@ public class AlarmService extends Service {
 
             //vibrate for two 250ms bursts if the checkbox was checked
             if (sharedPref.getBoolean("vibrate" + Integer.toString(NoteID), true)) {
-                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                long pattern[] = new long[]{0, 250, 250, 250, 250};
-                v.vibrate(pattern, -1); //-1 so it only occurs once. 0 if repeat forever
+                Notification vib_only_notif = new NotificationCompat.Builder(this)
+                        .setVibrate(new long[]{0, 250, 250, 250, 250})
+                        .build();
+                nm.notify(VIBRATE_NOTIFICATION_ID, vib_only_notif);
             }
 
             //start info screen
@@ -139,7 +142,6 @@ public class AlarmService extends Service {
     }
 
     private void flashNotificationLED() {
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notif = new Notification();
         notif.ledARGB = Color.CYAN;
         notif.flags = Notification.FLAG_SHOW_LIGHTS;
