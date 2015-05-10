@@ -350,15 +350,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 int d;
                 if (imageButtonNumber == 2)
-                    d = getResources().getIdentifier("ic_" + s + "_yellow_36dp", "drawable", getPackageName());
+                    d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
                 else if (imageButtonNumber == 3)
-                    d = getResources().getIdentifier("ic_" + s + "_blue_36dp", "drawable", getPackageName());
+                    d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
                 else if (imageButtonNumber == 4)
-                    d = getResources().getIdentifier("ic_" + s + "_green_36dp", "drawable", getPackageName());
+                    d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
                 else if (imageButtonNumber == 5)
-                    d = getResources().getIdentifier("ic_" + s + "_red_36dp", "drawable", getPackageName());
+                    d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
                 else
-                    d = getResources().getIdentifier("ic_" + s + "_white_36dp", "drawable", getPackageName());
+                    d = getResources().getIdentifier("ic_" + s + "_white_24dp", "drawable", getPackageName());
 
                 String note = et.getText().toString(); //get the text
 
