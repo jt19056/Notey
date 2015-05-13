@@ -54,6 +54,7 @@ public class About extends PreferenceActivity {
 
         Preference openSourceLic = findPreference("pref_open_source_licenses");
         Preference changelogPref = findPreference("pref_changelog");
+        Preference translationsPref = findPreference("pref_translations");
         Preference githubPref = findPreference("pref_github");
         Preference contactPref = findPreference("pref_contact");
         Preference ratePref = findPreference("pref_rate");
@@ -65,16 +66,6 @@ public class About extends PreferenceActivity {
         openSourceLic.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 new LicensesDialog.Builder(About.this).setNotices(R.raw.opensourcelicenses).setTitle(R.string.opensource).setCloseText(R.string.ok).build().show();
-            /* old dialog to show licenses.  keeping for now just in case i want to revert back to it*/
-//                MaterialDialog md = new MaterialDialog.Builder(About.this)
-//                        .title(getResources().getString(R.string.opensource))
-//                        .customView(R.layout.webview_dialog_layout, false)
-//                        .positiveText(getResources().getString(R.string.ok))
-//                        .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
-//                        .build();
-//                WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-//                webView.loadUrl("file:///android_asset/opensourcelicenses.html");
-//                md.show();
                 return false;
             }
         });
@@ -97,7 +88,23 @@ public class About extends PreferenceActivity {
             }
         });
 
-        //'Contact' preference selection. send an email intent, setting the subject and the recipient
+        //translations dialog pop-up
+        new AlertDialog.Builder(this);
+        translationsPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                MaterialDialog md = new MaterialDialog.Builder(About.this)
+                        .title(getResources().getString(R.string.translations))
+                        .content(R.string.translations_thank_you)
+                        .positiveText(getResources().getString(R.string.dismiss))
+                        .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"))
+                        .build();
+                md.show();
+
+                return false;
+            }
+        });
+
+        //'github' preference selection. send the user to my github
         githubPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             public boolean onPreferenceClick(Preference preference) {
                 Uri uri = Uri.parse(getResources().getString(R.string.github_url));
