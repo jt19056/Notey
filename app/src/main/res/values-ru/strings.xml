@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- General strings -->
+    <string name="version" translatable="false">2.2.2.a1</string>
+    <string name="app_name" translatable="false">Notey</string>
+
+    <!-- MainActivity strings-->
+    <string name="menu">Меню</string>
+    <string name="edit">Изменить</string>
+    <string name="remove">Удалить</string>
+    <string name="no_voice_input">Голосовой ввод не доступен.</string>
+    <string name="speak_now">Говорите</string>
+    <string name="hold_to_record">Удерживайте для записи</string>
+    <string name="impossibleToDeleteAtSend">Вы сделали невозможной для удаления эту запись. Пожалуйста, пройдите в настройки и измените этот параметр.</string>
+    <string name="title">Название</string>
+    <string name="quick_note">Добавить новую заметку</string>
+
+    <!-- Settings strings -->
+    <string name="notifications">Уведомления</string>
+    <string name="display">Дисплей</string>
+    <string name="other">Дополнительно</string>
+    <string name="notey_settings">Настройки</string>
+    <string name="settings">Настройки</string>
+    <string name="notifClick">Действия по нажатию на уведомление</string>
+    <string name="notifClickSummary">Что произойдет, если нажать на уведомление</string>
+    <string name="doNothing">Ничего</string>
+    <string name="show_info_screen">Показать информацию</string>
+    <string name="priority">Приоритет</string>
+    <string name="prioritySummary">Где уведомление будет расположено относительно уведомлений от других приложений.</string>
+    <string name="priorityHigh">Высокий - всегда вверху уведомлений в трее</string>
+    <string name="normal">Нормальный</string>
+    <string name="priorityLow">Низкий - Notey внизу всех уведомлений</string>
+    <string name="priorityMinimum">Минимальный - спрятать иконку из строки уведомлений, и оставить Notey внизу</string>
+    <string name="expandNotifs">Расширяющиеся уведомления</string>
+    <string name="expandNotifsSummary">Разрешить уведомлениям расширяться.</string>
+    <string name="swipeNotifs">Свайп для удаления</string>
+    <string name="swipeNotifsSummary">Разрешить удалять уведомления смахиванием в сторону.</string>
+    <string name="enterToSend">Отправлять нажатием Enter</string>
+    <string name="enterToSendSummary">Если не выбрано, то нажатие Enter создаст новую строку.</string>
+    <string name="impossibleToDelete">Ваши настройки таковы, что нет возможности удалить напоминания. Пожалуйста измените настройки.</string>
+    <string name="long_press_for_voice">Удерживайте для голосового ввода</string>
+    <string name="long_press_for_voice_summary">Длинное нажатие на микрофон для активации голоса.</string>
+    <string name="share_button">Кнопка "Поделиться"</string>
+    <string name="share_button_summary">Добавить кнопку "Поделиться" в расширяющиеся уведомления.</string>
+    <string name="shortcut">Ярлык уведомления</string>
+    <string name="shortcut_summary">Создание нового напоминания прямо из трея уведомлений.</string>
+    <string name="icons">Иконки</string>
+    <string name="icons_summary">Выберите иконку, которую вы хотите.</string>
+    <string name="please_select_at_least_one">Пожалуйста, выберите иконку перед тем, как продолжить.</string>
+    <string name="misc">Дополнительно.</string>
+    <string name="pro_options">Pro опции</string>
+
+
+    <!-- About strings -->
+    <string name="about">О приложении</string>
+    <string name="changelog">Что изменилось</string>
+    <string name="changelogSummary">Все изменения сделанные в начале.</string>
+    <string name="opensource">Open Source лицензии</string>
+    <string name="opensourceSummary">Детали лицензий для open source софта.</string>
+    <string name="verNum">Номер версии</string>
+    <string name="contact">Контакт</string>
+    <string name="email" translatable="false">jt19056@gmail.com</string>
+    <string name="rate">Оценить приложение</string>
+    <string name="rateSummary">Надеюсь, вам понравилось это приложение!</string>
+    <string name="sendemail">Отправить email</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
+    <string name="github">GitHub</string>
+    <string name="githubSummary">Отслеживать развитие проекта, отчеты об ошибках, и заявки на добавление функций.</string>
+    <string name="github_url">https://github.com/jt19056/Notey</string>
+
+    <!-- DashClock -->
+    <string name="dashclock_description">Показывать текущие напоминания.</string>
+    <string name="reminders">Напоминания</string>
+    <string name="icon">Иконка</string>
+    <string name="icon_summary">Иконка показанная в DashClock Widget.</string>
+    <string name="top_icon">Старая иконка напоминания.</string>
+    <string name="notey_extension_settings">Расширенные настройки Notey</string>
+
+    <!-- Icons -->
+    <string name="check">Галочка</string>
+    <string name="warning">Предупреждение</string>
+    <string name="star">Звезда</string>
+    <string name="flame">Пламя</string>
+    <string name="heart">Сердце</string>
+    <string name="smile">Смайлик</string>
+    <string name="note">Записка</string>
+    <string name="shopping_cart">Корзина покупок</string>
+
+    <!-- Info Screen Activity -->
+    <string name="text_copied">Текст скопирован.</string>
+    <string name="go_back">Назад</string>
+    <string name="copy">Копировать</string>
+    <string name="bad_url">Извините, URL не может быть показан.</string>
+
+    <!-- Alarm Activity-->
+    <string name="alarm">Сигнал</string>
+    <string name="no_alarm_set">Сигнал не установлен.</string>
+    <string name="alarm_set_for">Сигнал установлен: </string>
+    <string name="alarm_deleted">Сигнал удалён.</string>
+    <string name="null_date">Sat, Jan 1, 2000</string>
+    <string name="null_time">12:00 AM</string>
+    <string name="set">Установить</string>
+    <string name="cancel">Отмена</string>
+    <string name="delete">Удалить</string>
+    <string name="vibrate">Вибрация</string>
+    <string name="wake_screen">Экран</string>
+    <string name="alarm_not_set">Сигнал не установлен. Вы выбрали прошедшее время!</string>
+    <string name="sound">Звук: </string>
+    <string name="select_sound">Выберите мелодию сигнала.</string>
+    <string name="does_not_repeat">Не повторять</string>
+    <string name="repeat_every">"Повторять каждые "</string>
+    <string name="minutes">" минут"</string>
+    <string name="minute">" минуту"</string>
+    <string name="choose_alarm_type">"Выберите тип сигнала"</string>
+    <string name="notification_sound">"Звук уведомления"</string>
+    <string name="alarm_beep">"beep сигнала"</string>
+
+    <!-- Other -->
+    <string name="undo">Отмена</string>
+    <string name="share">Поделиться</string>
+    <string name="none">Нет</string>
+    <string name="no_thanks">Нет, Спасибо.</string>
+    <string name="ok">OK</string>
+    <string name="no">Нет</string>
+
+    <!-- Pro -->
+    <string name="go_pro">Обновитесь до Pro версии</string>
+    <string name="thank_you_for_pro">Спасибо за обновление до Pro версии!</string>
+    <string name="thank_you_for_contribution">Спасибо большое за Ваш вклад, и обновление до Pro версии продукта!</string>
+    <string name="pro_plus_tip">Pro + Tip</string>
+    <string name="pro_only">Pro только</string>
+    <string name="pro">Pro</string>
+    <string name="not_a_pro">Функции Pro версии отключены.</string>
+    <string name="yes_a_pro">Функции Pro версии включены.</string>
+    <string name="tip">Tip</string>
+    <string name="play_store_fail">Что-то пошло не так при соединении с Google Play Store.</string>
+
+</resources>
