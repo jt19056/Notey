@@ -8,9 +8,6 @@
         android:title="@string/opensource"
         android:summary="@string/opensourceSummary"/>
 
-    <Preference android:key="pref_translations"
-        android:title="@string/translations"/>
-
     <Preference android:key="pref_github"
         android:title="@string/github"
         android:summary="@string/githubSummary"/>

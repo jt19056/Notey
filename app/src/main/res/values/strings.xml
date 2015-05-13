@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2.2.a1</string>
+    <string name="version" translatable="false">2.2.1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -68,13 +68,6 @@
     <string name="github">GitHub</string>
     <string name="githubSummary">Track development, create bug tickets, request features.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
-    <string name="translations">Translations</string>
-    <string name="translations_thank_you">
-        Thank you to the following users:\n\n
-        Russian (русский) - Alex Besov\n
-        Spanish (Español) - Diego Andrés Nieves\n\n
-        If you would like to help with any translations, please send me an email.
-    </string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Displays your current reminders.</string>
@@ -130,7 +123,6 @@
     <string name="no_thanks">No Thanks</string>
     <string name="ok">OK</string>
     <string name="no">No</string>
-    <string name="dismiss">Dismiss</string>
 
     <!-- Pro -->
     <string name="go_pro">Upgrade to Pro</string>
