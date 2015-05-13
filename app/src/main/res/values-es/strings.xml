@@ -1,4 +1,139 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Notey</string>
+
+    <!-- General strings -->
+    <string name="version" translatable="false">2.2.1</string>
+    <string name="app_name" translatable="false">Notey</string>
+
+    <!-- MainActivity strings-->
+    <string name="menu">Menú</string>
+    <string name="edit">Editar</string>
+    <string name="remove">Eliminar</string>
+    <string name="no_voice_input">Entrada de voz no está disponible.</string>
+    <string name="speak_now">Hable ahora</string>
+    <string name="hold_to_record">Sostenga para grabar</string>
+    <string name="impossibleToDeleteAtSend">Usted ha hecho imposible eliminar esta nota. Por favor, vaya a ajustes y arregle esto.</string>
+    <string name="title">Título</string>
+    <string name="quick_note">Añadir nueva nota</string>
+
+    <!-- Settings strings -->
+    <string name="notifications">Notificaciones</string>
+    <string name="display">Visualizar</string>
+    <string name="other">Otro</string>
+    <string name="notey_settings">Ajustes</string>
+    <string name="settings">Ajustes</string>
+    <string name="notifClick">Acción al cliquear en una notificación</string>
+    <string name="notifClickSummary">Lo que sucede al presionar en una notificación.</string>
+    <string name="doNothing">Nada</string>
+    <string name="show_info_screen">Mostrar pantalla de información</string>
+    <string name="priority">Prioridad</string>
+    <string name="prioritySummary">Dónde se colocarán las notificaciones de Notey en comparación con las de otras aplicaciones.</string>
+    <string name="priorityHigh">Alta - Noteys siempre en la parte superior de la bandeja de notificaciones</string>
+    <string name="normal">Normal</string>
+    <string name="priorityLow">Baja - Noteys siempre en la parte inferior de la bandeja de notificaciones</string>
+    <string name="priorityMinimum">Mínima - Oculta el icono de la barra de estado y mantiene Noteys en la parte inferior de la bandeja de notificaciones</string>
+    <string name="expandNotifs">Notificaciones Expandibles</string>
+    <string name="expandNotifsSummary">Permitir que las notificaciones sean expandibles.</string>
+    <string name="swipeNotifs">Deslizar para eliminar</string>
+    <string name="swipeNotifsSummary">Permitir que las notificaciones puedan ser eliminadas al deslizarlas.</string>
+    <string name="enterToSend">Tecla Intro envía</string>
+    <string name="enterToSendSummary">Si no está tildada, pulsar Intro creará una nueva línea.</string>
+    <string name="impossibleToDelete">Usted ha hecho imposible eliminar cualquier Notey. Por favor, cambie los ajustes para que esto sea posible antes de salir.</string>
+    <string name="long_press_for_voice">Pulsación larga para entrada de voz</string>
+    <string name="long_press_for_voice_summary">Pulsación larga en el botón del micrófono para activar la voz.</string>
+    <string name="share_button">Botón Compartir</string>
+    <string name="share_button_summary">Agrega el botón Compartir para las notificaciones expandibles.</string>
+    <string name="shortcut">Acceso Directo a Notificaciones</string>
+    <string name="shortcut_summary">Cree nuevas notas directamente desde la bandeja de notificaciones.</string>
+    <string name="icons">Iconos</string>
+    <string name="icons_summary">Seleccione los iconos a elegir.</string>
+    <string name="please_select_at_least_one">Por favor, seleccione al menos un icono antes de continuar.</string>
+    <string name="misc">Otra información.</string>
+    <string name="pro_options">Opciones Pro</string>
+
+
+    <!-- About strings -->
+    <string name="about">Acerca de</string>
+    <string name="changelog">Historial de cambios</string>
+    <string name="changelogSummary">Todos los cambios realizados desde el inicio.</string>
+    <string name="opensource">Licencias de Código Abierto</string>
+    <string name="opensourceSummary">Detalles de las licencias para el software de código abierto.</string>
+    <string name="verNum">Número de Versión</string>
+    <string name="contact">Contacto</string>
+    <string name="email" translatable="false">jt19056@gmail.com</string>
+    <string name="rate">Valorar</string>
+    <string name="rateSummary">Espero que disfrute de la aplicación!</string>
+    <string name="sendemail">Enviar email…</string>
+    <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
+    <string name="github">GitHub</string>
+    <string name="githubSummary">Siga el desarrollo, cree entradas de errores, solicite características.</string>
+    <string name="github_url">https://github.com/jt19056/Notey</string>
+
+    <!-- DashClock -->
+    <string name="dashclock_description">Muestra tus recordatorios actuales.</string>
+    <string name="reminders">Recordatorios</string>
+    <string name="icon">Icono</string>
+    <string name="icon_summary">Icono que se mostrará en DashClock Widget.</string>
+    <string name="top_icon">El icono de la nota más antigua</string>
+    <string name="notey_extension_settings">Ajustes de la extensión de Notey</string>
+
+    <!-- Icons -->
+    <string name="check">Tilde</string>
+    <string name="warning">Advertencia</string>
+    <string name="star">Estrella</string>
+    <string name="flame">Llama</string>
+    <string name="heart">Corazón</string>
+    <string name="smile">Sonrisa</string>
+    <string name="note">Nota</string>
+    <string name="shopping_cart">Carrito de compras</string>
+
+    <!-- Info Screen Activity -->
+    <string name="text_copied">Texto copiado al portapapeles.</string>
+    <string name="go_back">Volver</string>
+    <string name="copy">Copiar</string>
+    <string name="bad_url">Lo sentimos, la dirección URL no puede ser mostrada.</string>
+
+    <!-- Alarm Activity-->
+    <string name="alarm">Alarma</string>
+    <string name="no_alarm_set">Ninguna alarma establecida.</string>
+    <string name="alarm_set_for">Alarma establecida para: </string>
+    <string name="alarm_deleted">Alarma eliminada.</string>
+    <string name="null_date">Sáb, 01 de Enero de 2000</string>
+    <string name="null_time">12:00 AM</string>
+    <string name="set">Establecer</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
+    <string name="vibrate">Vibrar</string>
+    <string name="wake_screen">Despertar Pantalla</string>
+    <string name="alarm_not_set">Alarma no establecida. Eligió un momento en el pasado!</string>
+    <string name="sound">Sonido: </string>
+    <string name="select_sound">Seleccionar sonido para el recordatorio</string>
+    <string name="does_not_repeat">No repetir</string>
+    <string name="repeat_every">"Repetir cada "</string>
+    <string name="minutes">" minutos"</string>
+    <string name="minute">" minuto"</string>
+    <string name="choose_alarm_type">"Eligir el tipo de alarma"</string>
+    <string name="notification_sound">"Sonido de notificación"</string>
+    <string name="alarm_beep">"Alarma bip"</string>
+
+    <!-- Other -->
+    <string name="undo">Deshacer</string>
+    <string name="share">Compartir</string>
+    <string name="none">Ninguna</string>
+    <string name="no_thanks">No Gracias</string>
+    <string name="ok">Si</string>
+    <string name="no">No</string>
+
+    <!-- Pro -->
+    <string name="go_pro">Actualice a Pro</string>
+    <string name="thank_you_for_pro">Gracias por actualizar a Pro!</string>
+    <string name="thank_you_for_contribution">Gracias por su donación y actualización a Pro!</string>
+    <string name="pro_plus_tip">Pro + Donación</string>
+    <string name="pro_only">Sólo Pro</string>
+    <string name="pro">Pro</string>
+    <string name="not_a_pro">Características Pro deshabilitadas.</string>
+    <string name="yes_a_pro">Características Pro habilitadas.</string>
+    <string name="tip">Donación</string>
+    <string name="play_store_fail">Algo salió mal al tratar de contactar con tienda Google Play.</string>
+
 </resources>
