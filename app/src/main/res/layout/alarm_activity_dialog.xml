@@ -242,14 +242,14 @@
         <com.rey.material.widget.Spinner
             style="@style/Widget.AppCompat.Spinner"
             android:id="@+id/reccurence_spinner"
-            android:layout_width="125dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             app:rd_style="@style/Material.Drawable.Ripple.Wave"
             android:background="?android:selectableItemBackground"
             android:layout_weight="20"
             android:gravity="center"
             android:layout_gravity="center"
-            app:spn_arrowSize="0dp"
+            android:layout_marginRight="10dp"
             />
     </LinearLayout>
 
