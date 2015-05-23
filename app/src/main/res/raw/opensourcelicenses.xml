@@ -52,6 +52,11 @@
         <license>MIT License</license>
     </notice>
     <notice>
+        <name>Material Design Icons</name>
+        <url>https://github.com/google/material-design-icons</url>
+        <copyright>Google</copyright>
+    </notice>
+    <notice>
         <name>Roboto Fonts</name>
         <url>http://www.google.com/fonts/specimen/Roboto</url>
         <copyright>Christian Robertson</copyright>
