@@ -1,10 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- General strings -->
-    <string name="version" translatable="false">2.2.2.a1</string>
-    <string name="app_name" translatable="false">Notey</string>
-
     <!-- MainActivity strings-->
     <string name="menu">Меню</string>
     <string name="edit">Изменить</string>
@@ -60,7 +55,6 @@
     <string name="opensourceSummary">Детали лицензий для open source софта.</string>
     <string name="verNum">Номер версии</string>
     <string name="contact">Контакт</string>
-    <string name="email" translatable="false">jt19056@gmail.com</string>
     <string name="rate">Оценить приложение</string>
     <string name="rateSummary">Надеюсь, вам понравилось это приложение!</string>
     <string name="sendemail">Отправить email</string>
@@ -68,6 +62,13 @@
     <string name="github">GitHub</string>
     <string name="githubSummary">Отслеживать развитие проекта, отчеты об ошибках, и заявки на добавление функций.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
+	<string name="translations">Переводы</string>
+	<string name="translations_thank_you">
+		Благодарность следующим пользователям:\n\n
+		Russian (русский) - Alex Besov\n
+		Spanish (Español) - Diego Andrés Nieves\n\n
+		Если вы хотите помочь с переводом на другие языки, пожалуйста напишите мне по электронной почте.
+	</string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Показывать текущие напоминания.</string>
@@ -123,6 +124,7 @@
     <string name="no_thanks">Нет, Спасибо.</string>
     <string name="ok">OK</string>
     <string name="no">Нет</string>
+	<string name="dismiss">Закрыть</string>
 
     <!-- Pro -->
     <string name="go_pro">Обновитесь до Pro версии</string>
