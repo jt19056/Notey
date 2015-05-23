@@ -65,8 +65,8 @@
 	<string name="translations">Переводы</string>
 	<string name="translations_thank_you">
 		Благодарность следующим пользователям:\n\n
-		Russian (русский) - Alex Besov\n
-		Spanish (Español) - Diego Andrés Nieves\n\n
+		Alex Besov - Russian (русский)\n
+		Diego Andrés Nieves - Spanish (Español)\n\n
 		Если вы хотите помочь с переводом на другие языки, пожалуйста напишите мне по электронной почте.
 	</string>
 
@@ -113,9 +113,17 @@
     <string name="repeat_every">"Повторять каждые "</string>
     <string name="minutes">" минут"</string>
     <string name="minute">" минуту"</string>
-    <string name="choose_alarm_type">"Выберите тип сигнала"</string>
-    <string name="notification_sound">"Звук уведомления"</string>
-    <string name="alarm_beep">"beep сигнала"</string>
+    <string name="hours">" часов"</string>
+    <string name="hour">" час"</string>
+    <string name="days">" дней"</string>
+    <string name="day">" день"</string>
+    <string name="choose_alarm_type">Выберите тип сигнала</string>
+    <string name="notification_sound">Звук уведомления</string>
+    <string name="alarm_beep">beep сигнала</string>
+	<string name="Mins">Мин</string>
+    <string name="Hours">Час</string>
+    <string name="Days">дней</string>
+
 
     <!-- Other -->
     <string name="undo">Отмена</string>

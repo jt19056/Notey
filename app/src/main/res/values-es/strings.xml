@@ -65,8 +65,8 @@
     <string name="translations">Traducciones</string>
     <string name="translations_thank_you">
         Agradecimientos a los siguientes usuarios:\n\n
-        Ruso (русский) - Alex Besov\n
-        Spanish (Español) - Diego Andrés Nieves\n\n
+        Alex Besov - Ruso (русский)\n
+        Diego Andrés Nieves - Spanish (Español)\n\n
         Si desea colaborar con cualquier traducción, por favor envíeme un correo electrónico.
     </string>
 
@@ -113,9 +113,17 @@
     <string name="repeat_every">"Repetir cada "</string>
     <string name="minutes">" minutos"</string>
     <string name="minute">" minuto"</string>
-    <string name="choose_alarm_type">"Eligir el tipo de alarma"</string>
-    <string name="notification_sound">"Sonido de notificación"</string>
-    <string name="alarm_beep">"Alarma bip"</string>
+    <string name="hours">" horas"</string>
+    <string name="hour">" hora"</string>
+    <string name="days">" días"</string>
+    <string name="day">" día"</string>
+    <string name="choose_alarm_type">Eligir el tipo de alarma</string>
+    <string name="notification_sound">Sonido de notificación</string>
+    <string name="alarm_beep">Alarma bip</string>
+	<string name="Mins">Mins</string>
+    <string name="Hours">Hrs</string>
+    <string name="Days">Días</string>
+
 
     <!-- Other -->
     <string name="undo">Deshacer</string>

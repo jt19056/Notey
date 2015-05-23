@@ -3,6 +3,7 @@ package thomas.jonathan.notey;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -13,6 +14,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.rey.material.widget.Spinner;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
@@ -38,7 +43,8 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private TextView time_tv;
     private TextView sound_tv;
     private ImageButton sound_btn;
-    private int year, month, day, hour, minute, ALARM_SOUND_REQUEST = 5, repeatTime = 0;
+    private Spinner recurrenceSpinner;
+    private int year, month, day, hour, minute, repeatTime = 0, spinnerSelectedValue;
     private PendingIntent alarmPendingIntent;
     public static final SimpleDateFormat format_date = new SimpleDateFormat("EEE, MMM dd"), format_time = new SimpleDateFormat("hh:mm a");
     private CheckBox vibrate_cb, wake_cb;
@@ -87,19 +93,177 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         sound_btn = (ImageButton) findViewById(R.id.alarm_sound_btn);
         ImageView repeat_iv = (ImageView) findViewById(R.id.alarm_repeat_iv);
         repeat_iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_refresh_grey600_24dp));
+        recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
 
         //set up seekbar
-        DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.discrete_bar);
+        final DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.discrete_bar);
         seekBar.setMin(0);
-        seekBar.setMax(12);
+        seekBar.setMax(5);
         seekBar.setScrubberColor(getResources().getColor(R.color.blue_500));
+        //set what the seekbar bubble displays based on the time option selected in the spinner
         seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
-                repeatTime = value * 5; //5 minute intervals
-                return value * 5;
+                int newValue = 0;
+                if (spinnerSelectedValue == 1) { //hours
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 1;
+                            break;
+                        case 2:
+                            newValue = 2;
+                            break;
+                        case 3:
+                            newValue = 5;
+                            break;
+                        case 4:
+                            newValue = 10;
+                            break;
+                        case 5:
+                            newValue = 12;
+                            break;
+                    }
+                    repeatTime = newValue * 60;
+                } else if (spinnerSelectedValue == 2) { //days
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 1;
+                            break;
+                        case 2:
+                            newValue = 7;
+                            break;
+                        case 3:
+                            newValue = 14;
+                            break;
+                        case 4:
+                            newValue = 21;
+                            break;
+                        case 5:
+                            newValue = 28;
+                            break;
+                    }
+                    repeatTime = newValue * 60 * 24;
+                } else { //minutes
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 5;
+                            break;
+                        case 2:
+                            newValue = 10;
+                            break;
+                        case 3:
+                            newValue = 15;
+                            break;
+                        case 4:
+                            newValue = 30;
+                            break;
+                        case 5:
+                            newValue = 45;
+                            break;
+                    }
+                    repeatTime = newValue;
+                }
+                return newValue;
             }
         });
+
+
+        //set up spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_row, getResources().getStringArray(R.array.recurrence_array));
+        adapter.setDropDownViewResource(R.layout.spinner_row_dropdown);
+        recurrenceSpinner.setAdapter(adapter);
+
+        recurrenceSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                spinnerSelectedValue = spinner.getSelectedItemPosition();
+                //reset the indicator value for the seekbar bubble
+                seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                    @Override
+                    public int transform(int value) {
+                        int newValue = 0;
+                        if (spinnerSelectedValue == 1) { //hours
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 1;
+                                    break;
+                                case 2:
+                                    newValue = 2;
+                                    break;
+                                case 3:
+                                    newValue = 5;
+                                    break;
+                                case 4:
+                                    newValue = 10;
+                                    break;
+                                case 5:
+                                    newValue = 12;
+                                    break;
+                            }
+                            repeatTime = newValue * 60;
+                        } else if (spinnerSelectedValue == 2) { //days
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 1;
+                                    break;
+                                case 2:
+                                    newValue = 7;
+                                    break;
+                                case 3:
+                                    newValue = 14;
+                                    break;
+                                case 4:
+                                    newValue = 21;
+                                    break;
+                                case 5:
+                                    newValue = 28;
+                                    break;
+                            }
+                            repeatTime = newValue * 60 * 24;
+                        } else { //minutes
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 5;
+                                    break;
+                                case 2:
+                                    newValue = 10;
+                                    break;
+                                case 3:
+                                    newValue = 15;
+                                    break;
+                                case 4:
+                                    newValue = 30;
+                                    break;
+                                case 5:
+                                    newValue = 45;
+                                    break;
+                            }
+                            repeatTime = newValue;
+                        }
+                        return newValue;
+                    }
+                });
+            }
+        });
+
 
         //if a pro user, enable the sound and repeat option
         if (MainActivity.proVersionEnabled) {
@@ -112,6 +276,9 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             sound_btn.setAlpha(0.3f);
             repeat_iv.setAlpha(0.3f);
             seekBar.setAlpha(0.3f);
+            recurrenceSpinner.setEnabled(false);
+            recurrenceSpinner.setClickable(false);
+            recurrenceSpinner.setAlpha(0.3f);
             seekBar.setEnabled(false);
             repeat_iv.setClickable(false);
             seekBar.setThumbColor(getResources().getColor(R.color.grey_600), getResources().getColor(R.color.grey_600));
@@ -127,9 +294,10 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         alarm_mainTitle.setTypeface(roboto_light);
         set_btn.setTypeface(roboto_light);
         cancel_btn.setTypeface(roboto_light);
-        vibrate_cb.setTypeface(roboto_light);
-        wake_cb.setTypeface(roboto_light);
-        sound_tv.setTypeface(roboto_light);
+        vibrate_cb.setTypeface(roboto_reg);
+        wake_cb.setTypeface(roboto_reg);
+        sound_tv.setTypeface(roboto_reg);
+
 
         date_tv.setOnClickListener(this);
         time_tv.setOnClickListener(this);
@@ -175,7 +343,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         if (i.hasExtra("alarm_set_time")) {
             alarm_set_tv.setText(getString(R.string.alarm_set_for));
             date = new Date(Long.valueOf(i.getExtras().getString("alarm_set_time")));
-            repeatTime = i.getExtras().getInt("repeat_set_time", 0)/5;
+            repeatTime = i.getExtras().getInt("repeat_set_time", 0);
             alarm_delete.setVisibility(View.VISIBLE);
 
             alarmPendingIntent = (PendingIntent) i.getExtras().get("alarmPendingIntent");
@@ -188,7 +356,30 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             hour = calendar.get(Calendar.HOUR_OF_DAY);
             minute = calendar.get(Calendar.MINUTE);
 
-            seekBar.setProgress(repeatTime);
+            //depending on what the repeating time is set to, set the seekbar and spinner values
+            switch (repeatTime) {
+                //minutes
+                case 0: seekBar.setProgress(0); break;
+                case 5: seekBar.setProgress(1); break;
+                case 10: seekBar.setProgress(2); break;
+                case 15: seekBar.setProgress(3); break;
+                case 30: seekBar.setProgress(4); break;
+                case 45: seekBar.setProgress(5); break;
+                //hours
+                case 60: seekBar.setProgress(1); recurrenceSpinner.setSelection(1); break;  //1hr
+                case 120: seekBar.setProgress(2); recurrenceSpinner.setSelection(1); break; //2hrs
+                case 300: seekBar.setProgress(3); recurrenceSpinner.setSelection(1); break; //5hrs
+                case 600: seekBar.setProgress(4); recurrenceSpinner.setSelection(1); break; //10hrs
+                case 720: seekBar.setProgress(5); recurrenceSpinner.setSelection(1); break; //12hrs
+                //days
+                case 1440: seekBar.setProgress(1); recurrenceSpinner.setSelection(2); break;  //1day
+                case 10080: seekBar.setProgress(2); recurrenceSpinner.setSelection(2); break; //7days
+                case 20160: seekBar.setProgress(3); recurrenceSpinner.setSelection(2); break; //14days
+                case 30240: seekBar.setProgress(4); recurrenceSpinner.setSelection(2); break; //21days
+                case 40320: seekBar.setProgress(5); recurrenceSpinner.setSelection(2); break; //28days
+            }
+
+
         } else {
             alarm_delete.setVisibility(View.INVISIBLE); // no alarm? don't show delete button then
             minute = minute + 1; //add one minute to the clock, so the default display time is one minute ahead of current time
@@ -284,7 +475,25 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                     .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"))
                     .show();
         } else if (view.getId() == R.id.alarm_repeat_iv) {
-            Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + repeatTime + getString(R.string.minutes), Toast.LENGTH_SHORT).show();
+            switch(spinnerSelectedValue) {
+                case 0:
+                    Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + repeatTime + getString(R.string.minutes), Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    int hours = repeatTime/60;
+                    //display "hour" or "hours" for the toast
+                    if(hours == 1)
+                        Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + hours + getString(R.string.hour), Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + hours + getString(R.string.hours), Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    int days = repeatTime/60/24;
+                    //display "day" or "days" for the toast
+                    if(days == 1)
+                        Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + days + getString(R.string.day), Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + days + getString(R.string.days), Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
@@ -305,7 +514,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
     @Override
     public void onResume() {
-        // Example of reattaching to the fragment
         super.onResume();
 
     }
@@ -345,5 +553,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         time_tv.setText(h2 + ":" + min + " " + AM_PM);
     }
 }
+
 
 

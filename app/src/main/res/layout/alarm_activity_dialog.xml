@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/alarm_activity_dialog"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/alarm_layout_top"
@@ -213,7 +214,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:clickable="false"
-            android:text="" />
+            android:text=""
+            android:layout_weight="1"/>
 
 
         <ImageView
@@ -224,16 +226,31 @@
             android:clickable="true"
             android:onClick="onClick"
             android:background="?android:selectableItemBackground"
+            android:layout_weight="1"
             />
+
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:id="@+id/discrete_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="-7dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_marginRight="-10dp"
             android:layout_gravity="center_vertical"
+            android:layout_weight="50"
             />
 
+        <com.rey.material.widget.Spinner
+            style="@style/Widget.AppCompat.Spinner"
+            android:id="@+id/reccurence_spinner"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            app:rd_style="@style/Material.Drawable.Ripple.Wave"
+            android:background="?android:selectableItemBackground"
+            android:layout_weight="20"
+            android:gravity="center"
+            android:layout_gravity="center"
+            app:spn_arrowSize="0dp"
+            />
     </LinearLayout>
 
     <LinearLayout

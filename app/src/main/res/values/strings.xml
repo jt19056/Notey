@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2.2.a1</string>
+    <string name="version" translatable="false">2.2.2</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -71,8 +71,8 @@
     <string name="translations">Translations</string>
     <string name="translations_thank_you">
         Thank you to the following users:\n\n
-        Russian (русский) - Alex Besov\n
-        Spanish (Español) - Diego Andrés Nieves\n\n
+        Alex Besov - Russian (русский)\n
+        Diego Andrés Nieves - Spanish (Español)\n\n
         If you would like to help with any translations, please send me an email.
     </string>
 
@@ -119,9 +119,16 @@
     <string name="repeat_every">"Repeat every "</string>
     <string name="minutes">" minutes"</string>
     <string name="minute">" minute"</string>
-    <string name="choose_alarm_type">"Choose Alarm Type"</string>
-    <string name="notification_sound">"Notification sound"</string>
-    <string name="alarm_beep">"Alarm beep"</string>
+    <string name="hours">" hours"</string>
+    <string name="hour">" hour"</string>
+    <string name="days">" days"</string>
+    <string name="day">" day"</string>
+    <string name="choose_alarm_type">Choose Alarm Type</string>
+    <string name="notification_sound">Notification sound</string>
+    <string name="alarm_beep">Alarm beep</string>
+    <string name="Mins">Mins</string>
+    <string name="Hours">Hrs</string>
+    <string name="Days">Days</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>

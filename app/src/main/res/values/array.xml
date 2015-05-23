@@ -114,4 +114,10 @@
         <item>warning</item>
         <item>whatshot</item>
     </string-array>
+
+    <string-array name="recurrence_array">
+        <item>@string/Mins</item>
+        <item>@string/Hours</item>
+        <item>@string/Days</item>
+    </string-array>
 </resources>
