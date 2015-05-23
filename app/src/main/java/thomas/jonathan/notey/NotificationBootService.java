@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -87,16 +88,30 @@ public class NotificationBootService extends IntentService {
 
             //show shortcut notification if settings say so
             if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("pref_shortcut", false)) {
-                Notification n = new NotificationCompat.Builder(this)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(getString(R.string.quick_note))
-                        .setSmallIcon(R.drawable.ic_launcher_dashclock)
-                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
-                        .setOngoing(true)
-                        .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
-                        .setAutoCancel(false)
-                        .setPriority(Notification.PRIORITY_MIN)
-                        .build();
+                Notification n;
+                if(CURRENT_ANDROID_VERSION >= 21 ) { //if > lollipop
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(getString(R.string.quick_note))
+                            .setSmallIcon(R.drawable.ic_new_note_white)
+                            .setColor(getResources().getColor(R.color.grey_500))
+                            .setOngoing(true)
+                            .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                            .setAutoCancel(false)
+                            .setPriority(Notification.PRIORITY_MIN)
+                            .build();
+                }else{
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(getString(R.string.quick_note))
+                            .setSmallIcon(R.drawable.ic_launcher_dashclock)
+                            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
+                            .setOngoing(true)
+                            .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                            .setAutoCancel(false)
+                            .setPriority(Notification.PRIORITY_MIN)
+                            .build();
+                }
                 nm.notify(MainActivity.SHORTCUT_NOTIF_ID, n);
             }
 
@@ -133,14 +148,48 @@ public class NotificationBootService extends IntentService {
                     e.printStackTrace();
                 }
 
-                Bitmap bm;
-                //big white icons are un-seeable on lollipop
-                if (CURRENT_ANDROID_VERSION >= 21 && n.getIconName().contains("white_36dp")) {
-                    bm = null;
-                } else bm = BitmapFactory.decodeResource(getResources(), ico);
+                //set background color if on lollipop or above
+                int color = getResources().getColor(R.color.grey_500); // grey, for grey background with white icons
+                if(CURRENT_ANDROID_VERSION >= 21){
+                    if (n.getIconName().contains("yellow")) {
+                        color = getResources().getColor(R.color.yellow_500);
+                    }
+                    else if (n.getIconName().contains("blue")) {
+                        color = getResources().getColor(R.color.cyan_a400);
+                    }
+                    else if (n.getIconName().contains("green")) {
+                        color = getResources().getColor(R.color.green_a700);
+                    }
+                    else if (n.getIconName().contains("red")) {
+                        color = getResources().getColor(R.color.red_a400);
+                    }
+                }
+
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), ico);
 
                 Notification notif;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16) { //expandable, with share button, and on jelly bean or greater
+                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21) { //expandable, with share button, and on lollipop and above
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit)
+                            .addAction(R.drawable.ic_share_white_24dp,
+                                    getString(R.string.share), piShare)
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss)
+                            .build();
+                }
+                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //expandable, with share button, and on jelly bean or greater. also, jb or kk.
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
@@ -161,8 +210,28 @@ public class NotificationBootService extends IntentService {
                                     getString(R.string.remove), piDismiss)
                             .build();
                 }
-                // same as above, except no share action button
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16) {
+                // same as above, except no share action button. lollipop.
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21) {
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit)
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss)
+                            .build();
+                }
+                // same as above, except no share action button. jb & kk.
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
@@ -181,8 +250,23 @@ public class NotificationBootService extends IntentService {
                                     getString(R.string.remove), piDismiss)
                             .build();
                 }
-                //not expandable, but still able to set priority
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) {
+                //not expandable, but still able to set priority. lollipop.
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21) {
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setColor(color)
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .build();
+                }
+                //not expandable, but still able to set priority. jb & kk.
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16  && CURRENT_ANDROID_VERSION < 21) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())

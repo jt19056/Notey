@@ -348,17 +348,36 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (s.equals("heart")) s = "favorite";
                 if (s.equals("note")) s = "note_add";
 
-                int d;
-                if (imageButtonNumber == 2)
-                    d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
-                else if (imageButtonNumber == 3)
-                    d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
-                else if (imageButtonNumber == 4)
-                    d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
-                else if (imageButtonNumber == 5)
-                    d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
-                else
-                    d = getResources().getIdentifier("ic_" + s + "_white_24dp", "drawable", getPackageName());
+                int d = getResources().getIdentifier("ic_" + s + "_white_24dp", "drawable", getPackageName());
+                int color = getResources().getColor(R.color.grey_500); // grey, for grey background with white icons
+                //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
+                if(CURRENT_ANDROID_VERSION < 21) {
+                    if (imageButtonNumber == 2)
+                        d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
+                    else if (imageButtonNumber == 3)
+                        d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
+                    else if (imageButtonNumber == 4)
+                        d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
+                    else if (imageButtonNumber == 5)
+                        d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
+                } else {
+                    if (imageButtonNumber == 2) {
+                        color = getResources().getColor(R.color.yellow_500);
+                        d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
+                    }
+                    else if (imageButtonNumber == 3) {
+                        color = getResources().getColor(R.color.cyan_a400);
+                        d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
+                    }
+                    else if (imageButtonNumber == 4) {
+                        color = getResources().getColor(R.color.green_a700);
+                        d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
+                    }
+                    else if (imageButtonNumber == 5) {
+                        color = getResources().getColor(R.color.red_a400);
+                        d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
+                    }
+                }
 
                 String note = et.getText().toString(); //get the text
 
@@ -433,16 +452,33 @@ public class MainActivity extends Activity implements OnClickListener {
                 PendingIntent piEdit = createEditIntent();
                 PendingIntent piShare = createShareIntent(note);
 
-                // set expandable notification buttons
-                Bitmap bm;
-                //big white icons are un-seeable on lollipop, have a null LargeIcon if that's the case
-                if (CURRENT_ANDROID_VERSION >= 21 && notey.getIconName().contains("white_36dp")) {
-                    bm = null;
-                } else bm = BitmapFactory.decodeResource(getResources(), d);
+                // bitmap for large icons (for < lollipop devices)
+                Bitmap bm = BitmapFactory.decodeResource(getResources(), d);
 
                 //build the notification!
                 Notification n;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16) { //jelly bean and above with expandable notifs settings allowed && share action button is enabled
+                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21) { //lollipop and above with expandable notifs settings allowed && share action button is enabled
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit) //edit button on notification
+                            .addAction(R.drawable.ic_share_white_24dp,
+                                    getString(R.string.share), piShare) // share button
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss) //remove button
+                            .build();
+                }
+                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings allowed && share action button is enabled
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -463,8 +499,28 @@ public class MainActivity extends Activity implements OnClickListener {
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
                 }
-                // same as above, but without share action button
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16) {
+                // same as above, but without share action button. lollipop only
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21) {
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit) //edit button on notification
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss) //remove button
+                            .build();
+                }
+                // same as above, but without share action button. jelly bean and kitkat.
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) {
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -482,7 +538,22 @@ public class MainActivity extends Activity implements OnClickListener {
                             .addAction(R.drawable.ic_delete_white_24dp,
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
-                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16) { //not expandable, but still able to set priority
+                }
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21) { //not expandable, but still able to set priority. lollipop only.
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setColor(color)
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .build();
+                }
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //not expandable, but still able to set priority. jb and kitkat.
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -495,7 +566,8 @@ public class MainActivity extends Activity implements OnClickListener {
                             .setAutoCancel(false)
                             .setPriority(priority)
                             .build();
-                } else { //if api < 16. they cannot have expandable notifs or any type of priority
+                }
+                else { //if api < 16. they cannot have expandable notifs or any type of priority
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -1077,16 +1149,30 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void buildShortcutNotification() {
-        Notification n = new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.quick_note))
-                .setSmallIcon(R.drawable.ic_launcher_dashclock)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
-                .setOngoing(true)
-                .setContentIntent(onNotifClickPI("shortcut", "", ""))
-                .setAutoCancel(false)
-                .setPriority(Notification.PRIORITY_MIN)
-                .build();
+        Notification n;
+        if(CURRENT_ANDROID_VERSION >= 21 ) { //if > lollipop
+            n = new NotificationCompat.Builder(this)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.quick_note))
+                    .setSmallIcon(R.drawable.ic_new_note_white)
+                    .setColor(getResources().getColor(R.color.grey_500))
+                    .setOngoing(true)
+                    .setContentIntent(onNotifClickPI("shortcut", "", ""))
+                    .setAutoCancel(false)
+                    .setPriority(Notification.PRIORITY_MIN)
+                    .build();
+        }else{
+            n = new NotificationCompat.Builder(this)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.quick_note))
+                    .setSmallIcon(R.drawable.ic_launcher_dashclock)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
+                    .setOngoing(true)
+                    .setContentIntent(onNotifClickPI("shortcut", "", ""))
+                    .setAutoCancel(false)
+                    .setPriority(Notification.PRIORITY_MIN)
+                    .build();
+        }
         nm.notify(SHORTCUT_NOTIF_ID, n);
     }
 

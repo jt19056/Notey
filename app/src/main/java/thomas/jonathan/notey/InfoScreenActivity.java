@@ -13,7 +13,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -201,10 +200,31 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             //show icon
             MySQLiteHelper db = new MySQLiteHelper(this);
             if (db.checkIfExist(infoID)) {
-                NoteyNote n = db.getNotey(infoID);
-                imageView.setImageResource(getResources().getIdentifier(n.getIconName(), "drawable", getPackageName()));
-                imageView.setBackgroundResource(R.drawable.circle);
-                imageView.setAlpha(0.5f);
+                if(CURRENT_ANDROID_VERSION < 21) { //for below lollipop, show the colored icon on a grey circle
+                    NoteyNote n = db.getNotey(infoID);
+                    imageView.setImageResource(getResources().getIdentifier(n.getIconName().replace("24", "36"), "drawable", getPackageName())); //use 36dp icon instead of 24
+                    imageView.setBackgroundResource(R.drawable.circle_grey);
+                    imageView.setAlpha(0.7f);
+                }else{ //for lollipop, show the white icon on a colored circle
+                    NoteyNote n = db.getNotey(infoID);
+                    String icon = n.getIconName().replace("24", "36"); //use 36dp icon instead of 24
+                    //show white icon with colored background
+                    if(icon.contains("yellow")) {
+                        imageView.setImageResource(getResources().getIdentifier(icon.replace("yellow", "white"), "drawable", getPackageName()));
+                        imageView.setBackgroundResource(R.drawable.circle_yellow);
+                    }else if(icon.contains("blue")) {
+                        imageView.setImageResource(getResources().getIdentifier(icon.replace("blue", "white"), "drawable", getPackageName()));
+                        imageView.setBackgroundResource(R.drawable.circle_blue);
+                    }else if(icon.contains("green")) {
+                        imageView.setImageResource(getResources().getIdentifier(icon.replace("green", "white"), "drawable", getPackageName()));
+                        imageView.setBackgroundResource(R.drawable.circle_green);
+                    }else if(icon.contains("red")) {
+                        imageView.setImageResource(getResources().getIdentifier(icon.replace("red", "white"), "drawable", getPackageName()));
+                        imageView.setBackgroundResource(R.drawable.circle_red);
+                    }else {
+                        imageView.setBackgroundResource(R.drawable.circle_grey);
+                    }
+                }
             }
 
             //only show title if it's not equal to "Notey"

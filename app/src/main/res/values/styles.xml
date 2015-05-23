@@ -25,6 +25,13 @@
     <color name="grey_600">#757575</color>
     <color name="pink_a200">#FF4081</color>
 
+    <!-- icon colors -->
+    <color name="grey_500">#9E9E9E</color>
+    <color name="yellow_500">#ffeb3b</color>
+    <color name="cyan_a400">#00e5ff</color>
+    <color name="green_a700">#00c853</color>
+    <color name="red_a400">#ff1744</color>
+
 
     <style name="CustomActionBarTheme"
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
