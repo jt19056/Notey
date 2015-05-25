@@ -222,6 +222,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                         imageView.setImageResource(getResources().getIdentifier(icon.replace("red", "white"), "drawable", getPackageName()));
                         imageView.setBackgroundResource(R.drawable.circle_red);
                     }else {
+                        imageView.setImageResource(getResources().getIdentifier(icon, "drawable", getPackageName()));
                         imageView.setBackgroundResource(R.drawable.circle_grey);
                     }
                 }
