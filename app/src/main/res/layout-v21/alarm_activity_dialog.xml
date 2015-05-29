@@ -238,6 +238,7 @@
             android:layout_marginRight="-10dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="50"
+            app:dsb_indicatorTextAppearance="@color/md_white_1000"
             />
 
         <com.rey.material.widget.Spinner

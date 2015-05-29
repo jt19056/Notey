@@ -3,32 +3,33 @@ package thomas.jonathan.notey;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.text.format.DateFormat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.rey.material.app.Dialog;
 import com.rey.material.widget.Spinner;
-import com.sleepbot.datetimepicker.time.RadialPickerLayout;
-import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -51,11 +52,16 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     SharedPreferences sharedPref;
     private int id;
     private Uri alarm_uri;
+    private DiscreteSeekBar seekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        themeStuffBeforeSetContentView();
         setContentView(R.layout.alarm_activity_dialog);
+        themeStuffAfterSetContentView();
+
 
         Intent i = getIntent();
 
@@ -63,12 +69,12 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         id = i.getExtras().getInt("alarm_id", -1);
 
         if (savedInstanceState != null) {
-            DatePickerDialog dpd = (DatePickerDialog) getSupportFragmentManager().findFragmentByTag(DATEPICKER_TAG);
+            DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag(DATEPICKER_TAG);
             if (dpd != null) {
                 dpd.setOnDateSetListener(this);
             }
 
-            TimePickerDialog tpd = (TimePickerDialog) getSupportFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+            TimePickerDialog tpd = (TimePickerDialog) getFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
             if (tpd != null) {
                 tpd.setOnTimeSetListener(this);
             }
@@ -95,183 +101,26 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         repeat_iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_refresh_grey600_24dp));
         recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
 
-        //set up seekbar
-        final DiscreteSeekBar seekBar = (DiscreteSeekBar) findViewById(R.id.discrete_bar);
-        seekBar.setMin(0);
-        seekBar.setMax(5);
-        seekBar.setScrubberColor(getResources().getColor(R.color.blue_500));
-        //set what the seekbar bubble displays based on the time option selected in the spinner
-        seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-            @Override
-            public int transform(int value) {
-                int newValue = 0;
-                if (spinnerSelectedValue == 1) { //hours
-                    switch (value) {
-                        case 0:
-                            newValue = 0;
-                            break;
-                        case 1:
-                            newValue = 1;
-                            break;
-                        case 2:
-                            newValue = 2;
-                            break;
-                        case 3:
-                            newValue = 5;
-                            break;
-                        case 4:
-                            newValue = 10;
-                            break;
-                        case 5:
-                            newValue = 12;
-                            break;
-                    }
-                    repeatTime = newValue * 60;
-                } else if (spinnerSelectedValue == 2) { //days
-                    switch (value) {
-                        case 0:
-                            newValue = 0;
-                            break;
-                        case 1:
-                            newValue = 1;
-                            break;
-                        case 2:
-                            newValue = 7;
-                            break;
-                        case 3:
-                            newValue = 14;
-                            break;
-                        case 4:
-                            newValue = 21;
-                            break;
-                        case 5:
-                            newValue = 28;
-                            break;
-                    }
-                    repeatTime = newValue * 60 * 24;
-                } else { //minutes
-                    switch (value) {
-                        case 0:
-                            newValue = 0;
-                            break;
-                        case 1:
-                            newValue = 5;
-                            break;
-                        case 2:
-                            newValue = 10;
-                            break;
-                        case 3:
-                            newValue = 15;
-                            break;
-                        case 4:
-                            newValue = 30;
-                            break;
-                        case 5:
-                            newValue = 45;
-                            break;
-                    }
-                    repeatTime = newValue;
-                }
-                return newValue;
-            }
-        });
+        setUpSeekbar();
+        setUpRecurrenceSpinner();
 
-
-        //set up spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_row, getResources().getStringArray(R.array.recurrence_array));
-        adapter.setDropDownViewResource(R.layout.spinner_row_dropdown);
-        recurrenceSpinner.setAdapter(adapter);
-
-        recurrenceSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(Spinner spinner, View view, int i, long l) {
-                spinnerSelectedValue = spinner.getSelectedItemPosition();
-                //reset the indicator value for the seekbar bubble
-                seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
-                    @Override
-                    public int transform(int value) {
-                        int newValue = 0;
-                        if (spinnerSelectedValue == 1) { //hours
-                            switch (value) {
-                                case 0:
-                                    newValue = 0;
-                                    break;
-                                case 1:
-                                    newValue = 1;
-                                    break;
-                                case 2:
-                                    newValue = 2;
-                                    break;
-                                case 3:
-                                    newValue = 5;
-                                    break;
-                                case 4:
-                                    newValue = 10;
-                                    break;
-                                case 5:
-                                    newValue = 12;
-                                    break;
-                            }
-                            repeatTime = newValue * 60;
-                        } else if (spinnerSelectedValue == 2) { //days
-                            switch (value) {
-                                case 0:
-                                    newValue = 0;
-                                    break;
-                                case 1:
-                                    newValue = 1;
-                                    break;
-                                case 2:
-                                    newValue = 7;
-                                    break;
-                                case 3:
-                                    newValue = 14;
-                                    break;
-                                case 4:
-                                    newValue = 21;
-                                    break;
-                                case 5:
-                                    newValue = 28;
-                                    break;
-                            }
-                            repeatTime = newValue * 60 * 24;
-                        } else { //minutes
-                            switch (value) {
-                                case 0:
-                                    newValue = 0;
-                                    break;
-                                case 1:
-                                    newValue = 5;
-                                    break;
-                                case 2:
-                                    newValue = 10;
-                                    break;
-                                case 3:
-                                    newValue = 15;
-                                    break;
-                                case 4:
-                                    newValue = 30;
-                                    break;
-                                case 5:
-                                    newValue = 45;
-                                    break;
-                            }
-                            repeatTime = newValue;
-                        }
-                        return newValue;
-                    }
-                });
-            }
-        });
-
+        int color = getResources().getColor(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName()));
+        seekBar.setScrubberColor(color);
+        seekBar.setThumbColor(color, color);
+        //dark theme stuffs
+        if(MainActivity.darkTheme){
+            wake_cb.setTextColor(getResources().getColor(R.color.md_grey_400));
+            vibrate_cb.setTextColor(getResources().getColor(R.color.md_grey_400));
+        }
 
         //if a pro user, enable the sound and repeat option
         if (MainActivity.proVersionEnabled) {
             sound_tv.setEnabled(true);
             sound_tv.setClickable(true);
             sound_tv.setOnClickListener(this);
-            sound_tv.setTextColor(Color.BLACK);
-            seekBar.setThumbColor(getResources().getColor(R.color.blue_500), getResources().getColor(R.color.blue_500));
+
+            if(MainActivity.darkTheme) sound_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
+            else sound_tv.setTextColor(Color.BLACK);
         } else { //fade the icons if not pro
             sound_btn.setAlpha(0.3f);
             repeat_iv.setAlpha(0.3f);
@@ -291,13 +140,12 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         alarm_set_tv.setTypeface(roboto_bold);
         date_tv.setTypeface(roboto_reg);
         time_tv.setTypeface(roboto_reg);
-        alarm_mainTitle.setTypeface(roboto_light);
+        alarm_mainTitle.setTypeface(roboto_reg);
         set_btn.setTypeface(roboto_light);
         cancel_btn.setTypeface(roboto_light);
         vibrate_cb.setTypeface(roboto_reg);
         wake_cb.setTypeface(roboto_reg);
         sound_tv.setTypeface(roboto_reg);
-
 
         date_tv.setOnClickListener(this);
         time_tv.setOnClickListener(this);
@@ -393,18 +241,14 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        Dialog.Builder builder = null;
         if (view.getId() == R.id.date_tv) { //show the date picker
-            DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day, true);
-            datePickerDialog.setVibrate(true);
+            DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day);
             datePickerDialog.setYearRange(1985, 2028);
-            datePickerDialog.setCloseOnSingleTapDay(false);
-            datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
+            datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
         } else if (view.getId() == R.id.time_tv) { //show the time picker
-            TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, false, false);
-            timePickerDialog.setVibrate(true);
-            timePickerDialog.setCloseOnSingleTapMinute(false);
-            timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
+            TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, DateFormat.is24HourFormat(this));
+            timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
         } else if (view.getId() == R.id.alarm_set_btn) {
             calendar.set(year, month, day, hour, minute); //set the calendar for the new alarm time
 
@@ -512,6 +356,184 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         }
     }
 
+    private void setUpRecurrenceSpinner(){
+        ArrayAdapter<String> adapter;
+        if(MainActivity.darkTheme && MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP) {
+            adapter = new ArrayAdapter<>(this, R.layout.spinner_row_dark, getResources().getStringArray(R.array.recurrence_array));
+            adapter.setDropDownViewResource(R.layout.spinner_row_dropdown_dark_lollipop);
+        }else if(MainActivity.darkTheme) { //pre-lollipop devices using dark theme need to color the spinner background
+            adapter = new ArrayAdapter<>(this, R.layout.spinner_row_dark, getResources().getStringArray(R.array.recurrence_array));
+            adapter.setDropDownViewResource(R.layout.spinner_row_dropdown_dark_prelollipop);
+        }else{
+            adapter = new ArrayAdapter<>(this, R.layout.spinner_row, getResources().getStringArray(R.array.recurrence_array));
+            adapter.setDropDownViewResource(R.layout.spinner_row_dropdown);
+        }
+        recurrenceSpinner.setAdapter(adapter);
+
+        recurrenceSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(Spinner spinner, View view, int i, long l) {
+                spinnerSelectedValue = spinner.getSelectedItemPosition();
+                //reset the indicator value for the seekbar bubble
+                seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+                    @Override
+                    public int transform(int value) {
+                        int newValue = 0;
+                        if (spinnerSelectedValue == 1) { //hours
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 1;
+                                    break;
+                                case 2:
+                                    newValue = 2;
+                                    break;
+                                case 3:
+                                    newValue = 5;
+                                    break;
+                                case 4:
+                                    newValue = 10;
+                                    break;
+                                case 5:
+                                    newValue = 12;
+                                    break;
+                            }
+                            repeatTime = newValue * 60;
+                        } else if (spinnerSelectedValue == 2) { //days
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 1;
+                                    break;
+                                case 2:
+                                    newValue = 7;
+                                    break;
+                                case 3:
+                                    newValue = 14;
+                                    break;
+                                case 4:
+                                    newValue = 21;
+                                    break;
+                                case 5:
+                                    newValue = 28;
+                                    break;
+                            }
+                            repeatTime = newValue * 60 * 24;
+                        } else { //minutes
+                            switch (value) {
+                                case 0:
+                                    newValue = 0;
+                                    break;
+                                case 1:
+                                    newValue = 5;
+                                    break;
+                                case 2:
+                                    newValue = 10;
+                                    break;
+                                case 3:
+                                    newValue = 15;
+                                    break;
+                                case 4:
+                                    newValue = 30;
+                                    break;
+                                case 5:
+                                    newValue = 45;
+                                    break;
+                            }
+                            repeatTime = newValue;
+                        }
+                        return newValue;
+                    }
+                });
+            }
+        });
+    }
+
+    private void setUpSeekbar(){
+        seekBar = (DiscreteSeekBar) findViewById(R.id.discrete_bar);
+        seekBar.setMin(0);
+        seekBar.setMax(5);
+       //set what the seekbar bubble displays based on the time option selected in the spinner
+        seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
+            @Override
+            public int transform(int value) {
+                int newValue = 0;
+                if (spinnerSelectedValue == 1) { //hours
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 1;
+                            break;
+                        case 2:
+                            newValue = 2;
+                            break;
+                        case 3:
+                            newValue = 5;
+                            break;
+                        case 4:
+                            newValue = 10;
+                            break;
+                        case 5:
+                            newValue = 12;
+                            break;
+                    }
+                    repeatTime = newValue * 60;
+                } else if (spinnerSelectedValue == 2) { //days
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 1;
+                            break;
+                        case 2:
+                            newValue = 7;
+                            break;
+                        case 3:
+                            newValue = 14;
+                            break;
+                        case 4:
+                            newValue = 21;
+                            break;
+                        case 5:
+                            newValue = 28;
+                            break;
+                    }
+                    repeatTime = newValue * 60 * 24;
+                } else { //minutes
+                    switch (value) {
+                        case 0:
+                            newValue = 0;
+                            break;
+                        case 1:
+                            newValue = 5;
+                            break;
+                        case 2:
+                            newValue = 10;
+                            break;
+                        case 3:
+                            newValue = 15;
+                            break;
+                        case 4:
+                            newValue = 30;
+                            break;
+                        case 5:
+                            newValue = 45;
+                            break;
+                    }
+                    repeatTime = newValue;
+                }
+                return newValue;
+            }
+        });
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -551,6 +573,28 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         if (m < 10) min = "0" + min;
 
         time_tv.setText(h2 + ":" + min + " " + AM_PM);
+    }
+
+    private void themeStuffBeforeSetContentView(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        //initialize theme preferences
+        MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
+        MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+
+        //set light/dark theme
+        if(MainActivity.darkTheme) {
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor, "style", getPackageName()));
+        }
+        else {
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor, "style", getPackageName()));
+        }
+    }
+
+    private void themeStuffAfterSetContentView(){
+        //set color
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.alarm_layout_top);
+        r.setBackgroundResource(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName()));
     }
 }
 

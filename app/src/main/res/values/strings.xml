@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.2.2</string>
+    <string name="version" translatable="false">2.3.b1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -50,6 +50,14 @@
     <string name="please_select_at_least_one">Please select at least one icon before continuing.</string>
     <string name="misc">Misc.</string>
     <string name="pro_options">Pro Options</string>
+    <string name="theme">Theme</string>
+    <string name="theme_title">Theme and Color</string>
+    <string name="theme_summary">Choose your color scheme and background color.</string>
+    <string name="color_chooser">Color Chooser</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="restart_required">Restart required</string>
+    <string name="restart_notice">Changes will not take effect until Notey is restarted.</string>
+    <string name="restart_now">Restart now</string>
 
 
     <!-- About strings -->

@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +51,10 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        themeStuffBeforeSetContentView();
         setContentView(R.layout.info_activity_dialog);
+        themeStuffAfterSetContentView();
 
         AlarmService.releaseWakeUpWakelock(); // release the wakelock which turns on the device
 
@@ -274,6 +280,15 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         share_btn.setOnClickListener(this);
         delete_btn.setOnClickListener(this);
 
+        //set button colors to grey500 instead of grey600 for dark theme
+        if(MainActivity.darkTheme){
+            back_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+            edit_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+            copy_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+            share_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+            delete_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+        }
+
         setupLongClickListeners(); // Long click listeners for the five buttons. All will display a toast to summarize their action to the user
 
         //menu popup
@@ -305,7 +320,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
         noteText.setTypeface(roboto_light);
         titleText.setTypeface(roboto_reg);
-        mainTitle.setTypeface(roboto_light);
+        mainTitle.setTypeface(roboto_reg);
     }
 
     private void setupLongClickListeners() {
@@ -344,6 +359,28 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 return true;
             }
         });
+    }
+
+    private void themeStuffBeforeSetContentView(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        //initialize theme preferences
+        MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
+        MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+
+        //set light/dark theme
+        if(MainActivity.darkTheme) {
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor, "style", getPackageName()));
+        }
+        else {
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor, "style", getPackageName()));
+        }
+    }
+
+    private void themeStuffAfterSetContentView(){
+        //set color
+        RelativeLayout r = (RelativeLayout) findViewById(R.id.info_layout_top);
+        r.setBackgroundResource(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName()));
     }
 
     @Override

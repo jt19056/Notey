@@ -31,6 +31,16 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="pref_key_theme"
+        android:title="@string/theme">
+
+        <Preference
+            android:key="pref_theme"
+            android:title="@string/theme_title"
+            android:summary="@string/theme_summary"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
 
@@ -52,14 +62,4 @@
             android:summary="@string/shortcut_summary"
             android:title="@string/shortcut" />
     </PreferenceCategory>
-
-    <!--<PreferenceCategory-->
-    <!--android:title="Theme"-->
-    <!--android:key="pref_theme_color_category">-->
-
-    <!--<Preference android:key="pref_theme_color"-->
-    <!--android:title="Theme Color"-->
-    <!--android:summary="Choose a color for your theme."/>-->
-    <!--</PreferenceCategory>-->
-
 </PreferenceScreen>

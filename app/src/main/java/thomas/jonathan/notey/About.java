@@ -32,6 +32,7 @@ public class About extends PreferenceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        themeStuffBeforeSetContentView();
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.about);
         //show action bar
@@ -48,7 +49,7 @@ public class About extends PreferenceActivity {
 
         //set action bar font
         SpannableString s = new SpannableString(getString(R.string.about));
-        s.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF")), 0, s.length(),
+        s.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "ROBOTO-BOLD.ttf")), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getActionBar().setTitle(s);
 
@@ -152,6 +153,21 @@ public class About extends PreferenceActivity {
             proPref.setSummary(getString(R.string.yes_a_pro));
         } else {
             proPref.setSummary(getString(R.string.not_a_pro));
+        }
+    }
+
+    private void themeStuffBeforeSetContentView(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
+        MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+
+        //set light/dark theme
+        if(MainActivity.darkTheme) {
+            super.setTheme(getResources().getIdentifier("MySettingsThemeDark_" + MainActivity.themeColor, "style", getPackageName()));
+        }
+        else {
+            super.setTheme(getResources().getIdentifier("MySettingsTheme_" + MainActivity.themeColor, "style", getPackageName()));
         }
     }
 

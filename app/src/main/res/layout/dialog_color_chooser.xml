@@ -1,0 +1,89 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
+
+    <TableRow
+        android:id="@+id/color_row_1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal">
+
+        <com.rey.material.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/button_bt_float1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:fab_backgroundColor = "@color/md_red_500"
+            app:fab_elevation="2dp"
+            />
+
+        <com.rey.material.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/button_bt_float6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:fab_backgroundColor = "@color/md_blue_500"
+            app:fab_elevation="2dp" />
+
+        <com.rey.material.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/button_bt_float10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:fab_backgroundColor = "@color/md_green_500"
+            app:fab_elevation="2dp" />
+
+        <com.rey.material.widget.FloatingActionButton
+            style="@style/FloatingActionButton"
+            android:id="@+id/button_bt_float18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:fab_backgroundColor = "@color/md_grey_500"
+            app:fab_elevation="2dp" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/color_row_6"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/color_row_1">
+
+        <CheckBox
+            android:id="@+id/dark_check_box"
+            style="@style/Material.Drawable.CheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="?android:selectableItemBackground"
+            />
+        <TextView
+            android:id="@+id/dark_theme_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dark_theme"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            />
+
+    </TableRow>
+
+</RelativeLayout>

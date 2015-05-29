@@ -5,33 +5,12 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
     </style>
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
-    <color name="black">#FF000000</color>
-    <color name="blue_100">#BBDEFB</color>
-    <color name="blue_300">#64B5F6</color>
-    <color name="blue_500">#2196F3</color>
-    <color name="blue_700">#1976D2</color>
-    <color name="grey_600">#757575</color>
-    <color name="pink_a200">#FF4081</color>
-
-    <!-- icon colors -->
-    <color name="grey_500">#9E9E9E</color>
-    <color name="yellow_500">#ffeb3b</color>
-    <color name="cyan_a400">#00e5ff</color>
-    <color name="green_a700">#00c853</color>
-    <color name="red_a400">#ff1744</color>
-
 
     <style name="CustomActionBarTheme"
         parent="@android:style/Theme.Holo.Light.DarkActionBar">
@@ -50,10 +29,448 @@
     </style>
 
     <style name="MenuItemRippleStyle" parent="Material.Drawable.Ripple.Wave">
-        <item name="rd_rippleColor">@color/blue_500</item>
+        <item name="rd_rippleColor">@color/md_grey_500</item>
         <item name="rd_rippleAnimDuration">100</item>
         <item name="rd_maskType">rectangle</item>
         <item name="rd_cornerRadius">0dp</item>
+    </style>
+
+    <!-- FloatingActionButton Style -->
+    <style name="FloatingActionButton" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="rd_delayClick">none</item>
+    </style>
+
+    <style name="FloatingWaveActionButton" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="fab_backgroundColor">#FFDFDFDF</item>
+        <item name="fab_iconLineMorphing">@style/FloatingActionButtonIcon.Light</item>
+        <item name="rd_delayClick">none</item>
+    </style>
+
+    <style name="FloatingColorActionButton" parent="Material.Drawable.Ripple.Touch.Light">
+        <item name="rd_rippleColor">#33000000</item>
+        <item name="fab_backgroundColor">#FF2196F3</item>
+        <item name="fab_iconLineMorphing">@style/FloatingActionButtonIcon</item>
+        <item name="rd_delayClick">untilRelease</item>
+    </style>
+
+    <style name="FloatingWaveColorActionButton" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="rd_rippleColor">#33000000</item>
+        <item name="fab_backgroundColor">#FF2196F3</item>
+        <item name="fab_iconLineMorphing">@style/FloatingActionButtonIcon</item>
+        <item name="rd_delayClick">afterRelease</item>
+    </style>
+
+    <style name="FloatingActionButtonIcon" >
+        <item name="lmd_state">@xml/fab_icon_states</item>
+        <item name="lmd_curState">0</item>
+        <item name="lmd_padding">2dp</item>
+        <item name="lmd_animDuration">400</item>
+        <item name="lmd_interpolator">@android:anim/accelerate_decelerate_interpolator</item>
+        <item name="lmd_strokeSize">3dp</item>
+        <item name="lmd_strokeColor">#FFFFFFFF</item>
+        <item name="lmd_strokeCap">butt</item>
+        <item name="lmd_strokeJoin">miter</item>
+        <item name="lmd_clockwise">true</item>
+    </style>
+
+    <style name="FloatingActionButtonIcon.Light" parent="FloatingActionButtonIcon">
+        <item name="lmd_strokeColor">#FF000000</item>
+    </style>
+
+    <color name="mdtp_accent_color">@color/md_grey_500</color>
+    <color name="mdtp_accent_color_dark">@color/md_grey_700</color>
+
+    <!-- ************************************* -->
+    <!--  Themes based on light/dark and color -->
+    <!-- ************************************* -->
+
+    <style name="AppBaseTheme_md_red_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_red_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_pink_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_pink_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_purple_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_purple_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_deep_purple_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_deep_purple_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_indigo_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_indigo_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_blue_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_blue_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_light_blue_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_light_blue_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_cyan_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_cyan_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_teal_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_teal_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_green_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_green_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_light_green_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_light_green_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_lime_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_lime_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_yellow_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_yellow_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_amber_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_amber_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_orange_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_orange_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_deep_orange_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_deep_orange_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_brown_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_brown_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_grey_500" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_grey_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+    <style name="AppBaseTheme_md_blue_grey_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+    <style name="AppBaseThemeDark_md_blue_grey_500" parent="android:Theme.Holo.Dialog.NoActionBar">
+    </style>
+
+
+    <!-- ************************************* -->
+    <!--  Themes based on light/dark and color -->
+    <!-- ************************************* -->
+
+    <style name="MySettingsTheme_md_red_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_red_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_red_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_red_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_pink_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_pink_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_pink_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_pink_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_purple_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_purple_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_purple_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_purple_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_deep_purple_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_deep_purple_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_deep_purple_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_deep_purple_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_indigo_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_indigo_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_indigo_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_indigo_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_blue_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_blue_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_light_blue_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_light_blue_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_light_blue_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_light_blue_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_cyan_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_cyan_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_cyan_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_cyan_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_teal_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_teal_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_teal_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_teal_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_green_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_green_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_green_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_green_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_light_green_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_light_green_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_light_green_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_light_green_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_lime_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_lime_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_lime_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_lime_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_yellow_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_yellow_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_yellow_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_yellow_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_amber_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_amber_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_amber_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_amber_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_orange_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_orange_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_orange_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_orange_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_deep_orange_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_deep_orange_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_deep_orange_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_deep_orange_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_brown_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_brown_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_brown_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_brown_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_grey_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_grey_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_grey_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_grey_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_blue_grey_500" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_500</item>
+    </style>
+    <style name="MySettingsThemeDark_md_blue_grey_500" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_500</item>
+    </style>
+
+    <style name="MySettingsTheme_md_blue_grey_900" parent="android:Theme.Holo.Light">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_900</item>
+    </style>
+    <style name="MySettingsThemeDark_md_blue_grey_900" parent="android:Theme.Holo">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_900</item>
+    </style>
+
+    <!-- ************************************* -->
+    <!--  Themes based on light/dark and color -->
+    <!-- ************************************* -->
+
+    <style name="MyTheme.ActionBar.TitleTextStyle.White" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/md_white_1000</item>
+    </style>
+
+    <style name="MyActionBar_md_red_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_red_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_pink_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_pink_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_purple_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_purple_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_deep_purple_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_deep_purple_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_indigo_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_indigo_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_blue_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_blue_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_light_blue_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_light_blue_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_cyan_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_cyan_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_teal_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_teal_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_green_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_green_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_light_green_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_light_green_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_lime_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_lime_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_yellow_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_yellow_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_amber_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_amber_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_orange_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_orange_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_deep_orange_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_deep_orange_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_brown_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_brown_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_grey_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_grey_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_blue_grey_500"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_blue_grey_500</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
+    </style>
+    <style name="MyActionBar_md_blue_grey_900"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/md_blue_grey_900</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle.White</item>
     </style>
 
 </resources>

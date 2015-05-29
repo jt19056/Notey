@@ -7,7 +7,7 @@
         android:id="@+id/layout_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_500">
+        android:background="@color/md_blue_500">
 
         <TextView
             android:id="@+id/mainTitle"
@@ -175,10 +175,7 @@
             android:textSelectHandle="@drawable/text_handler_24dp"
             android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
             android:textSelectHandleRight="@drawable/text_handler_right_24dp">
-
             <requestFocus />
         </EditText>
-
     </RelativeLayout>
-
 </RelativeLayout>
