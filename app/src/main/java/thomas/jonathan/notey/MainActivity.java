@@ -475,28 +475,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 // bitmap for large icons (for < lollipop devices)
                 Bitmap bm = BitmapFactory.decodeResource(getResources(), d);
 
-                Intent viewIntent = new Intent(this, MainActivity.class);
-                viewIntent.putExtra("1", 1);
-                PendingIntent viewPendingIntent =
-                        PendingIntent.getActivity(this, 0, viewIntent, 0);
-
-                NotificationCompat.Action action =
-                        new NotificationCompat.Action.Builder(R.drawable.ic_whatshot_blue_36dp,
-                                getString(R.string.does_not_repeat), piDismiss)
-                                .build();
-                NotificationManagerCompat notificationManager =
-                        NotificationManagerCompat.from(this);
-
-                NotificationCompat.Builder notificationBuilder =
-                        new NotificationCompat.Builder(this)
-                                .setSmallIcon(R.drawable.ic_check_blue_36dp)
-                                .setContentTitle("title")
-                                .setContentText("content text!!!")
-                                .setContentIntent(viewPendingIntent);
-
-                // Build the notification and issues it with notification manager.
-                notificationManager.notify(1234555, notificationBuilder.build());
-
                 //build the notification!
                 Notification n;
                 if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21) { //lollipop and above with expandable notifs settings allowed && share action button is enabled
@@ -518,7 +496,6 @@ public class MainActivity extends Activity implements OnClickListener {
                                     getString(R.string.share), piShare) // share button
                             .addAction(R.drawable.ic_delete_white_24dp,
                                     getString(R.string.remove), piDismiss) //remove button
-                            .extend(new NotificationCompat.WearableExtender().addAction(action))
                             .build();
                 }
                 else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings allowed && share action button is enabled
@@ -622,7 +599,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .setOngoing(!pref_swipe)
                             .build();
                 }
-                notificationManager.notify(id, n);
+                nm.notify(id, n);
                 db.close();
                 finish();
             }
@@ -1304,7 +1281,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.d(TAG, "Setup successful. Querying inventory.");
 
                 // Hooray, IAB is fully set up!
-                mHelper.queryInventoryAsync(mQueryFinishedListener);
+                mHelper.queryInventoryAsync(false, mQueryFinishedListener);
             }
 
         });
@@ -1369,7 +1346,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 Log.d(TAG, "Error purchasing: " + result);
 
                 return;
-            } else mHelper.queryInventoryAsync(mQueryFinishedListener);
+            } else mHelper.queryInventoryAsync(false, mQueryFinishedListener);
 
             if (!verifyDeveloperPayload(info)) {
                 Log.d(TAG, "Error purchasing. Authenticity verification failed.");
