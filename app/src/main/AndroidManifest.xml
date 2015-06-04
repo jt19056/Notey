@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="thomas.jonathan.notey"
-    android:versionCode="45"
+    android:versionCode="48"
     android:versionName="@string/version" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -16,11 +16,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_launcher_md_blue_500"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="android:label"
         >
+
+        <!-- Android Backup Service Key -->
+        <meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAI30w-5DNhsLnp7yU4aEUP4UwT4HtjFKL4mtMFLQ" />
 
         <!-- Declaring broadcast receiver for BOOT_COMPLETED event -->
         <receiver android:name=".DeviceBootListener" android:enabled="true" android:exported="false">
@@ -64,12 +67,16 @@
             <meta-data android:name="settingsActivity" android:value=".DashClockSettingsActivity" />
         </service>
 
+
+
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" 
             android:theme="@style/AppBaseTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <!--<action android:name="android.intent.action.MAIN" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -81,6 +88,442 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_blue_500"
+            android:name=".MainActivity-md_blue_500"
+            android:enabled="true"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_red_500"
+            android:name=".MainActivity-md_red_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_pink_500"
+            android:name=".MainActivity-md_pink_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_purple_500"
+            android:name=".MainActivity-md_purple_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_deep_purple_500"
+            android:name=".MainActivity-md_deep_purple_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_indigo_500"
+            android:name=".MainActivity-md_indigo_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_light_blue_500"
+            android:name=".MainActivity-md_light_blue_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_cyan_500"
+            android:name=".MainActivity-md_cyan_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_teal_500"
+            android:name=".MainActivity-md_teal_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_green_500"
+            android:name=".MainActivity-md_green_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_light_green_500"
+            android:name=".MainActivity-md_light_green_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_lime_500"
+            android:name=".MainActivity-md_lime_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_yellow_500"
+            android:name=".MainActivity-md_yellow_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_amber_500"
+            android:name=".MainActivity-md_amber_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_orange_500"
+            android:name=".MainActivity-md_orange_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_deep_orange_500"
+            android:name=".MainActivity-md_deep_orange_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_brown_500"
+            android:name=".MainActivity-md_brown_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_grey_500"
+            android:name=".MainActivity-md_grey_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_blue_grey_500"
+            android:name=".MainActivity-md_blue_grey_500"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_blue_500_dark"
+            android:name=".MainActivity-md_blue_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_red_500_dark"
+            android:name=".MainActivity-md_red_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_pink_500_dark"
+            android:name=".MainActivity-md_pink_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_purple_500_dark"
+            android:name=".MainActivity-md_purple_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_deep_purple_500_dark"
+            android:name=".MainActivity-md_deep_purple_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_indigo_500_dark"
+            android:name=".MainActivity-md_indigo_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_light_blue_500_dark"
+            android:name=".MainActivity-md_light_blue_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_cyan_500_dark"
+            android:name=".MainActivity-md_cyan_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_teal_500_dark"
+            android:name=".MainActivity-md_teal_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_green_500_dark"
+            android:name=".MainActivity-md_green_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_light_green_500_dark"
+            android:name=".MainActivity-md_light_green_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_lime_500_dark"
+            android:name=".MainActivity-md_lime_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_yellow_500_dark"
+            android:name=".MainActivity-md_yellow_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_amber_500_dark"
+            android:name=".MainActivity-md_amber_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_orange_500_dark"
+            android:name=".MainActivity-md_orange_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_deep_orange_500_dark"
+            android:name=".MainActivity-md_deep_orange_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_brown_500_dark"
+            android:name=".MainActivity-md_brown_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_grey_500_dark"
+            android:name=".MainActivity-md_grey_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias android:label="@string/app_name"
+            android:icon="@drawable/ic_launcher_md_blue_grey_500_dark"
+            android:name=".MainActivity-md_blue_grey_500_dark"
+            android:enabled="false"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <activity
             android:name=".InfoScreenActivity"
