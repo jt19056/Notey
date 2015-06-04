@@ -60,6 +60,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import thomas.jonathan.notey.util.IabHelper;
 import thomas.jonathan.notey.util.IabResult;
@@ -1081,9 +1082,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
                 if(darkTheme) alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
 
-                Date date = new Date(Long.valueOf(alarm_time));
-                Toast.makeText(getApplicationContext(), getString(R.string.alarm_set_for) + " " +
-                        format_short_date.format(date) + ", " + format_short_time.format(date), Toast.LENGTH_LONG).show();
+                showAlarmToast();
+
             } else {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_add_grey600_36dp));
@@ -1203,6 +1203,72 @@ public class MainActivity extends Activity implements OnClickListener {
                     .build();
         }
         nm.notify(SHORTCUT_NOTIF_ID, n);
+    }
+
+    private void showAlarmToast(){
+        long diffInMillisec = Long.valueOf(alarm_time) - System.currentTimeMillis();
+        long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMillisec);
+        diffInSec /= 60;
+        long minutes = diffInSec % 60;
+        diffInSec /= 60;
+        long hours = diffInSec % 24;
+        diffInSec /= 24;
+        long days = diffInSec;
+
+        String dateString = "";
+        if(days != 0) {
+            if(hours != 0 && minutes != 0) { // 3 day, 2 hr, and 5 min
+                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + ", ";
+                else dateString = Long.toString(days) + "" + getString(R.string.day) + ", ";
+
+                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours) + ", and ";
+                else dateString += Long.toString(hours) + "" + getString(R.string.hour) + ", and ";
+
+                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
+            }
+            else if(hours != 0 && minutes == 0) { // 3 day and 2 hr
+                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
+                else dateString = Long.toString(days) + "" + getString(R.string.day) + " and ";
+
+                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours);
+                else dateString += Long.toString(hours) + "" + getString(R.string.hour);
+            }
+            else if(hours == 0 && minutes != 0) { // 3 day and 5 min
+                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
+                else dateString = Long.toString(days) + "" + getString(R.string.day) + " and ";
+
+                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
+            }
+            else // 3 day
+                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days);
+                else dateString = Long.toString(days) + "" + getString(R.string.day);
+        }
+        else{
+            if(hours != 0 && minutes != 0){ // 2 hr and 5 min
+                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours) + " and ";
+                else dateString += Long.toString(hours) + "" + getString(R.string.hour) + " and ";
+
+                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
+            }
+            else if(hours == 0 && minutes != 0){ // 5 min
+                if (minutes > 1) dateString = Long.toString(minutes) + "" + getString(R.string.minutes);
+                else dateString = Long.toString(minutes) + "" + getString(R.string.minute);
+            }
+            else if(hours != 0 && minutes == 0){ // 2 hr
+                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours);
+                else dateString += Long.toString(hours) + "" + getString(R.string.hour);
+            }
+            else dateString = getString(R.string.less_than_a_minute); // less than 1 min
+        }
+
+
+
+
+        Toast.makeText(getApplicationContext(), getString(R.string.alarm_set_for) + " " +
+                dateString + " " + getString(R.string.from_now), Toast.LENGTH_LONG).show();
     }
 
     /* changes were made from v2.0.3 to v2.0.4. this fudged up the icon numbers. a new column in the
