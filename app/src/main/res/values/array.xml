@@ -121,27 +121,44 @@
         <item>@string/Days</item>
     </string-array>
 
-    <array name="colors">
-        <item>#3F51B5</item>
-        <item>#9E9E9E</item>
-        <item>#424242</item>
-        <item>#1F1F1F</item>
-        <item>#607D8B</item>
-        <item>#795548</item>
-        <item>#D32F2F</item>
-        <item>#E91E63</item>
-        <item>#9C27B0</item>
-        <item>#5E35B1</item>
-        <item>#1E88E5</item>
-        <item>#03A9F4</item>
-        <item>#00BCD4</item>
-        <item>#009688</item>
-        <item>#4CAF50</item>
-        <item>#8BC34A</item>
-        <item>#CDDC39</item>
-        <item>#FFEB3B</item>
-        <item>#FFC107</item>
-        <item>#FF9800</item>
-        <item>#FF5722</item>
-    </array>
+    <string-array name="mainactivity_icon_alias_array_names">
+        <item>thomas.jonathan.notey.MainActivity-md_red_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_pink_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_purple_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_deep_purple_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_indigo_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_blue_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_light_blue_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_cyan_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_teal_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_green_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_light_green_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_lime_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_yellow_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_amber_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_orange_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_deep_orange_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_brown_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_grey_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_blue_grey_500</item>
+        <item>thomas.jonathan.notey.MainActivity-md_red_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_pink_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_purple_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_deep_purple_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_indigo_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_blue_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_light_blue_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_cyan_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_teal_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_green_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_light_green_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_lime_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_yellow_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_amber_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_orange_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_deep_orange_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_brown_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_grey_500_dark</item>
+        <item>thomas.jonathan.notey.MainActivity-md_blue_grey_500_dark</item>
+    </string-array>
 </resources>

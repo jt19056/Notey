@@ -1,9 +1,11 @@
 package thomas.jonathan.notey;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -18,6 +20,7 @@ import android.text.SpannableString;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +34,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 public class Settings extends PreferenceActivity{
     private boolean impossible_to_delete = false;
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     //theme dialog variables
     private String selectedFab;
@@ -190,8 +192,8 @@ public class Settings extends PreferenceActivity{
                 int colorID = getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName());
 
                 int view; //layout for theme choose
-                if(MainActivity.proVersionEnabled) view = R.layout.dialog_color_chooser_pro;
-                else view = R.layout.dialog_color_chooser;
+                if(MainActivity.proVersionEnabled) view = R.layout.color_chooser_dialog_pro;
+                else view = R.layout.color_chooser_dialog;
 
                 final MaterialDialog md = new MaterialDialog.Builder(Settings.this)
                         .customView(view, false)
@@ -242,8 +244,66 @@ public class Settings extends PreferenceActivity{
                 return false;
             }
         });
+
+        //update theme
+        new AlertDialog.Builder(this);
+        findPreference("pref_update_icon").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                int colorID = getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName());
+
+                final MaterialDialog md = new MaterialDialog.Builder(Settings.this)
+                        .customView(R.layout.update_icon_dialog, false)
+                        .title(getString(R.string.your_new_icon))
+                        .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"))
+                        .positiveText(R.string.set)
+                        .negativeText(R.string.cancel)
+                        .callback(new MaterialDialog.ButtonCallback() {
+                            @Override
+                            public void onPositive(MaterialDialog dialog) {
+                                setLauncherIcon();
+                                finish();
+                            }
+                            @Override
+                            public void onNegative(MaterialDialog dialog) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .positiveColorRes(colorID)
+                        .negativeColorRes(colorID)
+                        .build();
+                md.show();
+
+                ImageView iconImage = (ImageView) md.findViewById(R.id.update_icon_iv);
+                if(MainActivity.darkTheme) iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor + "_dark", "drawable", getPackageName()));
+                else iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor, "drawable", getPackageName()));
+
+                return false;
+            }
+        });
     }
 
+    private void setLauncherIcon() {
+        //loop through all 38 activity alias and disable them
+        String[] activityArray = getResources().getStringArray(R.array.mainactivity_icon_alias_array_names);
+        for(String s : activityArray) {
+            getPackageManager().setComponentEnabledSetting(
+                    new ComponentName("thomas.jonathan.notey", s),
+                    PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+        }
+
+        //get which activity to enable
+        String enabledActivity;
+        if(MainActivity.darkTheme) enabledActivity = "thomas.jonathan.notey.MainActivity-" + MainActivity.themeColor + "_dark";
+        else enabledActivity = "thomas.jonathan.notey.MainActivity-" + MainActivity.themeColor;
+
+        //enable it
+        getPackageManager().setComponentEnabledSetting(
+                new ComponentName("thomas.jonathan.notey", enabledActivity),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+
+        //restart the app
+        restartNotey();
+    }
 
     private void setProColorButtonOnClickListeners(final MaterialDialog md){
 
@@ -669,7 +729,6 @@ public class Settings extends PreferenceActivity{
 
     private void themeStuffBeforeSetContentView(){
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        editor = sharedPreferences.edit();
 
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
         MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
@@ -709,7 +768,7 @@ public class Settings extends PreferenceActivity{
     }
 
     private void restartNotey(){
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName() );
         Intent i2 = new Intent(getApplicationContext(), Settings.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

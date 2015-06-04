@@ -77,8 +77,9 @@
         <item name="lmd_strokeColor">#FF000000</item>
     </style>
 
-    <color name="mdtp_accent_color">@color/md_grey_500</color>
-    <color name="mdtp_accent_color_dark">@color/md_grey_700</color>
+    <!-- calendar colors -->
+    <color name="mdtp_accent_color">@color/md_grey_600</color>
+    <color name="mdtp_accent_color_dark">@color/md_grey_800</color>
 
     <!-- ************************************* -->
     <!--  Themes based on light/dark and color -->

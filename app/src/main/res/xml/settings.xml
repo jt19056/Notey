@@ -31,19 +31,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_theme"
-        android:title="@string/theme">
+        android:key="pref_key_appearance"
+        android:title="@string/appearance">
 
         <Preference
             android:key="pref_theme"
             android:title="@string/theme_title"
             android:summary="@string/theme_summary"/>
+
+        <Preference
+            android:key="pref_update_icon"
+            android:title="@string/update_icon"
+            android:summary="@string/update_to_match"/>
     </PreferenceCategory>
 
     <PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_enter"
