@@ -48,6 +48,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     private String noteTitle, alarm_time = "";
     private String[] internetStrings = new String[]{"www.", ".com", "http://", "https://"};
     private Notification notification;
+    private SharedPreferences sharedPreferences;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -205,8 +206,9 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
             //show icon
             MySQLiteHelper db = new MySQLiteHelper(this);
+            boolean pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
             if (db.checkIfExist(infoID)) {
-                if(CURRENT_ANDROID_VERSION < 21) { //for below lollipop, show the colored icon on a grey circle
+                if(CURRENT_ANDROID_VERSION < 21 || pref_use_colored_icons) { //for below lollipop, show the colored icon on a grey circle.  OR if user wants to use the colored icons
                     NoteyNote n = db.getNotey(infoID);
                     imageView.setImageResource(getResources().getIdentifier(n.getIconName().replace("24", "36"), "drawable", getPackageName())); //use 36dp icon instead of 24
                     imageView.setBackgroundResource(R.drawable.circle_grey);
@@ -362,7 +364,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
     }
 
     private void themeStuffBeforeSetContentView(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         //initialize theme preferences
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");

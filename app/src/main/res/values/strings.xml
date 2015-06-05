@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.3</string>
+    <string name="version" translatable="false">2.3.0.1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -59,6 +59,8 @@
     <string name="update_icon">Update Icon Color</string>
     <string name="update_to_match">Update the launcher icon to match your color scheme.</string>
     <string name="your_new_icon">Your new icon:</string>
+    <string name="use_colored_icons">Use Colored Icons</string>
+    <string name="use_colored_icons_summary">Use colored icons instead of white icon with colored background.  If you are not seeing your icons in the notification tray, try having this checked.</string>
 
 
     <!-- About strings -->

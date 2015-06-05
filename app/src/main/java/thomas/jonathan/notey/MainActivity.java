@@ -85,6 +85,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
     private boolean pref_enter;
+    private boolean pref_use_colored_icons;
     private boolean pref_share_action;
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
@@ -134,8 +135,8 @@ public class MainActivity extends Activity implements OnClickListener {
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
 
-        doInAppBillingStuff();
-//        proVersionEnabled = true;
+//        doInAppBillingStuff();
+        proVersionEnabled = true;
 
         initializeSettings();
         initializeGUI();
@@ -335,7 +336,7 @@ public class MainActivity extends Activity implements OnClickListener {
         // else if the send button is pressed
         else if (v.getId() == R.id.btn) {
             //check if user has made it not possible to remove notifications.
-            // (this is a fail-safe in case they got out of the settings menu by pressing the 'home' key or some other way)
+            // (this is a fail-safe in case they got out of the settings_jb_kk menu by pressing the 'home' key or some other way)
             if ((!clickNotif.equals("remove") && !clickNotif.equals("info")) && !pref_swipe && !pref_expand) {
                 Toast.makeText(getApplicationContext(), getString(R.string.impossibleToDeleteAtSend), Toast.LENGTH_SHORT).show();
                 impossible_to_delete = true;
@@ -475,7 +476,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
                 //build the notification!
                 Notification n;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21) { //lollipop and above with expandable notifs settings allowed && share action button is enabled
+                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -496,7 +497,29 @@ public class MainActivity extends Activity implements OnClickListener {
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
                 }
-                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings allowed && share action button is enabled
+                //same as above, but use LargeIcon instead of SetColor
+                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setLargeIcon(bm)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit) //edit button on notification
+                            .addAction(R.drawable.ic_share_white_24dp,
+                                    getString(R.string.share), piShare) // share button
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss) //remove button
+                            .build();
+                }
+                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings_jb_kk allowed && share action button is enabled
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -518,13 +541,33 @@ public class MainActivity extends Activity implements OnClickListener {
                             .build();
                 }
                 // same as above, but without share action button. lollipop only
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21) {
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
                             .setTicker(tickerText)
                             .setSmallIcon(d)
                             .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit) //edit button on notification
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss) //remove button
+                            .build();
+                }
+                //same as above, but use LargeIcon instead of SetColor
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) {
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setLargeIcon(bm)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                             .setDeleteIntent(piDismiss)
                             .setOngoing(!pref_swipe)
@@ -556,13 +599,29 @@ public class MainActivity extends Activity implements OnClickListener {
                             .addAction(R.drawable.ic_delete_white_24dp,
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
-                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21) { //not expandable, but still able to set priority. lollipop only.
+                }
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
                             .setTicker(tickerText)
                             .setSmallIcon(d)
                             .setColor(color)
+                            .setDeleteIntent(piDismiss)
+                            .setOngoing(!pref_swipe)
+                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .build();
+                }
+                //same as above, but use LargeIcon instead of SetColor
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
+                    n = new NotificationCompat.Builder(this)
+                            .setContentTitle(noteTitle)
+                            .setContentText(note)
+                            .setTicker(tickerText)
+                            .setSmallIcon(d)
+                            .setLargeIcon(bm)
                             .setDeleteIntent(piDismiss)
                             .setOngoing(!pref_swipe)
                             .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
@@ -882,6 +941,7 @@ public class MainActivity extends Activity implements OnClickListener {
         if (CURRENT_ANDROID_VERSION >= 16) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
+            pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
 
             String pref_priority = sharedPreferences.getString("pref_priority", "normal");
             switch (pref_priority) {
@@ -1116,7 +1176,7 @@ public class MainActivity extends Activity implements OnClickListener {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.settings:
-                        settings_activity_flag = true; //flag so mainActivity UI does get reset after settings is called
+                        settings_activity_flag = true; //flag so mainActivity UI does get reset after settings_jb_kk is called
                         Intent intent = new Intent(MainActivity.this, Settings.class);
                         startActivity(intent);
                         break;
@@ -1498,7 +1558,7 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        // if settings activity was called, reset the ui
+        // if settings_jb_kk activity was called, reset the ui
         if (settings_activity_flag) {
             initializeSettings();
             if (spinnerChanged) { //if the spinner was altered then refresh it

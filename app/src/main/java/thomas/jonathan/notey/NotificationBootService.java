@@ -86,7 +86,7 @@ public class NotificationBootService extends IntentService {
             //Settings stuff
             initializeSettings();
 
-            //show shortcut notification if settings say so
+            //show shortcut notification if settings_jb_kk say so
             if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("pref_shortcut", false)) {
                 Notification n;
                 if(CURRENT_ANDROID_VERSION >= 21 ) { //if > lollipop

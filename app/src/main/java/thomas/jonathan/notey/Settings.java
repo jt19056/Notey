@@ -43,9 +43,10 @@ public class Settings extends PreferenceActivity{
     protected void onCreate(Bundle savedInstanceState) {
         themeStuffBeforeSetContentView();
         super.onCreate(savedInstanceState);
-        if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN) {
-            addPreferencesFromResource(R.xml.settings);
-        } else addPreferencesFromResource(R.xml.settings_ics);
+        if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP) {
+            addPreferencesFromResource(R.xml.settings_lollipop);
+        } else if(MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN) addPreferencesFromResource(R.xml.settings_jb_kk);
+        else addPreferencesFromResource(R.xml.settings_ics);
 
         //show action bar
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -74,7 +75,7 @@ public class Settings extends PreferenceActivity{
                 boolean temp_pref_swipe = prefs.getBoolean("pref_swipe", false);
                 boolean temp_pref_expand = prefs.getBoolean("pref_expand", true);
 
-                //if all three settings are set like this, notify user and don't allow them to close out the settings
+                //if all three settings_jb_kk are set like this, notify user and don't allow them to close out the settings_jb_kk
                 // until they make it possible to delete notifications
                 if ((!temp_clickNotif.equals("remove") && !temp_clickNotif.equals("info")) && !temp_pref_swipe && !temp_pref_expand) {
                     Toast.makeText(getApplicationContext(), getString(R.string.impossibleToDelete), Toast.LENGTH_LONG).show();
@@ -212,7 +213,7 @@ public class Settings extends PreferenceActivity{
                                 editor.putString("pref_theme_fab", selectedFab).apply();
                                 editor.putString("pref_theme_color", MainActivity.themeColor).apply();
 
-                                restartNotey(); //restart notey. re-launching the main activity along with the settings. that way the user returns to the settings screen
+                                restartNotey(); //restart notey. re-launching the main activity along with the settings_jb_kk. that way the user returns to the settings_jb_kk screen
                                 finish();
                             }
                             @Override
@@ -776,7 +777,7 @@ public class Settings extends PreferenceActivity{
         startActivity(i2);
     }
 
-    @Override //back button in action bar to go close settings
+    @Override //back button in action bar to go close settings_jb_kk
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();

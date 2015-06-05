@@ -20,7 +20,7 @@ public class DashClockSettingsActivity extends PreferenceActivity {
         getActionBar().setIcon(new ColorDrawable(getResources().getColor(android.R.color.transparent)));
     }
 
-    @Override //back button in action bar to close settings
+    @Override //back button in action bar to close settings_jb_kk
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             this.finish();

@@ -341,7 +341,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         }
     }
 
-    //save the checkboxes and settings. create a new sharedpref for each alarm, this is using the id as an identifier for the alarmService.
+    //save the checkboxes and settings_jb_kk. create a new sharedpref for each alarm, this is using the id as an identifier for the alarmService.
     private void saveSettings() {
         if (id != -1) {
             SharedPreferences.Editor editor = sharedPref.edit();
