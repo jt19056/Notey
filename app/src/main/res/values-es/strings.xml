@@ -45,6 +45,15 @@
     <string name="please_select_at_least_one">Por favor, seleccione al menos un icono antes de continuar.</string>
     <string name="misc">Otra información.</string>
     <string name="pro_options">Opciones Pro</string>
+	<string name="theme">Tema</string>
+    <string name="theme_title">Tema y Color</string>
+    <string name="theme_summary">Elija su esquema de color.</string>
+    <string name="color_chooser">Selector de Color</string>
+    <string name="dark_theme">Tema oscuro</string>
+    <string name="appearance">Apariencia</string>
+    <string name="update_icon">Actualización del color del icono</string>
+    <string name="update_to_match">Actualizar el icono del launcher para que coincida con su esquema de color.</string>
+    <string name="your_new_icon">Su nuevo icono:</string>
 
 
     <!-- About strings -->
@@ -123,6 +132,8 @@
 	<string name="Mins">Mins</string>
     <string name="Hours">Hrs</string>
     <string name="Days">Días</string>
+	<string name="from_now">desde ahora.</string>
+    <string name="less_than_a_minute">menos de un minuto</string>
 
 
     <!-- Other -->

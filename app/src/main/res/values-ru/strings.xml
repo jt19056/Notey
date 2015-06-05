@@ -45,6 +45,15 @@
     <string name="please_select_at_least_one">Пожалуйста, выберите иконку перед тем, как продолжить.</string>
     <string name="misc">Дополнительно.</string>
     <string name="pro_options">Pro опции</string>
+	<string name="theme">Тема</string>
+    <string name="theme_title">Тема и цвета</string>
+    <string name="theme_summary">Выберите вашу цветовую схему.</string>
+    <string name="color_chooser">Выбор цвета</string>
+    <string name="dark_theme">Тёмная тема</string>
+    <string name="appearance">Оформление</string>
+    <string name="update_icon">Обновить цвет иконки</string>
+    <string name="update_to_match">Обновить цвет иконки в соответствии с темой.</string>
+    <string name="your_new_icon">Ваша новая иконка:</string>
 
 
     <!-- About strings -->
@@ -123,6 +132,8 @@
 	<string name="Mins">Мин</string>
     <string name="Hours">Час</string>
     <string name="Days">дней</string>
+	<string name="from_now">с текущего времени.</string>
+    <string name="less_than_a_minute">меньше минуты</string>
 
 
     <!-- Other -->
