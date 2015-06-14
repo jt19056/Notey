@@ -13,7 +13,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
+import android.content.res.Configuration;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,38 +28,38 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.vending.billing.IInAppBillingService;
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.easyandroidanimations.library.ScaleInAnimation;
+import com.rey.material.widget.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import thomas.jonathan.notey.util.IabHelper;
@@ -67,20 +67,24 @@ import thomas.jonathan.notey.util.IabResult;
 import thomas.jonathan.notey.util.Inventory;
 import thomas.jonathan.notey.util.Purchase;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, View.OnLongClickListener {
     public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
-    public static boolean justTurnedPro = false;
-    public static boolean spinnerChanged = false;
+    private static boolean justTurnedPro = false;
     private static final int REQUEST_CODE = 1234;
     public static final int SHORTCUT_NOTIF_ID = 314150413; //pi and bday
     private final String TAG = "Notey_MainActivity";
-    private List<Integer> imageIconList;
     private NotificationManager nm;
-    private ImageButton ib1, ib2, ib3, ib4, ib5, send_btn, menu_btn, alarm_btn;
+    private ImageButton ib1;
+    private MaterialRippleLayout mrl_ib1;
+    private Set<Integer> buttons;
+    private Set<Integer> rippleButtons;
+    private ImageButton send_btn;
+    private ImageButton menu_btn;
+    private ImageButton alarm_btn;
+    private int selectedRippleButtonId;
     private EditText et, et_title;
-    private Spinner spinner;
     private PopupMenu mPopupMenu;
-    private int imageButtonNumber = 1, spinnerLocation = 0, id = (int) (Math.random() * 10000), priority;
+    private int imageButtonNumber = 1, id = (int) (Math.random() * 10000), priority; //spinnerLocation = 0,
     private boolean pref_expand;
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
@@ -96,24 +100,27 @@ public class MainActivity extends Activity implements OnClickListener {
     private String alarm_time = "";
     private int repeat_time = 0;
     private NoteyNote notey;
-    public final MySQLiteHelper db = new MySQLiteHelper(this);
+    private final MySQLiteHelper db = new MySQLiteHelper(this);
     private RelativeLayout layout_bottom;
     private PendingIntent alarmPendingIntent;
-    private static List<String> pref_icons;
-    private List<String> spinnerPositionList;
+    //    private static List<String> pref_icons;
+//    private List<String> spinnerPositionList;
     private static Context appContext;
     public static final SimpleDateFormat format_short_date = new SimpleDateFormat("MMM dd"), format_short_time = new SimpleDateFormat("hh:mm a");
     private static SharedPreferences sharedPreferences;
+    private String iconName = "ic_check_", fullIconName = "ic_check_white_24dp", iconColor = "white";
+    private HorizontalScrollView hsv;
+    private TableRow tableRow;
 
     /* in app billing variables */
-    public static IabHelper mHelper;
-    public static IInAppBillingService mService;
-    public static ServiceConnection mServiceConn;
-    public static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
-    public static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
+    private static IabHelper mHelper;
+    private static IInAppBillingService mService;
+    private static ServiceConnection mServiceConn;
+    private static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
+    private static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
     public static boolean proVersionEnabled = false;
-    public static boolean userWasAlreadyAPro = false;
-    public static String payload = Integer.toString((int) (Math.random() * 1000000));
+    private static boolean userWasAlreadyAPro = false;
+    private static String payload = Integer.toString((int) (Math.random() * 1000000));
 
     //theme variables
     public static String themeColor;
@@ -135,11 +142,16 @@ public class MainActivity extends Activity implements OnClickListener {
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
 
-//        doInAppBillingStuff();
-        proVersionEnabled = true;
+        doInAppBillingStuff();
+
+        /*** For free Pro users, enable this and setProImageButtons() on line 149 ***/
+//        proVersionEnabled = true;
 
         initializeSettings();
         initializeGUI();
+
+        /*** For free Pro users, enable this too! ***/
+//        setProImageButtons();
 
         setLayout();
 
@@ -150,44 +162,6 @@ public class MainActivity extends Activity implements OnClickListener {
         checkForAppUpdate(); // restore notifications after app update
 
         checkForAnyIntents(); //checking for intents of edit button clicks or received shares
-
-        //spinner listener. changes the row of five icons based on what spinner item is selected.
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                if (editIntentFlag) {
-                    spinner.setSelection(spinnerLocation);
-                    position = spinnerLocation;
-                    editIntentFlag = false;
-                } else spinnerLocation = position;
-                String s = pref_icons.get(position);
-
-                //the text the user sees is different than the icon names
-                if (s.equals("smile")) s = "mood";
-                if (s.equals("heart")) s = "favorite";
-                if (s.equals("note")) s = "note_add";
-
-                ib1.setImageResource(getResources().getIdentifier("ic_" + s + "_white_36dp", "drawable", getPackageName()));
-                ib2.setImageResource(getResources().getIdentifier("ic_" + s + "_yellow_36dp", "drawable", getPackageName()));
-                ib3.setImageResource(getResources().getIdentifier("ic_" + s + "_blue_36dp", "drawable", getPackageName()));
-                ib4.setImageResource(getResources().getIdentifier("ic_" + s + "_green_36dp", "drawable", getPackageName()));
-                ib5.setImageResource(getResources().getIdentifier("ic_" + s + "_red_36dp", "drawable", getPackageName()));
-
-                if (!justTurnedPro) { //don't animate after user turns pro, since the check marks just look like they're reloading and it looks bad
-                    new ScaleInAnimation(ib1).setDuration(250).animate();
-                    new ScaleInAnimation(ib2).setDuration(250).animate();
-                    new ScaleInAnimation(ib3).setDuration(250).animate();
-                    new ScaleInAnimation(ib4).setDuration(250).animate();
-                    new ScaleInAnimation(ib5).setDuration(250).animate();
-                    justTurnedPro = false;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // do nothing
-            }
-        });
 
         //button click listener. for Enter key and Menu key
         et.setOnKeyListener(new View.OnKeyListener() {
@@ -232,36 +206,6 @@ public class MainActivity extends Activity implements OnClickListener {
         });
     }
 
-    //adapter for spinner. allows custom icons to be placed.
-    public class MyAdapter extends ArrayAdapter<String> {
-        public MyAdapter(Context context, int textViewResourceId, String[] objects) {
-            super(context, textViewResourceId, objects);
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, parent);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getCustomView(position, parent);
-        }
-
-        public View getCustomView(int position, ViewGroup parent) {
-            LayoutInflater inflater = getLayoutInflater();
-            View row = inflater.inflate(R.layout.spinner, parent, false);
-            ImageView icon = (ImageView) row.findViewById(R.id.imageView1);
-
-            icon.setImageResource(imageIconList.get(position));
-            if(darkTheme) icon.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
-
-            new ScaleInAnimation(icon).setDuration(250).animate();
-
-            return row;
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -271,47 +215,39 @@ public class MainActivity extends Activity implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //if one of the five icons are clicked, highlight them and un-highlight the previous selection.
-        if (v.getId() == R.id.imageButton1) {
-            imageButtonNumber = 1;
-            ib1.setBackgroundColor(getResources().getColor(R.color.grey_600));
+        //if one horizontal scroll are clicked, highlight them and un-highlight the previous selection.
+        if (buttons.contains(v.getId())) {
+            //highlight selected
+//            ImageButton ib = (ImageButton) findViewById(v.getId());
+//            ib.setBackgroundColor(getResources().getColor(R.color.grey_600));
 
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (v.getId() == R.id.imageButton2) {
-            imageButtonNumber = 2;
-            ib2.setBackgroundColor(getResources().getColor(R.color.grey_600));
+            //un-highlight old. if user clicks on same icon twice in a row,  don't dun-highlight it
+//            if(v.getId() != selectedImageButtonId) {
+//                ImageButton ib2 = (ImageButton) findViewById(selectedImageButtonId);
+//                ib2.setBackgroundColor(Color.TRANSPARENT);
+//            }
+            if (v.getId() != selectedRippleButtonId + 1) {
+                MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
+                rip.setRadius(0);
+            }
 
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (v.getId() == R.id.imageButton3) {
-            imageButtonNumber = 3;
-            ib3.setBackgroundColor(getResources().getColor(R.color.grey_600));
+            //set new icon name and new selected ib
+            iconName = v.getTag().toString();
 
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (v.getId() == R.id.imageButton4) {
-            imageButtonNumber = 4;
-            ib4.setBackgroundColor(getResources().getColor(R.color.grey_600));
+            //get the name of the current button clicked to determine which ripple button we clicked
+            String imageButtonName = getResources().getResourceEntryName(v.getId());
+            selectedRippleButtonId = getResources().getIdentifier("ripple_" + imageButtonName, "id", getPackageName());
+        } else if (v.getId() == R.id.pallete_btn) {
+            int view; //layout for icons
+            if (MainActivity.proVersionEnabled) view = R.layout.icon_color_chooser_dialog_pro;
+            else view = R.layout.icon_color_chooser_dialog;
 
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (v.getId() == R.id.imageButton5) {
-            imageButtonNumber = 5;
-            ib5.setBackgroundColor(getResources().getColor(R.color.grey_600));
+            final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
+                    .customView(view, false)
+                    .build();
+            md.show();
 
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
+            setIconColorOnClickListeners(md);
         } else if (v.getId() == R.id.menuButton) {
             mPopupMenu.show();
         } else if (v.getId() == R.id.alarm_btn) {
@@ -360,42 +296,35 @@ public class MainActivity extends Activity implements OnClickListener {
 
             //if either textbox has text AND it is possible to delete notifs AND (if current time is less than alarm time OR there is a repeating alarm), then set the alarm, continue and create notification
             if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && (alarmTimeIsGreaterThanCurrentTime || repeat_time != 0)) {
-
-                String s = pref_icons.get(spinnerLocation);
-
-                if (s.equals("smile")) s = "mood";
-                if (s.equals("heart")) s = "favorite";
-                if (s.equals("note")) s = "note_add";
-
-                int d = getResources().getIdentifier("ic_" + s + "_white_24dp", "drawable", getPackageName());
-                int color = getResources().getColor(R.color.grey_500); // grey, for grey background with white icons
+                fullIconName = iconName + iconColor + "_24dp";
+                int d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
+                int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
                 //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
-                if(CURRENT_ANDROID_VERSION < 21) {
-                    if (imageButtonNumber == 2)
-                        d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
-                    else if (imageButtonNumber == 3)
-                        d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
-                    else if (imageButtonNumber == 4)
-                        d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
-                    else if (imageButtonNumber == 5)
-                        d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
-                } else {
-                    if (imageButtonNumber == 2) {
-                        color = getResources().getColor(R.color.yellow_500);
-                        d = getResources().getIdentifier("ic_" + s + "_yellow_24dp", "drawable", getPackageName());
-                    }
-                    else if (imageButtonNumber == 3) {
-                        color = getResources().getColor(R.color.cyan_a400);
-                        d = getResources().getIdentifier("ic_" + s + "_blue_24dp", "drawable", getPackageName());
-                    }
-                    else if (imageButtonNumber == 4) {
-                        color = getResources().getColor(R.color.green_a700);
-                        d = getResources().getIdentifier("ic_" + s + "_green_24dp", "drawable", getPackageName());
-                    }
-                    else if (imageButtonNumber == 5) {
-                        color = getResources().getColor(R.color.red_a400);
-                        d = getResources().getIdentifier("ic_" + s + "_red_24dp", "drawable", getPackageName());
-                    }
+                d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
+
+                //get string color for lollipop notification background color
+                // converts ex. red -> md_red_A400  or  blue -> md_blue_500
+                if (CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
+                    String colorArray[];
+                    if (proVersionEnabled)
+                        colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
+                    else
+                        colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
+
+                    int c = Arrays.asList(colorArray).indexOf(iconColor);
+
+                    String colorNames[];
+                    if (proVersionEnabled)
+                        colorNames = getResources().getStringArray(R.array.icon_color_names_pro);
+                    else
+                        colorNames = getResources().getStringArray(R.array.icon_color_names_standard);
+
+                    String colorString = Arrays.asList(colorNames).get(c);
+
+                    color = getResources().getColor(getResources().getIdentifier(colorString, "color", getPackageName()));
+                } else if (CURRENT_ANDROID_VERSION >= 21 && iconColor.equals("white")) { //for lollipop white icons, use white icon with grey background so they can see it
+                    pref_use_colored_icons = false; //make them use the lollipop circle background
+                    color = getResources().getColor(R.color.md_grey_500);
                 }
 
                 String note = et.getText().toString(); //get the text
@@ -415,9 +344,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 notey.setNote(note);
                 notey.setIcon(d);
                 notey.setImgBtnNum(imageButtonNumber);
-                notey.setSpinnerLoc(spinnerLocation);
+//                notey.setSpinnerLoc(spinnerLocation);
                 notey.setTitle(noteTitle);
-                notey.setIconName(getResources().getResourceEntryName(d));
+                notey.setIconName(fullIconName);
 
                 //add alarm to db and set it
                 String noteForNotification = note;  // use a temp string to add the alarm info to the notification
@@ -518,8 +447,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .addAction(R.drawable.ic_delete_white_24dp,
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
-                }
-                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings_jb_kk allowed && share action button is enabled
+                } else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings_jb_kk allowed && share action button is enabled
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -599,8 +527,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .addAction(R.drawable.ic_delete_white_24dp,
                                     getString(R.string.remove), piDismiss) //remove button
                             .build();
-                }
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
+                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -628,8 +555,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .setAutoCancel(false)
                             .setPriority(priority)
                             .build();
-                }
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //not expandable, but still able to set priority. jb and kitkat.
+                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //not expandable, but still able to set priority. jb and kitkat.
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -642,8 +568,7 @@ public class MainActivity extends Activity implements OnClickListener {
                             .setAutoCancel(false)
                             .setPriority(priority)
                             .build();
-                }
-                else { //if api < 16. they cannot have expandable notifs or any type of priority
+                } else { //if api < 16. they cannot have expandable notifs or any type of priority
                     n = new NotificationCompat.Builder(this)
                             .setContentTitle(noteTitle)
                             .setContentText(note)
@@ -667,6 +592,95 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
+    @Override
+    public boolean onLongClick(View v) {
+        //any button in the horiztonal scroll
+        if (buttons.contains(v.getId())) {
+            iconName = v.getTag().toString();
+            createIconPickerDialog();
+
+            //un-highlight old. if user clicks on same icon twice in a row,  don't un-highlight it
+            if (v.getId() != selectedRippleButtonId) {
+                MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
+                rip.setRadius(0);
+            }
+            //get the name of the current button clicked to determine which ripple button we clicked
+            String imageButtonName = getResources().getResourceEntryName(v.getId());
+            selectedRippleButtonId = getResources().getIdentifier("ripple_" + imageButtonName, "id", getPackageName());
+
+            //highlight the correct image button
+            MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
+            rip.setRadius(1000);
+        }
+
+        return false;
+    }
+
+
+    private void setIconColorOnClickListeners(final MaterialDialog md) {
+        String colors[];
+        if (proVersionEnabled)
+            colors = getResources().getStringArray(R.array.icon_colors_array_pro);
+        else colors = getResources().getStringArray(R.array.icon_colors_array_standard);
+        for (int i = 0; i < colors.length; i++) {
+            int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getPackageName());
+            FloatingActionButton fab = (FloatingActionButton) md.findViewById(id);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    iconColor = v.getTag().toString();
+                    setImageButtonsBasedOffIconSelection();
+                    md.dismiss();
+                }
+            });
+
+        }
+    }
+
+    private void createIconPickerDialog() {
+        int view; //layout for icons
+        if (MainActivity.proVersionEnabled) view = R.layout.icon_chooser_dialog_pro;
+        else view = R.layout.icon_chooser_dialog;
+
+        final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
+                .customView(view, false)
+                .build();
+        md.show();
+
+        //based on the icon clicked, show all the color options for that icon
+        String[] colorArray;
+        if (proVersionEnabled)
+            colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
+        else colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
+
+        for (int i = 0; i < colorArray.length; i++) {
+            int id = getResources().getIdentifier("icon_chooser_dialog_imageview_" + Integer.toString(i + 1), "id", getPackageName());
+            ImageView iv = (ImageView) md.findViewById(id);
+            iv.setImageResource(getResources().getIdentifier(iconName + colorArray[i] + "_36dp", "drawable", getPackageName()));
+            iv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    iconColor = v.getTag().toString();
+                    setImageButtonsBasedOffIconSelection();
+                    md.dismiss();
+
+                    //highlight the correct image button
+//                    MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
+//                    rip.setRadius(1000);
+                }
+            });
+        }
+    }
+
+    private void setImageButtonsBasedOffIconSelection() {
+        String[] icons = getResources().getStringArray(R.array.icons_array_pro);
+        //loop through the imagebuttons in the horizontal scroll, set each icon to the correct color
+        for (int i = 0; i < icons.length; i++) {
+            ImageButton ib = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + Integer.toString(i + 1), "id", getPackageName()));
+            ib.setImageResource(getResources().getIdentifier(icons[i] + iconColor + "_36dp", "drawable", getPackageName()));
+        }
+    }
+
     private void setLayout() {
         //show keyboard at start
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -675,10 +689,10 @@ public class MainActivity extends Activity implements OnClickListener {
         //keep layout where it belongs on screen
         layout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom); //row containing the text box
         RelativeLayout.LayoutParams parms = (RelativeLayout.LayoutParams) layout_bottom.getLayoutParams();
-        parms.addRule(RelativeLayout.BELOW, R.id.tableRow1);
-        final int spinnerHeight = spinner.getLayoutParams().height;
-        layout_bottom.getLayoutParams().height = spinnerHeight + (int) convertDpToPixel(10, this); //get spinner height + 10dp
-        et.getLayoutParams().height = spinnerHeight; //set the row's height to that of the spinner's + 10dp
+        parms.addRule(RelativeLayout.BELOW, R.id.horizontal_scroll_view);
+//        final int spinnerHeight = spinner.getLayoutParams().height;
+//        layout_bottom.getLayoutParams().height = spinnerHeight + (int) convertDpToPixel(10, this); //get spinner height + 10dp
+//        et.getLayoutParams().height = spinnerHeight; //set the row's height to that of the spinner's + 10dp
 
         /* resizing the window when more/less text is added */
         final RelativeLayout relativeLayoutCopy = layout_bottom;
@@ -690,7 +704,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (et.getText().toString().equals("") && et_title.getText().toString().equals("")) { //if both note and title are blank, set to mic
                     new ScaleInAnimation(send_btn).setDuration(250).animate();
                     send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
-                    if(darkTheme) send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    if (darkTheme)
+                        send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
                 }
 
                 if (et.getLineCount() > 1) {
@@ -710,7 +725,8 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())) { //switch it to the send icon if not already
                         new ScaleInAnimation(send_btn).setDuration(250).animate();
                         send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
-                        if(darkTheme) send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                        if (darkTheme)
+                            send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
                     }
                 }
             }
@@ -722,7 +738,8 @@ public class MainActivity extends Activity implements OnClickListener {
                 if (et_title.getText().toString().equals("") && et.getText().toString().equals("")) {
                     new ScaleInAnimation(send_btn).setDuration(250).animate();
                     send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
-                    if(darkTheme) send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    if (darkTheme)
+                        send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
                 }
             }
 
@@ -734,7 +751,8 @@ public class MainActivity extends Activity implements OnClickListener {
                     if (!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())) {
                         new ScaleInAnimation(send_btn).setDuration(250).animate();
                         send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
-                        if(darkTheme) send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                        if (darkTheme)
+                            send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
                     }
                 }
             }
@@ -758,7 +776,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 int editID = i.getExtras().getInt("editNotificationID");
                 NoteyNote nTemp = db.getNotey(editID);
 
-                int editBtn = i.getExtras().getInt("editButton");
                 String editAlarm = i.getExtras().getString("editAlarm");
                 boolean doAlarmActivity = i.getExtras().getBoolean("doEditAlarmActivity", false);
                 PendingIntent editAlarmPI = (PendingIntent) i.getExtras().get("editAlarmPendingIntent");
@@ -766,7 +783,52 @@ public class MainActivity extends Activity implements OnClickListener {
                 id = editID;
                 et.setText(nTemp.getNote());
                 et.setSelection(et.getText().length());
-                spinnerLocation = nTemp.getSpinnerLoc();
+//                spinnerLocation = nTemp.getSpinnerLoc();
+
+                fullIconName = nTemp.getIconName();
+
+                iconName = fullIconName.split("_")[0] + "_" + fullIconName.split("_")[1] + "_";  //ic_check_red_24dp ---> ic_check_
+                if (iconName.contains("shopping")) {
+                    iconName += "cart_"; //make it so iconname is ic_shopping_cart_
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("note")) {
+                    iconName += "add_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("attach")) {
+                    iconName += "money_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("brightness")) {
+                    iconName += "low_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("directions")) {
+                    iconName += "car_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("flash")) {
+                    iconName += "on_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("local")) {
+                    iconName += "florist_";
+                    iconColor = fullIconName.split("_")[3];
+                } else if (iconName.contains("music")) {
+                    iconName += "note_";
+                    iconColor = fullIconName.split("_")[3];
+                } else iconColor = fullIconName.split("_")[2];
+
+                if (iconColor.contains("light")) iconColor += "_green";
+                else if (iconColor.contains("deep")) iconColor += "_orange";
+
+                //un-highlight the check mark
+                ib1.setBackgroundColor(Color.TRANSPARENT);
+                mrl_ib1.setRadius(0);
+                //highlight selected. this is done by getting the index of the icons array which contains the icon name. ex) check = image button 1 = icons array index 0
+                String icons[];
+                if (proVersionEnabled)
+                    icons = getResources().getStringArray(R.array.icons_array_pro);
+                else icons = getResources().getStringArray(R.array.icons_array_standard);
+                int selected = Arrays.asList(icons).indexOf(iconName);
+//                ImageButton ib = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + Integer.toString(selected+1), "id", getPackageName()));
+//                ib.setBackgroundColor(getResources().getColor(R.color.md_grey_600));
+
                 imageButtonNumber = nTemp.getImgBtnNum();
                 noteTitle = nTemp.getTitle();
                 if (!noteTitle.equals(getString(R.string.app_name))) //if title is not Notey, then display it
@@ -780,12 +842,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 if ((alarm_time != null && !alarm_time.equals("")) || repeat_time != 0) {
                     new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                     alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
-                    if(darkTheme) alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    if (darkTheme)
+                        alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
                 }
 
-                spinner.setSelection(spinnerLocation);
-                setImageButtonsBasedOffSpinnerSelection();
-                setWhichImageButtonIsSelected(editBtn);
+                setImageButtonsBasedOffIconSelection();
+
                 //resize window for amount of text
                 et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 layout_bottom.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
@@ -808,47 +870,22 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void setWhichImageButtonIsSelected(int loc) {
-        if (loc == 1) {
-            imageButtonNumber = 1;
-            ib1.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (loc == 2) {
-            imageButtonNumber = 2;
-            ib2.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (loc == 3) {
-            imageButtonNumber = 3;
-            ib3.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (loc == 4) {
-            imageButtonNumber = 4;
-            ib4.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib5.setBackgroundColor(Color.TRANSPARENT);
-        } else if (loc == 5) {
-            imageButtonNumber = 5;
-            ib5.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            ib1.setBackgroundColor(Color.TRANSPARENT);
-            ib2.setBackgroundColor(Color.TRANSPARENT);
-            ib3.setBackgroundColor(Color.TRANSPARENT);
-            ib4.setBackgroundColor(Color.TRANSPARENT);
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        //scroll to the correct icon in the horizontal scroll view if we are opening an edit intent
+        if (editIntentFlag) {
+            String icons[] = getResources().getStringArray(R.array.icons_array_pro);
+            int selected = Arrays.asList(icons).indexOf(iconName);
+//            ImageButton ib = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + Integer.toString(selected + 1), "id", getPackageName()));
+//            ib.setBackgroundColor(getResources().getColor(R.color.md_grey_600));
+            MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(getResources().getIdentifier("ripple_imageButton" + Integer.toString(selected + 1), "id", getPackageName()));
+            rip.setRadius(1000);
+            selectedRippleButtonId = rip.getId();
+            int x = rip.getLeft();
+            int y = rip.getTop();
+            hsv.scrollTo(x, y);
+            editIntentFlag = false;
         }
     }
 
@@ -880,24 +917,31 @@ public class MainActivity extends Activity implements OnClickListener {
         sharedPref.edit().putInt("VERSION_CODE", versionCode).apply();
     }
 
-    public void initializeGUI() {
-        setUpSpinner();
-
+    private void initializeGUI() {
         //setup the five icons
         ib1 = (ImageButton) findViewById(R.id.imageButton1);
-        ib2 = (ImageButton) findViewById(R.id.imageButton2);
-        ib3 = (ImageButton) findViewById(R.id.imageButton3);
-        ib4 = (ImageButton) findViewById(R.id.imageButton4);
-        ib5 = (ImageButton) findViewById(R.id.imageButton5);
+        ImageButton ib2 = (ImageButton) findViewById(R.id.imageButton2);
+        ImageButton ib3 = (ImageButton) findViewById(R.id.imageButton3);
+        ImageButton ib4 = (ImageButton) findViewById(R.id.imageButton4);
+        ImageButton ib5 = (ImageButton) findViewById(R.id.imageButton5);
+        mrl_ib1 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton1);
+        MaterialRippleLayout mrl_ib2 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton2);
+        MaterialRippleLayout mrl_ib3 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton3);
+        MaterialRippleLayout mrl_ib4 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton4);
+        MaterialRippleLayout mrl_ib5 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton5);
+        selectedRippleButtonId = mrl_ib1.getId();
+//        iconPickerFAB = (FloatingActionButton) findViewById(R.id.mainactivity_icon_picker_fab);
 
         send_btn = (ImageButton) findViewById(R.id.btn); //send button
         menu_btn = (ImageButton) findViewById(R.id.menuButton);
         alarm_btn = (ImageButton) findViewById(R.id.alarm_btn);
+        ImageButton pallete_btn = (ImageButton) findViewById(R.id.pallete_btn);
 
         //set button colors to grey500 instead of grey600 for dark theme
-        if(darkTheme) {
+        if (darkTheme) {
             send_btn.setColorFilter(Color.argb(255, 158, 158, 158));
             alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158));
+            pallete_btn.setColorFilter(Color.argb(255, 158, 158, 158));
         }
 
         nm.cancel(id);
@@ -905,19 +949,51 @@ public class MainActivity extends Activity implements OnClickListener {
 
         //set the click listener
         ib1.setOnClickListener(this);
+        ib1.setOnLongClickListener(this);
         ib2.setOnClickListener(this);
+        ib2.setOnLongClickListener(this);
         ib3.setOnClickListener(this);
+        ib3.setOnLongClickListener(this);
         ib4.setOnClickListener(this);
+        ib4.setOnLongClickListener(this);
         ib5.setOnClickListener(this);
+        ib5.setOnLongClickListener(this);
+        mrl_ib1.setOnClickListener(this);
+        mrl_ib1.setOnLongClickListener(this);
+        mrl_ib2.setOnClickListener(this);
+        mrl_ib2.setOnLongClickListener(this);
+        mrl_ib3.setOnClickListener(this);
+        mrl_ib3.setOnLongClickListener(this);
+        mrl_ib4.setOnClickListener(this);
+        mrl_ib4.setOnLongClickListener(this);
+        mrl_ib5.setOnClickListener(this);
+        mrl_ib5.setOnLongClickListener(this);
+
         send_btn.setOnClickListener(this);
         menu_btn.setOnClickListener(this);
         alarm_btn.setOnClickListener(this);
+        pallete_btn.setOnClickListener(this);
 
-        ib1.setBackgroundColor(getResources().getColor(R.color.grey_600));
+//        ib1.setBackgroundColor(getResources().getColor(R.color.grey_600));
+        ib1.setBackgroundColor(Color.TRANSPARENT);
+        mrl_ib1.setRadius(1000);
         ib2.setBackgroundColor(Color.TRANSPARENT);
         ib3.setBackgroundColor(Color.TRANSPARENT);
         ib4.setBackgroundColor(Color.TRANSPARENT);
         ib5.setBackgroundColor(Color.TRANSPARENT);
+
+        if (!proVersionEnabled && isTablet(this)) { //spread out the 5 non-pro icons for tablets
+            tableRow.setGravity(Gravity.CENTER);
+            float twentyDP = 20 * getResources().getDisplayMetrics().density;
+            mrl_ib1.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib2.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib3.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib4.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib5.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+        }
+
+        buttons = new HashSet<>(Arrays.asList(R.id.imageButton1, R.id.imageButton2, R.id.imageButton3, R.id.imageButton4, R.id.imageButton5));
+        rippleButtons = new HashSet<>(Arrays.asList(R.id.ripple_imageButton1, R.id.ripple_imageButton2, R.id.ripple_imageButton3, R.id.ripple_imageButton4, R.id.ripple_imageButton5));
 
         impossible_to_delete = false; //set setting for unable to delete notifications to false, will be checked before pressing send
 
@@ -930,10 +1006,12 @@ public class MainActivity extends Activity implements OnClickListener {
         et.setTypeface(font);
         et_title.setTypeface(font);
         mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
+    }
 
-//        et.getBackground().setColorFilter(getResources().getColor(R.color.md_green_500), PorterDuff.Mode.SRC_ATOP);
-                                //   getResources().getIdentifier(themeColor, "color", getPackageName())
-
+    private static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -966,7 +1044,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
 
-        pref_icons = (proVersionEnabled) ? Arrays.asList(getResources().getStringArray(R.array.pro_icons_values)) : Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons list
+//        pref_icons = (proVersionEnabled) ? Arrays.asList(getResources().getStringArray(R.array.pro_icons_values)) : Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons list
 
         // Create new note shortcut in the notification tray
         boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);
@@ -975,35 +1053,181 @@ public class MainActivity extends Activity implements OnClickListener {
         } else {
             nm.cancel(SHORTCUT_NOTIF_ID);
         }
-     }
-
-    private void setUpSpinner() {
-        setUpIcons();
-        spinner = (Spinner) findViewById(R.id.spinner1);
-        spinner.setAdapter(new MyAdapter(this, R.layout.spinner, spinnerPositionList.toArray(new String[spinnerPositionList.size()])));
     }
 
+    private void setProImageButtons() {
+        buttons = new HashSet<>(Arrays.asList(R.id.imageButton1, R.id.imageButton2, R.id.imageButton3, R.id.imageButton4, R.id.imageButton5,
+                R.id.imageButton6, R.id.imageButton7, R.id.imageButton8, R.id.imageButton9, R.id.imageButton10, R.id.imageButton11, R.id.imageButton12, R.id.imageButton13, R.id.imageButton14, R.id.imageButton15,
+                R.id.imageButton16, R.id.imageButton17, R.id.imageButton18, R.id.imageButton19, R.id.imageButton20, R.id.imageButton21, R.id.imageButton22, R.id.imageButton23, R.id.imageButton24, R.id.imageButton25));
 
-    private void setUpIcons() {
-        imageIconList = new ArrayList<>();
-        spinnerPositionList = new ArrayList<>();
-        for (int i = 0; i < pref_icons.size(); i++) {
-            imageIconList.add(convertStringToIcon(pref_icons.get(i)));
-            spinnerPositionList.add(Integer.toString(i));
-        }
-    }
+        rippleButtons = new HashSet<>(Arrays.asList(R.id.ripple_imageButton1, R.id.ripple_imageButton2, R.id.ripple_imageButton3, R.id.ripple_imageButton4, R.id.ripple_imageButton5,
+                R.id.ripple_imageButton6, R.id.ripple_imageButton7, R.id.ripple_imageButton8, R.id.ripple_imageButton9, R.id.ripple_imageButton10, R.id.ripple_imageButton11, R.id.ripple_imageButton12, R.id.ripple_imageButton13, R.id.ripple_imageButton14, R.id.ripple_imageButton15,
+                R.id.ripple_imageButton16, R.id.ripple_imageButton17, R.id.ripple_imageButton18, R.id.ripple_imageButton19, R.id.ripple_imageButton20, R.id.ripple_imageButton21, R.id.ripple_imageButton22, R.id.ripple_imageButton23, R.id.ripple_imageButton24, R.id.ripple_imageButton25));
 
-    //turns name like edit into ic_edit_grey600_36dp
-    private int convertStringToIcon(String s) {
-        int ic;
-        if (s.equals("smile")) s = "mood";
-        if (s.equals("heart")) s = "favorite";
-        if (s.equals("note")) s = "note_add";
+        ImageButton ib6 = (ImageButton) findViewById(R.id.imageButton6);
+        ib6.setVisibility(View.VISIBLE);
+        ImageButton ib7 = (ImageButton) findViewById(R.id.imageButton7);
+        ib7.setVisibility(View.VISIBLE);
+        ImageButton ib8 = (ImageButton) findViewById(R.id.imageButton8);
+        ib8.setVisibility(View.VISIBLE);
+        ImageButton ib9 = (ImageButton) findViewById(R.id.imageButton9);
+        ib9.setVisibility(View.VISIBLE);
+        ImageButton ib10 = (ImageButton) findViewById(R.id.imageButton10);
+        ib10.setVisibility(View.VISIBLE);
+        ImageButton ib11 = (ImageButton) findViewById(R.id.imageButton11);
+        ib11.setVisibility(View.VISIBLE);
+        ImageButton ib12 = (ImageButton) findViewById(R.id.imageButton12);
+        ib12.setVisibility(View.VISIBLE);
+        ImageButton ib13 = (ImageButton) findViewById(R.id.imageButton13);
+        ib13.setVisibility(View.VISIBLE);
+        ImageButton ib14 = (ImageButton) findViewById(R.id.imageButton14);
+        ib14.setVisibility(View.VISIBLE);
+        ImageButton ib15 = (ImageButton) findViewById(R.id.imageButton15);
+        ib15.setVisibility(View.VISIBLE);
+        ImageButton ib16 = (ImageButton) findViewById(R.id.imageButton16);
+        ib16.setVisibility(View.VISIBLE);
+        ImageButton ib17 = (ImageButton) findViewById(R.id.imageButton17);
+        ib17.setVisibility(View.VISIBLE);
+        ImageButton ib18 = (ImageButton) findViewById(R.id.imageButton18);
+        ib18.setVisibility(View.VISIBLE);
+        ImageButton ib19 = (ImageButton) findViewById(R.id.imageButton19);
+        ib19.setVisibility(View.VISIBLE);
+        ImageButton ib20 = (ImageButton) findViewById(R.id.imageButton20);
+        ib20.setVisibility(View.VISIBLE);
+        ImageButton ib21 = (ImageButton) findViewById(R.id.imageButton21);
+        ib21.setVisibility(View.VISIBLE);
+        ImageButton ib22 = (ImageButton) findViewById(R.id.imageButton22);
+        ib22.setVisibility(View.VISIBLE);
+        ImageButton ib23 = (ImageButton) findViewById(R.id.imageButton23);
+        ib23.setVisibility(View.VISIBLE);
+        ImageButton ib24 = (ImageButton) findViewById(R.id.imageButton24);
+        ib24.setVisibility(View.VISIBLE);
+        ImageButton ib25 = (ImageButton) findViewById(R.id.imageButton25);
+        ib25.setVisibility(View.VISIBLE);
 
-        s = "ic_" + s + "_grey600_36dp";
-        ic = getResources().getIdentifier(s, "drawable", getPackageName());
+        MaterialRippleLayout mrl_ib6 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton6);
+        MaterialRippleLayout mrl_ib7 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton7);
+        MaterialRippleLayout mrl_ib8 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton8);
+        MaterialRippleLayout mrl_ib9 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton9);
+        MaterialRippleLayout mrl_ib10 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton10);
+        MaterialRippleLayout mrl_ib11 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton11);
+        MaterialRippleLayout mrl_ib12 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton12);
+        MaterialRippleLayout mrl_ib13 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton13);
+        MaterialRippleLayout mrl_ib14 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton14);
+        MaterialRippleLayout mrl_ib15 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton15);
+        MaterialRippleLayout mrl_ib16 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton16);
+        MaterialRippleLayout mrl_ib17 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton17);
+        MaterialRippleLayout mrl_ib18 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton18);
+        MaterialRippleLayout mrl_ib19 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton19);
+        MaterialRippleLayout mrl_ib20 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton20);
+        MaterialRippleLayout mrl_ib21 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton21);
+        MaterialRippleLayout mrl_ib22 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton22);
+        MaterialRippleLayout mrl_ib23 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton23);
+        MaterialRippleLayout mrl_ib24 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton24);
+        MaterialRippleLayout mrl_ib25 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton25);
 
-        return ic;
+        ib6.setOnClickListener(this);
+        ib6.setOnLongClickListener(this);
+        ib7.setOnClickListener(this);
+        ib7.setOnLongClickListener(this);
+        ib8.setOnClickListener(this);
+        ib8.setOnLongClickListener(this);
+        ib9.setOnClickListener(this);
+        ib9.setOnLongClickListener(this);
+        ib10.setOnClickListener(this);
+        ib10.setOnLongClickListener(this);
+        ib11.setOnClickListener(this);
+        ib11.setOnLongClickListener(this);
+        ib12.setOnClickListener(this);
+        ib12.setOnLongClickListener(this);
+        ib13.setOnClickListener(this);
+        ib13.setOnLongClickListener(this);
+        ib14.setOnClickListener(this);
+        ib14.setOnLongClickListener(this);
+        ib15.setOnClickListener(this);
+        ib15.setOnLongClickListener(this);
+        ib16.setOnClickListener(this);
+        ib16.setOnLongClickListener(this);
+        ib17.setOnClickListener(this);
+        ib17.setOnLongClickListener(this);
+        ib18.setOnClickListener(this);
+        ib18.setOnLongClickListener(this);
+        ib19.setOnClickListener(this);
+        ib19.setOnLongClickListener(this);
+        ib20.setOnClickListener(this);
+        ib20.setOnLongClickListener(this);
+        ib21.setOnClickListener(this);
+        ib21.setOnLongClickListener(this);
+        ib22.setOnClickListener(this);
+        ib22.setOnLongClickListener(this);
+        ib23.setOnClickListener(this);
+        ib23.setOnLongClickListener(this);
+        ib24.setOnClickListener(this);
+        ib24.setOnLongClickListener(this);
+        ib25.setOnClickListener(this);
+        ib25.setOnLongClickListener(this);
+
+        mrl_ib6.setOnClickListener(this);
+        mrl_ib6.setOnLongClickListener(this);
+        mrl_ib7.setOnClickListener(this);
+        mrl_ib7.setOnLongClickListener(this);
+        mrl_ib8.setOnClickListener(this);
+        mrl_ib8.setOnLongClickListener(this);
+        mrl_ib9.setOnClickListener(this);
+        mrl_ib9.setOnLongClickListener(this);
+        mrl_ib10.setOnClickListener(this);
+        mrl_ib10.setOnLongClickListener(this);
+        mrl_ib11.setOnClickListener(this);
+        mrl_ib11.setOnLongClickListener(this);
+        mrl_ib12.setOnClickListener(this);
+        mrl_ib12.setOnLongClickListener(this);
+        mrl_ib13.setOnClickListener(this);
+        mrl_ib13.setOnLongClickListener(this);
+        mrl_ib14.setOnClickListener(this);
+        mrl_ib14.setOnLongClickListener(this);
+        mrl_ib15.setOnClickListener(this);
+        mrl_ib15.setOnLongClickListener(this);
+        mrl_ib16.setOnClickListener(this);
+        mrl_ib16.setOnLongClickListener(this);
+        mrl_ib17.setOnClickListener(this);
+        mrl_ib17.setOnLongClickListener(this);
+        mrl_ib18.setOnClickListener(this);
+        mrl_ib18.setOnLongClickListener(this);
+        mrl_ib19.setOnClickListener(this);
+        mrl_ib19.setOnLongClickListener(this);
+        mrl_ib20.setOnClickListener(this);
+        mrl_ib20.setOnLongClickListener(this);
+        mrl_ib21.setOnClickListener(this);
+        mrl_ib21.setOnLongClickListener(this);
+        mrl_ib22.setOnClickListener(this);
+        mrl_ib22.setOnLongClickListener(this);
+        mrl_ib23.setOnClickListener(this);
+        mrl_ib23.setOnLongClickListener(this);
+        mrl_ib24.setOnClickListener(this);
+        mrl_ib24.setOnLongClickListener(this);
+        mrl_ib25.setOnClickListener(this);
+        mrl_ib25.setOnLongClickListener(this);
+
+        ib6.setBackgroundColor(Color.TRANSPARENT);
+        ib7.setBackgroundColor(Color.TRANSPARENT);
+        ib8.setBackgroundColor(Color.TRANSPARENT);
+        ib9.setBackgroundColor(Color.TRANSPARENT);
+        ib10.setBackgroundColor(Color.TRANSPARENT);
+        ib11.setBackgroundColor(Color.TRANSPARENT);
+        ib12.setBackgroundColor(Color.TRANSPARENT);
+        ib13.setBackgroundColor(Color.TRANSPARENT);
+        ib14.setBackgroundColor(Color.TRANSPARENT);
+        ib15.setBackgroundColor(Color.TRANSPARENT);
+        ib16.setBackgroundColor(Color.TRANSPARENT);
+        ib17.setBackgroundColor(Color.TRANSPARENT);
+        ib18.setBackgroundColor(Color.TRANSPARENT);
+        ib19.setBackgroundColor(Color.TRANSPARENT);
+        ib20.setBackgroundColor(Color.TRANSPARENT);
+        ib21.setBackgroundColor(Color.TRANSPARENT);
+        ib22.setBackgroundColor(Color.TRANSPARENT);
+        ib23.setBackgroundColor(Color.TRANSPARENT);
+        ib24.setBackgroundColor(Color.TRANSPARENT);
+        ib25.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private PendingIntent createOnDismissedIntent(Context context, int notificationId) {
@@ -1030,7 +1254,7 @@ public class MainActivity extends Activity implements OnClickListener {
         Intent infoIntent = new Intent(this, InfoScreenActivity.class);
         infoIntent.putExtra("infoNotificationID", id);
         infoIntent.putExtra("infoNote", note);
-        infoIntent.putExtra("infoLoc", spinnerLocation);
+//        infoIntent.putExtra("infoLoc", spinnerLocation);
         infoIntent.putExtra("infoButton", imageButtonNumber);
         infoIntent.putExtra("infoTitle", title);
         infoIntent.putExtra("infoAlarm", alarm_time);
@@ -1062,27 +1286,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    private void setImageButtonsBasedOffSpinnerSelection() {
-        String s;
-        try {
-            s = pref_icons.get(spinnerLocation);
-        }catch (IndexOutOfBoundsException e){
-            s = "check";
-            e.printStackTrace();
-        }
-
-        if (s.equals("smile")) s = "mood";
-        if (s.equals("heart")) s = "favorite";
-        if (s.equals("note")) s = "note_add";
-
-        ib1.setImageResource(getResources().getIdentifier("ic_" + s + "_white_36dp", "drawable", getPackageName()));
-        ib2.setImageResource(getResources().getIdentifier("ic_" + s + "_yellow_36dp", "drawable", getPackageName()));
-        ib3.setImageResource(getResources().getIdentifier("ic_" + s + "_blue_36dp", "drawable", getPackageName()));
-        ib4.setImageResource(getResources().getIdentifier("ic_" + s + "_green_36dp", "drawable", getPackageName()));
-        ib5.setImageResource(getResources().getIdentifier("ic_" + s + "_red_36dp", "drawable", getPackageName()));
-    }
-
-    void handleSendText(Intent intent) { //for intents from other apps who want to share text to notey
+    private void handleSendText(Intent intent) { //for intents from other apps who want to share text to notey
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             // Update ui to reflect text being shared
@@ -1091,12 +1295,6 @@ public class MainActivity extends Activity implements OnClickListener {
 
             noteTitle = intent.getStringExtra(Intent.EXTRA_SUBJECT);
         }
-    }
-
-    public static float convertDpToPixel(float dp, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        return dp * (metrics.densityDpi / 160f);
     }
 
     private void startVoiceRecognitionActivity() {
@@ -1140,14 +1338,16 @@ public class MainActivity extends Activity implements OnClickListener {
             if ((alarm_time != null && !alarm_time.equals("")) || repeat_time != 0) {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
-                if(darkTheme) alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                if (darkTheme)
+                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
 
                 showAlarmToast();
 
             } else {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
                 alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_add_grey600_36dp));
-                if(darkTheme) alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                if (darkTheme)
+                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
             }
         }
 
@@ -1239,7 +1439,7 @@ public class MainActivity extends Activity implements OnClickListener {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void buildShortcutNotification() {
         Notification n;
-        if(CURRENT_ANDROID_VERSION >= 21 ) { //if > lollipop
+        if (CURRENT_ANDROID_VERSION >= 21) { //if > lollipop
             n = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(getString(R.string.quick_note))
@@ -1250,7 +1450,7 @@ public class MainActivity extends Activity implements OnClickListener {
                     .setAutoCancel(false)
                     .setPriority(Notification.PRIORITY_MIN)
                     .build();
-        }else{
+        } else {
             n = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(getString(R.string.quick_note))
@@ -1265,7 +1465,7 @@ public class MainActivity extends Activity implements OnClickListener {
         nm.notify(SHORTCUT_NOTIF_ID, n);
     }
 
-    private void showAlarmToast(){
+    private void showAlarmToast() {
         long diffInMillisec = Long.valueOf(alarm_time) - System.currentTimeMillis();
         long diffInSec = TimeUnit.MILLISECONDS.toSeconds(diffInMillisec);
         diffInSec /= 60;
@@ -1276,55 +1476,55 @@ public class MainActivity extends Activity implements OnClickListener {
         long days = diffInSec;
 
         String dateString = "";
-        if(days != 0) {
-            if(hours != 0 && minutes != 0) { // 3 day, 2 hr, and 5 min
-                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + ", ";
+        if (days != 0) {
+            if (hours != 0 && minutes != 0) { // 3 day, 2 hr, and 5 min
+                if (days > 1)
+                    dateString = Long.toString(days) + "" + getString(R.string.days) + ", ";
                 else dateString = Long.toString(days) + "" + getString(R.string.day) + ", ";
 
-                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours) + ", and ";
+                if (hours > 1)
+                    dateString += Long.toString(hours) + "" + getString(R.string.hours) + ", and ";
                 else dateString += Long.toString(hours) + "" + getString(R.string.hour) + ", and ";
 
-                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                if (minutes > 1)
+                    dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
                 else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
-            }
-            else if(hours != 0 && minutes == 0) { // 3 day and 2 hr
-                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
+            } else if (hours != 0 && minutes == 0) { // 3 day and 2 hr
+                if (days > 1)
+                    dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
                 else dateString = Long.toString(days) + "" + getString(R.string.day) + " and ";
 
                 if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours);
                 else dateString += Long.toString(hours) + "" + getString(R.string.hour);
-            }
-            else if(hours == 0 && minutes != 0) { // 3 day and 5 min
-                if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
+            } else if (hours == 0 && minutes != 0) { // 3 day and 5 min
+                if (days > 1)
+                    dateString = Long.toString(days) + "" + getString(R.string.days) + " and ";
                 else dateString = Long.toString(days) + "" + getString(R.string.day) + " and ";
 
-                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                if (minutes > 1)
+                    dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
                 else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
-            }
-            else // 3 day
+            } else // 3 day
                 if (days > 1) dateString = Long.toString(days) + "" + getString(R.string.days);
                 else dateString = Long.toString(days) + "" + getString(R.string.day);
-        }
-        else{
-            if(hours != 0 && minutes != 0){ // 2 hr and 5 min
-                if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours) + " and ";
+        } else {
+            if (hours != 0 && minutes != 0) { // 2 hr and 5 min
+                if (hours > 1)
+                    dateString += Long.toString(hours) + "" + getString(R.string.hours) + " and ";
                 else dateString += Long.toString(hours) + "" + getString(R.string.hour) + " and ";
 
-                if (minutes > 1) dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
+                if (minutes > 1)
+                    dateString += Long.toString(minutes) + "" + getString(R.string.minutes);
                 else dateString += Long.toString(minutes) + "" + getString(R.string.minute);
-            }
-            else if(hours == 0 && minutes != 0){ // 5 min
-                if (minutes > 1) dateString = Long.toString(minutes) + "" + getString(R.string.minutes);
+            } else if (hours == 0 && minutes != 0) { // 5 min
+                if (minutes > 1)
+                    dateString = Long.toString(minutes) + "" + getString(R.string.minutes);
                 else dateString = Long.toString(minutes) + "" + getString(R.string.minute);
-            }
-            else if(hours != 0 && minutes == 0){ // 2 hr
+            } else if (hours != 0 && minutes == 0) { // 2 hr
                 if (hours > 1) dateString += Long.toString(hours) + "" + getString(R.string.hours);
                 else dateString += Long.toString(hours) + "" + getString(R.string.hour);
-            }
-            else dateString = getString(R.string.less_than_a_minute); // less than 1 min
+            } else dateString = getString(R.string.less_than_a_minute); // less than 1 min
         }
-
-
 
 
         Toast.makeText(getApplicationContext(), getString(R.string.alarm_set_for) + " " +
@@ -1411,7 +1611,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    final IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
+    private final IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
         @Override
         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
             Log.d(TAG, "Query inventory finished.");
@@ -1429,27 +1629,17 @@ public class MainActivity extends Activity implements OnClickListener {
             if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
                 proVersionEnabled = true;
                 //if user was already a pro, don't bother fixing the spinner locations
-                if(!userWasAlreadyAPro) setUpProGUI();
-
-                //still want to enable the pro icons
-                pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
-                Collections.sort(pref_icons);
-                //just make check first in the list
-                if (pref_icons.size() > 1 && pref_icons.get(1).equals("check")) {
-                    Collections.swap(pref_icons, 1, 0);
-                }
-
+                if (!userWasAlreadyAPro) setUpProGUI();
+                setProImageButtons();
                 setUpMenu();
-                setUpSpinner();
-            }
-            else{ //if user is not a pro, disable pro features
+            } else { //if user is not a pro, disable pro features
                 //set notification shortcut to false if it is set to true
-                if(sharedPreferences.getBoolean("pref_shortcut", false)) {
+                if (sharedPreferences.getBoolean("pref_shortcut", false)) {
                     editor.putBoolean("pref_shortcut", false);
                     editor.apply();
                 }
                 //set spinner icons back to default five
-                pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
+//                pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
             }
 
             Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
@@ -1458,7 +1648,7 @@ public class MainActivity extends Activity implements OnClickListener {
     };
 
     // Callback for when a purchase is finished
-    final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
         @Override
         public void onIabPurchaseFinished(IabResult result, Purchase info) {
             Log.d(TAG, "Purchase finished: " + result + ", purchase: " + info);
@@ -1485,7 +1675,6 @@ public class MainActivity extends Activity implements OnClickListener {
                 proVersionEnabled = true;
                 justTurnedPro = true;
                 setUpProGUI();
-                setUpSpinner();
             } else if (info.getSku().equals(SKU_TIP_VERSION)) {
                 Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
 
@@ -1493,14 +1682,13 @@ public class MainActivity extends Activity implements OnClickListener {
                 proVersionEnabled = true;
                 justTurnedPro = true;
                 setUpProGUI();
-                setUpSpinner();
             }
         }
     };
 
-    public static void setUpProGUI() {
+    private static void setUpProGUI() {
         //make all the icons enabled initially
-        pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
+//        pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
 
         //when upgrading to pro, adding more icons to the spinner alters the spinner location's number. this is to fix that
         MySQLiteHelper db = new MySQLiteHelper(appContext);
@@ -1522,36 +1710,38 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     }
 
-    boolean verifyDeveloperPayload(Purchase p) {
+    private boolean verifyDeveloperPayload(Purchase p) {
         payload = p.getDeveloperPayload();
         return true;
     }
 
-    private void themeStuffBeforeSetContentView(){
+    private void themeStuffBeforeSetContentView() {
         //initialize theme preferences
         themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
         darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
 
         //set light/dark theme
-        if(darkTheme) {
-            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+themeColor, "style", getPackageName()));
-        }
-        else {
-            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+themeColor, "style", getPackageName()));
+        if (darkTheme) {
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_" + themeColor, "style", getPackageName()));
+        } else {
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_" + themeColor, "style", getPackageName()));
         }
     }
 
-    private void themeStuffAfterSetContentView(){
+    private void themeStuffAfterSetContentView() {
         //set color
         RelativeLayout r = (RelativeLayout) findViewById(R.id.layout_top);
         r.setBackgroundResource(getResources().getIdentifier(themeColor, "color", getPackageName()));
 
         //re-color the icon row for dark theme
-        TableRow t = (TableRow) findViewById(R.id.tableRow1);
-        if(darkTheme) {
-            t.setBackgroundResource(R.color.md_grey_800);
-        }else{
-            t.setBackgroundResource(R.color.md_grey_700);
+        tableRow = (TableRow) findViewById(R.id.tableRow1);
+        hsv = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+        if (darkTheme) {
+            tableRow.setBackgroundResource(R.color.md_grey_800);
+            hsv.setBackgroundResource(R.color.md_grey_800);
+        } else {
+            tableRow.setBackgroundResource(R.color.md_grey_700);
+            hsv.setBackgroundResource(R.color.md_grey_700);
         }
     }
 
@@ -1561,17 +1751,16 @@ public class MainActivity extends Activity implements OnClickListener {
         // if settings_jb_kk activity was called, reset the ui
         if (settings_activity_flag) {
             initializeSettings();
-            if (spinnerChanged) { //if the spinner was altered then refresh it
-                setUpSpinner();
-                spinnerChanged = false;
-            }
+//            if (spinnerChanged) { //if the spinner was altered then refresh it
+//                setUpSpinner();
+//                spinnerChanged = false;
+//            }
             settings_activity_flag = false;
         }
         if (about_activity_flag) { // if about activity was called, check to see if the user had typed in the secret code and are now Pro. if yes, set up everything like a normal pro purchase.
             initializeSettings();
             if (justTurnedPro) {
                 setUpMenu();
-                setUpSpinner();
                 justTurnedPro = false;
             }
             about_activity_flag = false;

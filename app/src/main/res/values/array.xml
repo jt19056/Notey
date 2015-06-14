@@ -29,31 +29,6 @@
         <item>minimum</item>
     </string-array>
 
-    <!-- Icon picker-->
-    <string-array name="pro_icons_array">
-        <item>@string/check</item>
-        <item>@string/alarm</item>
-        <item>@string/edit</item>
-        <item>@string/heart</item>
-        <item>@string/note</item>
-        <item>@string/shopping_cart</item>
-        <item>@string/smile</item>
-        <item>@string/star</item>
-        <item>@string/warning</item>
-        <item>@string/flame</item>
-    </string-array>
-    <string-array name="pro_icons_values">
-        <item>check</item>
-        <item>alarm</item>
-        <item>edit</item>
-        <item>heart</item>
-        <item>note</item>
-        <item>shopping_cart</item>
-        <item>smile</item>
-        <item>star</item>
-        <item>warning</item>
-        <item>whatshot</item>
-    </string-array>
     <string-array name="default_icons">
         <item>check</item>
         <item>warning</item>
@@ -160,5 +135,90 @@
         <item>thomas.jonathan.notey.MainActivity-md_brown_500_dark</item>
         <item>thomas.jonathan.notey.MainActivity-md_grey_500_dark</item>
         <item>thomas.jonathan.notey.MainActivity-md_blue_grey_500_dark</item>
+    </string-array>
+
+    <string-array name="icon_colors_array_standard">
+        <item>white</item>
+        <item>yellow</item>
+        <item>blue</item>
+        <item>green</item>
+        <item>red</item>
+    </string-array>
+    <string-array name="icon_colors_array_pro">
+        <item>white</item>
+        <item>red</item>
+        <item>pink</item>
+        <item>purple</item>
+        <item>indigo</item>
+        <item>blue</item>
+        <item>cyan</item>
+        <item>teal</item>
+        <item>green</item>
+        <item>light_green</item>
+        <item>yellow</item>
+        <item>orange</item>
+        <item>deep_orange</item>
+        <item>bluegrey</item>
+        <item>black</item>
+    </string-array>
+
+    <string-array name="icons_array_standard">
+        <item>ic_check_</item>
+        <item>ic_edit_</item>
+        <item>ic_star_</item>
+        <item>ic_warning_</item>
+        <item>ic_whatshot_</item>
+    </string-array>
+    <string-array name="icons_array_pro">
+        <item>ic_check_</item>
+        <item>ic_edit_</item>
+        <item>ic_star_</item>
+        <item>ic_warning_</item>
+        <item>ic_whatshot_</item>
+        <item>ic_alarm_</item>
+        <item>ic_favorite_</item>
+        <item>ic_note_add_</item>
+        <item>ic_shopping_cart_</item>
+        <item>ic_mood_</item>
+        <item>ic_assignment_</item>
+        <item>ic_attach_money_</item>
+        <item>ic_book_</item>
+        <item>ic_brightness_low_</item>
+        <item>ic_call_</item>
+        <item>ic_directions_car_</item>
+        <item>ic_event_</item>
+        <item>ic_flag_</item>
+        <item>ic_flash_on_</item>
+        <item>ic_bar_</item>
+        <item>ic_local_florist_</item>
+        <item>ic_music_note_</item>
+        <item>ic_notifications_</item>
+        <item>ic_reply_</item>
+        <item>ic_toys_</item>
+    </string-array>
+
+    <string-array name="icon_color_names_pro">
+        <item>md_grey_500</item>
+        <item>md_red_A400</item>
+        <item>md_pink_A100</item>
+        <item>md_purple_500</item>
+        <item>md_indigo_500</item>
+        <item>md_blue_500</item>
+        <item>md_cyan_A400</item>
+        <item>md_teal_500</item>
+        <item>md_green_A700</item>
+        <item>md_light_green_A400</item>
+        <item>md_yellow_500</item>
+        <item>md_orange_A400</item>
+        <item>md_deep_orange_A200</item>
+        <item>md_blue_grey_500</item>
+        <item>md_black_1000</item>
+    </string-array>
+    <string-array name="icon_color_names_standard">
+        <item>md_grey_500</item>
+        <item>md_yellow_500</item>
+        <item>md_blue_500</item>
+        <item>md_green_A700</item>
+        <item>md_red_A400</item>
     </string-array>
 </resources>

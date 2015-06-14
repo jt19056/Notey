@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import java.util.List;
 public class NotificationBootService extends IntentService {
     final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
     int priority, repeatTime = 0;
-    boolean pref_expand, pref_swipe, pref_share_action;
+    boolean pref_expand, pref_swipe, pref_share_action, pref_use_colored_icons;
     String clickNotif, intentType, pref_priority, noteString;
     PendingIntent alarmPendingIntent;
 
@@ -149,32 +150,70 @@ public class NotificationBootService extends IntentService {
                 }
 
                 //set background color if on lollipop or above
-                int color = getResources().getColor(R.color.grey_500); // grey, for grey background with white icons
-                if(CURRENT_ANDROID_VERSION >= 21){
-                    if (n.getIconName().contains("yellow")) {
-                        color = getResources().getColor(R.color.yellow_500);
-                    }
-                    else if (n.getIconName().contains("blue")) {
-                        color = getResources().getColor(R.color.cyan_a400);
-                    }
-                    else if (n.getIconName().contains("green")) {
-                        color = getResources().getColor(R.color.green_a700);
-                    }
-                    else if (n.getIconName().contains("red")) {
-                        color = getResources().getColor(R.color.red_a400);
-                    }
+                int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
+                //get icon color
+                String iconColor;
+                if(n.getIconName().contains("shopping") || n.getIconName().contains("note") || n.getIconName().contains("attach") || n.getIconName().contains("brightness") ||
+                        n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music")) {
+                    iconColor = n.getIconName().split("_")[3];
+                }
+                else{
+                    iconColor = n.getIconName().split("_")[2];
+                }
+                //if not greater than lollipop set the colors. otherwise, use white and set the background icon color\
+                //get string color for lollipop notification background color
+                // converts ex. red -> md_red_A400  or  blue -> md_blue_500
+                if(CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
+                            //light_green or deep_orange special cases
+                    if(iconColor.contains("light")) iconColor += "_green";
+                    else if(iconColor.contains("deep")) iconColor += "_orange";
+
+                    String colorArray[] = getResources().getStringArray(R.array.icon_colors_array_pro);
+
+                    int c = Arrays.asList(colorArray).indexOf(iconColor);
+
+                    String colorNames[] = getResources().getStringArray(R.array.icon_color_names_pro);
+
+                    String colorString = Arrays.asList(colorNames).get(c);
+
+                    color = getResources().getColor(getResources().getIdentifier(colorString, "color", getPackageName()));
+                }
+                else if(CURRENT_ANDROID_VERSION >= 21 && iconColor.equals("white")){ //for lollipop white icons, use white icon with grey background so they can see it
+                    pref_use_colored_icons = false; //make them use the lollipop circle background
+                    color = getResources().getColor(R.color.md_grey_500);
                 }
 
                 Bitmap bm = BitmapFactory.decodeResource(getResources(), ico);
 
                 Notification notif;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21) { //expandable, with share button, and on lollipop and above
+                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
                             .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit)
+                            .addAction(R.drawable.ic_share_white_24dp,
+                                    getString(R.string.share), piShare)
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss)
+                            .build();
+                }
+                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setLargeIcon(bm)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
@@ -211,13 +250,32 @@ public class NotificationBootService extends IntentService {
                             .build();
                 }
                 // same as above, except no share action button. lollipop.
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21) {
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21  && !pref_use_colored_icons) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
                             .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setColor(color)
+                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .addAction(R.drawable.ic_edit_white_24dp,
+                                    getString(R.string.edit), piEdit)
+                            .addAction(R.drawable.ic_delete_white_24dp,
+                                    getString(R.string.remove), piDismiss)
+                            .build();
+                }
+                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21  && pref_use_colored_icons) {
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setLargeIcon(bm)
                             .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
@@ -251,13 +309,27 @@ public class NotificationBootService extends IntentService {
                             .build();
                 }
                 //not expandable, but still able to set priority. lollipop.
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21) {
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
                     notif = new NotificationCompat.Builder(this)
                             .setContentTitle(n.getTitle())
                             .setContentText(n.getNote())
                             .setTicker(tickerText)
                             .setSmallIcon(ico)
                             .setColor(color)
+                            .setDeleteIntent(piDismiss)
+                            .setContentIntent(onNotifClickPI(clickNotif, n))
+                            .setOngoing(!pref_swipe)
+                            .setAutoCancel(false)
+                            .setPriority(priority)
+                            .build();
+                }
+                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) {
+                    notif = new NotificationCompat.Builder(this)
+                            .setContentTitle(n.getTitle())
+                            .setContentText(n.getNote())
+                            .setTicker(tickerText)
+                            .setSmallIcon(ico)
+                            .setLargeIcon(bm)
                             .setDeleteIntent(piDismiss)
                             .setContentIntent(onNotifClickPI(clickNotif, n))
                             .setOngoing(!pref_swipe)
@@ -306,6 +378,7 @@ public class NotificationBootService extends IntentService {
         if (CURRENT_ANDROID_VERSION >= 16) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
+            pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
 
             pref_priority = sharedPreferences.getString("pref_priority", "normal");
             switch (pref_priority) {

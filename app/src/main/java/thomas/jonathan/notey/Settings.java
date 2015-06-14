@@ -193,8 +193,8 @@ public class Settings extends PreferenceActivity{
                 int colorID = getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName());
 
                 int view; //layout for theme choose
-                if(MainActivity.proVersionEnabled) view = R.layout.color_chooser_dialog_pro;
-                else view = R.layout.color_chooser_dialog;
+                if(MainActivity.proVersionEnabled) view = R.layout.theme_color_chooser_dialog_pro;
+                else view = R.layout.theme_color_chooser_dialog;
 
                 final MaterialDialog md = new MaterialDialog.Builder(Settings.this)
                         .customView(view, false)

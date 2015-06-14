@@ -212,26 +212,30 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                     NoteyNote n = db.getNotey(infoID);
                     imageView.setImageResource(getResources().getIdentifier(n.getIconName().replace("24", "36"), "drawable", getPackageName())); //use 36dp icon instead of 24
                     imageView.setBackgroundResource(R.drawable.circle_grey);
-                    imageView.setAlpha(0.7f);
                 }else{ //for lollipop, show the white icon on a colored circle
                     NoteyNote n = db.getNotey(infoID);
                     String icon = n.getIconName().replace("24", "36"); //use 36dp icon instead of 24
+
+                    String iconColor, replaceMe;
+                    if(n.getIconName().contains("shopping") || n.getIconName().contains("note") || n.getIconName().contains("attach") || n.getIconName().contains("brightness") ||
+                            n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music")) {
+                        iconColor = n.getIconName().split("_")[3];
+                    }
+                    else{
+                        iconColor = n.getIconName().split("_")[2];
+                    }
+
+                    //light_green or deep_orange special cases
+                    if(iconColor.contains("light")) iconColor += "_green";
+                    else if(iconColor.contains("deep")) iconColor += "_orange";
+
                     //show white icon with colored background
-                    if(icon.contains("yellow")) {
-                        imageView.setImageResource(getResources().getIdentifier(icon.replace("yellow", "white"), "drawable", getPackageName()));
-                        imageView.setBackgroundResource(R.drawable.circle_yellow);
-                    }else if(icon.contains("blue")) {
-                        imageView.setImageResource(getResources().getIdentifier(icon.replace("blue", "white"), "drawable", getPackageName()));
-                        imageView.setBackgroundResource(R.drawable.circle_blue);
-                    }else if(icon.contains("green")) {
-                        imageView.setImageResource(getResources().getIdentifier(icon.replace("green", "white"), "drawable", getPackageName()));
-                        imageView.setBackgroundResource(R.drawable.circle_green);
-                    }else if(icon.contains("red")) {
-                        imageView.setImageResource(getResources().getIdentifier(icon.replace("red", "white"), "drawable", getPackageName()));
-                        imageView.setBackgroundResource(R.drawable.circle_red);
-                    }else {
+                    if(icon.contains("white")) { // white icon with gray background for white icons
                         imageView.setImageResource(getResources().getIdentifier(icon, "drawable", getPackageName()));
                         imageView.setBackgroundResource(R.drawable.circle_grey);
+                    }else  {
+                        imageView.setImageResource(getResources().getIdentifier(icon.replace(iconColor, "white"), "drawable", getPackageName()));
+                        imageView.setBackgroundResource(getResources().getIdentifier("circle_" + iconColor, "drawable", getPackageName()));
                     }
                 }
             }

@@ -252,6 +252,7 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_marginRight="10dp"
+
             />
     </LinearLayout>
 
@@ -269,7 +270,8 @@
             android:layout_weight="1"
             android:background="?android:selectableItemBackground"
             android:text="@string/cancel"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
 
         <Button
             android:id="@+id/alarm_set_btn"
