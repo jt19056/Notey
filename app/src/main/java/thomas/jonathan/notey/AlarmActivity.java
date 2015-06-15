@@ -230,6 +230,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
         } else {
             alarm_delete.setVisibility(View.INVISIBLE); // no alarm? don't show delete button then
+            if(minute == 59) hour += 1; //if it's 8:59, we'll want to show 9:00
             minute = minute + 1; //add one minute to the clock, so the default display time is one minute ahead of current time
         }
 
