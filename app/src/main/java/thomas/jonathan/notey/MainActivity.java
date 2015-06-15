@@ -90,6 +90,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private boolean impossible_to_delete = false;
     private boolean pref_enter;
     private boolean pref_use_colored_icons;
+    private boolean pref_large_icons;
     private boolean pref_share_action;
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
@@ -142,16 +143,16 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         appContext = getApplicationContext();
 
-        doInAppBillingStuff();
+//        doInAppBillingStuff();
 
         /*** For free Pro users, enable this and setProImageButtons() on line 149 ***/
-//        proVersionEnabled = true;
+        proVersionEnabled = true;
 
         initializeSettings();
         initializeGUI();
 
         /*** For free Pro users, enable this too! ***/
-//        setProImageButtons();
+        setProImageButtons();
 
         setLayout();
 
@@ -296,7 +297,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
             //if either textbox has text AND it is possible to delete notifs AND (if current time is less than alarm time OR there is a repeating alarm), then set the alarm, continue and create notification
             if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && (alarmTimeIsGreaterThanCurrentTime || repeat_time != 0)) {
-                fullIconName = iconName + iconColor + "_24dp";
+                //use the 36dp or 24dp icons
+                if(pref_large_icons) fullIconName = iconName + iconColor + "_36dp";
+                else fullIconName = iconName + iconColor + "_24dp";
+
                 int d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
                 int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
                 //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
@@ -1041,6 +1045,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
+        pref_large_icons = sharedPreferences.getBoolean("pref_large_icons", false); //icon size for notifications
+
 
         userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
 

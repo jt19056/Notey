@@ -46,6 +46,18 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:key="pref_key_pro"
+        android:title="@string/pro_options">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="pref_shortcut"
+            android:summary="@string/shortcut_summary"
+            android:title="@string/shortcut" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
         <CheckBoxPreference
@@ -59,17 +71,11 @@
             android:key="pref_use_colored_icons"
             android:summary="@string/use_colored_icons_summary"
             android:title="@string/use_colored_icons" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="pref_key_pro"
-        android:title="@string/pro_options">
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:enabled="false"
-            android:key="pref_shortcut"
-            android:summary="@string/shortcut_summary"
-            android:title="@string/shortcut" />
+            android:key="pref_large_icons"
+            android:summary="@string/large_icons_summary"
+            android:title="@string/large_icons" />
     </PreferenceCategory>
 </PreferenceScreen>

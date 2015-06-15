@@ -35,16 +35,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:key="pref_key_other"
-        android:title="@string/other">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref_enter"
-            android:summary="@string/enterToSendSummary"
-            android:title="@string/enterToSend" />
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:key="pref_key_pro"
         android:title="@string/pro_options">
 
@@ -56,4 +46,19 @@
             android:title="@string/shortcut" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="pref_key_other"
+        android:title="@string/other">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_enter"
+            android:summary="@string/enterToSendSummary"
+            android:title="@string/enterToSend" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref_large_icons"
+            android:summary="@string/large_icons_summary"
+            android:title="@string/large_icons" />
+    </PreferenceCategory>
 </PreferenceScreen>

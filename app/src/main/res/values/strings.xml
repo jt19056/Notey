@@ -61,7 +61,8 @@
     <string name="your_new_icon">Your new icon:</string>
     <string name="use_colored_icons">Use Colored Icons</string>
     <string name="use_colored_icons_summary">Use colored icons instead of white icon with colored background.  If you are not seeing your icons in the notification tray, try having this checked.</string>
-
+    <string name="large_icons">Large Icons</string>
+    <string name="large_icons_summary">Bigger icons in the notification tray</string>
 
     <!-- About strings -->
     <string name="about">About</string>
