@@ -93,7 +93,11 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             finish();
         } else if (view.getId() == R.id.info_copy_button) {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText("label", noteText.getText());
+            ClipData clip;
+            //if no note text, copy the title
+            if(noteText.getText() == null || noteText.getText().toString().isEmpty())
+                clip = ClipData.newPlainText("label", noteTitle);
+            else clip = ClipData.newPlainText("label", noteText.getText());
             clipboard.setPrimaryClip(clip);
 
             Toast.makeText(getApplicationContext(), getString(R.string.text_copied), Toast.LENGTH_SHORT).show();
