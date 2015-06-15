@@ -1049,16 +1049,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
 
         userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
-
-//        pref_icons = (proVersionEnabled) ? Arrays.asList(getResources().getStringArray(R.array.pro_icons_values)) : Arrays.asList(getResources().getStringArray(R.array.default_icons)); //initialize icons list
-
-        // Create new note shortcut in the notification tray
-        boolean pref_shortcut = sharedPreferences.getBoolean("pref_shortcut", false);
-        if (pref_shortcut) {
-            buildShortcutNotification();
-        } else {
-            nm.cancel(SHORTCUT_NOTIF_ID);
-        }
     }
 
     private void setProImageButtons() {
@@ -1440,35 +1430,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 return true;
             }
         });
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private void buildShortcutNotification() {
-        Notification n;
-        if (CURRENT_ANDROID_VERSION >= 21) { //if > lollipop
-            n = new NotificationCompat.Builder(this)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(getString(R.string.quick_note))
-                    .setSmallIcon(R.drawable.ic_new_note_white)
-                    .setColor(getResources().getColor(R.color.grey_500))
-                    .setOngoing(true)
-                    .setContentIntent(onNotifClickPI("shortcut", "", ""))
-                    .setAutoCancel(false)
-                    .setPriority(Notification.PRIORITY_MIN)
-                    .build();
-        } else {
-            n = new NotificationCompat.Builder(this)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(getString(R.string.quick_note))
-                    .setSmallIcon(R.drawable.ic_launcher_dashclock)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
-                    .setOngoing(true)
-                    .setContentIntent(onNotifClickPI("shortcut", "", ""))
-                    .setAutoCancel(false)
-                    .setPriority(Notification.PRIORITY_MIN)
-                    .build();
-        }
-        nm.notify(SHORTCUT_NOTIF_ID, n);
     }
 
     private void showAlarmToast() {

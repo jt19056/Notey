@@ -1,11 +1,15 @@
 package thomas.jonathan.notey;
 
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -15,6 +19,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.MenuItem;
@@ -34,6 +39,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 public class Settings extends PreferenceActivity{
     private boolean impossible_to_delete = false;
     private SharedPreferences sharedPreferences;
+    private NotificationManager nm;
 
     //theme dialog variables
     private String selectedFab;
@@ -64,8 +70,18 @@ public class Settings extends PreferenceActivity{
 
         //enable pro feature options
         if (MainActivity.proVersionEnabled) {
-            CheckBoxPreference pref_shortcut = (CheckBoxPreference) findPreference("pref_shortcut");
+            final CheckBoxPreference pref_shortcut = (CheckBoxPreference) findPreference("pref_shortcut");
             pref_shortcut.setEnabled(true);
+            // Create new note shortcut in the notification tray
+            pref_shortcut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if(pref_shortcut.isChecked()) buildShortcutNotification();
+                    else nm.cancel(MainActivity.SHORTCUT_NOTIF_ID);
+                    return false;
+                }
+            });
         }
 
         //listen for changes to preferences. Need to make sure users make it possible to delete notifications.
@@ -766,6 +782,35 @@ public class Settings extends PreferenceActivity{
         s4.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "ROBOTO-BOLD.ttf")), 0, s4.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         notif_pro.setTitle(s4);
+    }
+
+    private void buildShortcutNotification() {
+        Notification n;
+
+        if (MainActivity.CURRENT_ANDROID_VERSION >= 21) { //if > lollipop
+            n = new NotificationCompat.Builder(this)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.quick_note))
+                    .setSmallIcon(R.drawable.ic_new_note_white)
+                    .setColor(getResources().getColor(R.color.grey_500))
+                    .setOngoing(true)
+                    .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setAutoCancel(false)
+                    .setPriority(Notification.PRIORITY_MIN)
+                    .build();
+        } else {
+            n = new NotificationCompat.Builder(this)
+                    .setContentTitle(getString(R.string.app_name))
+                    .setContentText(getString(R.string.quick_note))
+                    .setSmallIcon(R.drawable.ic_launcher_dashclock)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_new_note))
+                    .setOngoing(true)
+                    .setContentIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                    .setAutoCancel(false)
+                    .setPriority(Notification.PRIORITY_MIN)
+                    .build();
+        }
+        nm.notify(MainActivity.SHORTCUT_NOTIF_ID, n);
     }
 
     private void restartNotey(){
