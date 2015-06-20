@@ -60,7 +60,6 @@ public class About extends PreferenceActivity {
         Preference contactPref = findPreference("pref_contact");
         Preference ratePref = findPreference("pref_rate");
         Preference proPref = findPreference("pref_pro");
-        Preference verNumPref = findPreference("pref_ver_num");
 
         //dialog pop-up for 'open sources' preference
         new AlertDialog.Builder(this);
@@ -145,6 +144,24 @@ public class About extends PreferenceActivity {
                 } catch (android.content.ActivityNotFoundException e) {
                     e.printStackTrace();
                 }
+                return false;
+            }
+        });
+
+        //Pro - popup to show the pro features
+        new AlertDialog.Builder(this);
+        proPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                MaterialDialog md = new MaterialDialog.Builder(About.this)
+                        .title(getResources().getString(R.string.pro_features))
+                        .customView(R.layout.webview_dialog_layout, false)
+                        .positiveText(getResources().getString(R.string.ok))
+                        .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
+                        .build();
+                WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
+                webView.loadUrl("file:///android_asset/ProFeaturesInfo.html");
+                md.show();
+
                 return false;
             }
         });
