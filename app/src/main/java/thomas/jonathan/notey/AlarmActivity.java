@@ -242,7 +242,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        Dialog.Builder builder = null;
         if (view.getId() == R.id.date_tv) { //show the date picker
             DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day);
             datePickerDialog.setYearRange(1985, 2028);

@@ -152,6 +152,8 @@
     <string name="ok">OK</string>
     <string name="no">No</string>
     <string name="dismiss">Dismiss</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo_caps">UNDO</string>
 
     <!-- Pro -->
     <string name="go_pro">Upgrade to Pro</string>

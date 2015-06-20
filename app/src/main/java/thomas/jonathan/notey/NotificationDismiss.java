@@ -9,16 +9,65 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteException;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 
-public class NotificationDismiss extends BroadcastReceiver {
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class NotificationDismiss extends BroadcastReceiver{
     NotificationManager nm;
+    public static Timer timer;
+    public static TimerTask timerTask;
 
     @Override
-    public void onReceive(Context paramContext, Intent paramIntent) {
-        MySQLiteHelper db = new MySQLiteHelper(paramContext);
-        NoteyNote notey;
-        int id = paramIntent.getExtras().getInt("NotificationID");
+    public void onReceive(final Context paramContext, final Intent paramIntent) {
+
+        final MySQLiteHelper db = new MySQLiteHelper(paramContext);
+        final int id = paramIntent.getExtras().getInt("NotificationID");
+        nm = (NotificationManager) paramContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(paramContext).edit();
+
+        //give the user 5 seconds before removing the notification
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                nm.cancel(id);
+                editor.remove("notification" + Integer.toString(id)).apply();
+            }
+        };
+        timer.schedule(timerTask, 5000, 5000);
+
+        //undo notification layout
+        RemoteViews remoteViews = new RemoteViews(paramContext.getPackageName(),
+                R.layout.undo_delete_layout);
+
+        //intent to rebuild the notification
+        Intent intent = new Intent(paramContext, NotificationBuild.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
+        intent.putExtras(bundle);
+
+        //get the notification icon
+        NoteyNote notey = null;
+        int smallIcon = R.drawable.md_transparent;
+        try {
+            notey = db.getNotey(id);
+            if(notey != null) smallIcon = notey.getIcon();
+        } catch (SQLiteException | CursorIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+
+        // build undo notification
+        NotificationCompat.Builder n = new NotificationCompat.Builder(paramContext)
+                .setSmallIcon(smallIcon)
+                .setContent(remoteViews)
+                .setContentIntent(PendingIntent.getBroadcast(paramContext, id, intent, 0));
+
+        nm.notify(id, n.build());
 
         //cancel the alarm pending intent
         PendingIntent alarmPendingIntent = (PendingIntent) paramIntent.getExtras().get("alarmPendingIntent");
@@ -27,7 +76,6 @@ public class NotificationDismiss extends BroadcastReceiver {
             alarmManager.cancel(alarmPendingIntent);
 
             // remove the no longer needed sharedprefs
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(paramContext).edit();
             editor.remove("vibrate" + Integer.toString(id)).apply();
             editor.remove("wake" + Integer.toString(id)).apply();
             editor.remove("sound" + Integer.toString(id)).apply();
@@ -37,15 +85,10 @@ public class NotificationDismiss extends BroadcastReceiver {
         }
 
         try {
-            notey = db.getNotey(id);
-            db.deleteNotey(notey);
-
-            nm = (NotificationManager) paramContext.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.cancel(id);
-        } catch (SQLiteException | CursorIndexOutOfBoundsException e) {
+            if(notey != null)  db.deleteNotey(notey);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void clearNotificationLED(Context paramContext) {

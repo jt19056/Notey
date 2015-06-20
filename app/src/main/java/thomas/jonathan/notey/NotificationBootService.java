@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.google.gson.Gson;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -87,7 +89,7 @@ public class NotificationBootService extends IntentService {
             //Settings stuff
             initializeSettings();
 
-            //show shortcut notification if settings_jb_kk say so
+            //show shortcut notification if settings say so
             if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("pref_shortcut", false)) {
                 Notification n;
                 if(CURRENT_ANDROID_VERSION >= 21 ) { //if > lollipop
@@ -117,9 +119,6 @@ public class NotificationBootService extends IntentService {
             }
 
             for (NoteyNote n : allNoteys) {
-                PendingIntent piDismiss = createOnDismissedIntent(n.getId());
-                PendingIntent piEdit = createEditIntent(n);
-                PendingIntent piShare = createShareIntent(n);
 
                 //for users on < v2.0.3, they didn't have 'title' column in db
                 if (n.getTitle() == null) {
@@ -183,190 +182,35 @@ public class NotificationBootService extends IntentService {
                     color = getResources().getColor(R.color.md_grey_500);
                 }
 
-                Bitmap bm = BitmapFactory.decodeResource(getResources(), ico);
+                repeatTime = PreferenceManager.getDefaultSharedPreferences(this).getInt("repeat" + n.getId(), 0);
 
-                Notification notif;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setColor(color)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //expandable, with share button, and on jelly bean or greater. also, jb or kk.
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                // same as above, except no share action button. lollipop.
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21  && !pref_use_colored_icons) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setColor(color)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21  && pref_use_colored_icons) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                // same as above, except no share action button. jb & kk.
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteString))
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit)
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss)
-                            .build();
-                }
-                //not expandable, but still able to set priority. lollipop.
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setColor(color)
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                }
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                }
-                //not expandable, but still able to set priority. jb & kk.
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16  && CURRENT_ANDROID_VERSION < 21) {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setDeleteIntent(piDismiss)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                }
-                //if api < 16
-                else {
-                    notif = new NotificationCompat.Builder(this)
-                            .setContentTitle(n.getTitle())
-                            .setContentText(n.getNote())
-                            .setTicker(tickerText)
-                            .setSmallIcon(ico)
-                            .setLargeIcon(bm)
-                            .setContentIntent(onNotifClickPI(clickNotif, n))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setAutoCancel(false)
-                            .build();
-                }
-                nm.notify(n.getId(), notif);
+                //intent to build the notification
+                Intent undoIntent = new Intent(this, NotificationBuild.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", n.getId());
+                undoIntent.putExtras(bundle);
+                sendBroadcast(undoIntent);
+
+                // save all the info of the notification. this is for undo notification re-building
+                List list = Arrays.asList(
+                        n.getTitle(), // 0 string
+                        n.getNote(), // 1 string
+                        tickerText, // 2 string
+                        ico, // 3 int
+                        color, // 4 int
+                        n.getIconName(), // 5 string
+                        priority, // 6 int
+                        n.getImgBtnNum(), // 7 int
+                        n.getAlarm(), // 8 string
+                        repeatTime // 9 int
+                );
+
+                //save to sharedprefs
+                SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit();
+                Gson gson = new Gson();
+                String json = gson.toJson(list);
+                prefsEditor.putString("notification" + Integer.toString(n.getId()), json);
+                prefsEditor.apply();
             }
         }
         stopSelf();

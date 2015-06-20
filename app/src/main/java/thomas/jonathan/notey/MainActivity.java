@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -51,8 +52,13 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.vending.billing.IInAppBillingService;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.easyandroidanimations.library.ScaleInAnimation;
+import com.google.gson.Gson;
 import com.rey.material.widget.FloatingActionButton;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -271,327 +277,162 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             about_activity_flag = false;
         }
         // else if the send button is pressed
-        else if (v.getId() == R.id.btn) {
-            //check if user has made it not possible to remove notifications.
-            // (this is a fail-safe in case they got out of the settings_jb_kk menu by pressing the 'home' key or some other way)
-            if ((!clickNotif.equals("remove") && !clickNotif.equals("info")) && !pref_swipe && !pref_expand) {
-                Toast.makeText(getApplicationContext(), getString(R.string.impossibleToDeleteAtSend), Toast.LENGTH_SHORT).show();
-                impossible_to_delete = true;
-            } else impossible_to_delete = false;
+        else {
+            if (v.getId() == R.id.btn) {
+                //check if user has made it not possible to remove notifications.
+                // (this is a fail-safe in case they got out of the settings_jb_kk menu by pressing the 'home' key or some other way)
+                if ((!clickNotif.equals("remove") && !clickNotif.equals("info")) && !pref_swipe && !pref_expand) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.impossibleToDeleteAtSend), Toast.LENGTH_SHORT).show();
+                    impossible_to_delete = true;
+                } else impossible_to_delete = false;
 
-            //if empty, go ahead with voice input
-            if (et.getText().toString().equals("") && et_title.getText().toString().equals("")) {
-                PackageManager pm = getPackageManager();
-                List<ResolveInfo> activities = pm.queryIntentActivities(
-                        new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
-                if (activities.size() == 0) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.no_voice_input), Toast.LENGTH_SHORT).show();
-                } else {
-                    startVoiceRecognitionActivity();
-                }
-            }
-
-            // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
-            boolean alarmTimeIsGreaterThanCurrentTime;
-            alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
-
-            //if either textbox has text AND it is possible to delete notifs AND (if current time is less than alarm time OR there is a repeating alarm), then set the alarm, continue and create notification
-            if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && (alarmTimeIsGreaterThanCurrentTime || repeat_time != 0)) {
-                //use the 36dp or 24dp icons
-                if(pref_large_icons) fullIconName = iconName + iconColor + "_36dp";
-                else fullIconName = iconName + iconColor + "_24dp";
-
-                int d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
-                int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
-                //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
-                d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
-
-                //get string color for lollipop notification background color
-                // converts ex. red -> md_red_A400  or  blue -> md_blue_500
-                if (CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
-                    String colorArray[];
-                    if (proVersionEnabled)
-                        colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
-                    else
-                        colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
-
-                    int c = Arrays.asList(colorArray).indexOf(iconColor);
-
-                    String colorNames[];
-                    if (proVersionEnabled)
-                        colorNames = getResources().getStringArray(R.array.icon_color_names_pro);
-                    else
-                        colorNames = getResources().getStringArray(R.array.icon_color_names_standard);
-
-                    String colorString = Arrays.asList(colorNames).get(c);
-
-                    color = getResources().getColor(getResources().getIdentifier(colorString, "color", getPackageName()));
-                } else if (CURRENT_ANDROID_VERSION >= 21 && iconColor.equals("white")) { //for lollipop white icons, use white icon with grey background so they can see it
-                    pref_use_colored_icons = false; //make them use the lollipop circle background
-                    color = getResources().getColor(R.color.md_grey_500);
-                }
-
-                String note = et.getText().toString(); //get the text
-
-                //set title text
-                String tickerText;  //if title is there, set ticker to title. otherwise set it to the note
-                if (!et_title.getText().toString().equals("")) {
-                    noteTitle = et_title.getText().toString();
-                    tickerText = noteTitle;
-                } else {
-                    noteTitle = getString(R.string.app_name);
-                    tickerText = note;
-                }
-
-                //set the notey object
-                notey.setId(id);
-                notey.setNote(note);
-                notey.setIcon(d);
-                notey.setImgBtnNum(imageButtonNumber);
-//                notey.setSpinnerLoc(spinnerLocation);
-                notey.setTitle(noteTitle);
-                notey.setIconName(fullIconName);
-
-                //add alarm to db and set it
-                String noteForNotification = note;  // use a temp string to add the alarm info to the notification
-                if (alarm_time != null && !alarm_time.equals("")) {  //if alarm time is valid, and if we are not in and editIntent
-                    notey.setAlarm(alarm_time); // add to db
-
-                    // add the alarm date/time to the notification
-                    Date date = new Date(Long.valueOf(alarm_time));
-                    noteForNotification += "\n" + getString(R.string.alarm) + ": " + format_short_date.format(date) + ", " + format_short_time.format(date);
-
-                    // intent for alarm service to launch
-                    Intent myIntent = new Intent(this, AlarmService.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("alarmID", id);
-                    myIntent.putExtras(bundle);
-
-                    //set alarm
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                    alarmPendingIntent = PendingIntent.getService(this, id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    alarmManager.cancel(alarmPendingIntent); // cancel any alarm that might already exist
-
-                    //set repeating alarm or set regular alarm
-                    if (repeat_time != 0) {
-
-                        //if alarm_time is old, set alarm_time to currTime+repeat_time to avoid alarm going off directly after user creates note
-                        if (!alarmTimeIsGreaterThanCurrentTime) {
-                            alarm_time = Long.toString((System.currentTimeMillis() + (long) (repeat_time * 1000 * 60)));
-                        }
-
-                        // check the sharedPrefs for the check box to wake up the device
-                        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
-                            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), repeat_time * 1000 * 60, alarmPendingIntent);
-                        else
-                            alarmManager.setRepeating(AlarmManager.RTC, Long.valueOf(alarm_time), repeat_time * 1000 * 60, alarmPendingIntent);
-                    } else { //set regualar alarm
-                        // check the sharedPrefs for the check box to wake up the device
-                        if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), alarmPendingIntent);
-                        else
-                            alarmManager.set(AlarmManager.RTC, Long.valueOf(alarm_time), alarmPendingIntent);
+                //if empty, go ahead with voice input
+                if (et.getText().toString().equals("") && et_title.getText().toString().equals("")) {
+                    PackageManager pm = getPackageManager();
+                    List<ResolveInfo> activities = pm.queryIntentActivities(
+                            new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+                    if (activities.size() == 0) {
+                        Toast.makeText(getApplicationContext(), getString(R.string.no_voice_input), Toast.LENGTH_SHORT).show();
+                    } else {
+                        startVoiceRecognitionActivity();
                     }
                 }
 
-                //does notey exist in database? if yes-update. if no-add new notey.
-                if (db.checkIfExist(id)) db.updateNotey(notey);
-                else db.addNotey(notey);
+                // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
+                boolean alarmTimeIsGreaterThanCurrentTime;
+                alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
 
-                //intents for expandable notifications
-                PendingIntent piDismiss = createOnDismissedIntent(this, id);
-                PendingIntent piEdit = createEditIntent();
-                PendingIntent piShare = createShareIntent(note);
+                //if either textbox has text AND it is possible to delete notifs AND (if current time is less than alarm time OR there is a repeating alarm), then set the alarm, continue and create notification
+                if ((!et.getText().toString().equals("") || !et_title.getText().toString().equals("")) && !impossible_to_delete && (alarmTimeIsGreaterThanCurrentTime || repeat_time != 0)) {
+                    //use the 36dp or 24dp icons
+                    if (pref_large_icons) fullIconName = iconName + iconColor + "_36dp";
+                    else fullIconName = iconName + iconColor + "_24dp";
 
-                // bitmap for large icons (for < lollipop devices)
-                Bitmap bm = BitmapFactory.decodeResource(getResources(), d);
+                    int d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
+                    int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
+                    //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
+                    d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
 
-                //build the notification!
-                Notification n;
-                if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setColor(color)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare) // share button
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
+                    //get string color for lollipop notification background color
+                    // converts ex. red -> md_red_A400  or  blue -> md_blue_500
+                    if (CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
+                        String colorArray[];
+                        if (proVersionEnabled)
+                            colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
+                        else
+                            colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
+
+                        int c = Arrays.asList(colorArray).indexOf(iconColor);
+
+                        String colorNames[];
+                        if (proVersionEnabled)
+                            colorNames = getResources().getStringArray(R.array.icon_color_names_pro);
+                        else
+                            colorNames = getResources().getStringArray(R.array.icon_color_names_standard);
+
+                        String colorString = Arrays.asList(colorNames).get(c);
+
+                        color = getResources().getColor(getResources().getIdentifier(colorString, "color", getPackageName()));
+                    } else if (CURRENT_ANDROID_VERSION >= 21 && iconColor.equals("white")) { //for lollipop white icons, use white icon with grey background so they can see it
+                        pref_use_colored_icons = false; //make them use the lollipop circle background
+                        color = getResources().getColor(R.color.md_grey_500);
+                    }
+
+                    String note = et.getText().toString(); //get the text
+
+                    //set title text
+                    String tickerText;  //if title is there, set ticker to title. otherwise set it to the note
+                    if (!et_title.getText().toString().equals("")) {
+                        noteTitle = et_title.getText().toString();
+                        tickerText = noteTitle;
+                    } else {
+                        noteTitle = getString(R.string.app_name);
+                        tickerText = note;
+                    }
+
+                    //set the notey object
+                    notey.setId(id);
+                    notey.setNote(note);
+                    notey.setIcon(d);
+                    notey.setImgBtnNum(imageButtonNumber);
+                    notey.setTitle(noteTitle);
+                    notey.setIconName(fullIconName);
+
+                    //add alarm to db and set it
+                    if (alarm_time != null && !alarm_time.equals("")) {  //if alarm time is valid, and if we are not in and editIntent
+                        notey.setAlarm(alarm_time); // add to db
+
+                        // add the alarm date/time to the notification
+                        Date date = new Date(Long.valueOf(alarm_time));
+
+                        // intent for alarm service to launch
+                        Intent myIntent = new Intent(this, AlarmService.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("alarmID", id);
+                        myIntent.putExtras(bundle);
+
+                        //set alarm
+                        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                        alarmPendingIntent = PendingIntent.getService(this, id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        alarmManager.cancel(alarmPendingIntent); // cancel any alarm that might already exist
+
+                        //set repeating alarm or set regular alarm
+                        if (repeat_time != 0) {
+
+                            //if alarm_time is old, set alarm_time to currTime+repeat_time to avoid alarm going off directly after user creates note
+                            if (!alarmTimeIsGreaterThanCurrentTime) {
+                                alarm_time = Long.toString((System.currentTimeMillis() + (long) (repeat_time * 1000 * 60)));
+                            }
+
+                            // check the sharedPrefs for the check box to wake up the device
+                            if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
+                                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), repeat_time * 1000 * 60, alarmPendingIntent);
+                            else
+                                alarmManager.setRepeating(AlarmManager.RTC, Long.valueOf(alarm_time), repeat_time * 1000 * 60, alarmPendingIntent);
+                        } else { //set regualar alarm
+                            // check the sharedPrefs for the check box to wake up the device
+                            if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("wake" + Integer.toString(id), true))
+                                alarmManager.set(AlarmManager.RTC_WAKEUP, Long.valueOf(alarm_time), alarmPendingIntent);
+                            else
+                                alarmManager.set(AlarmManager.RTC, Long.valueOf(alarm_time), alarmPendingIntent);
+                        }
+                    }
+
+                    //intent to build the notification
+                    Intent intent = new Intent(this, NotificationBuild.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("id", id);
+                    intent.putExtras(bundle);
+                    sendBroadcast(intent);
+
+                    finish();
+
+                    // save all the info of the notification. this is for undo notification re-building
+                    List list = Arrays.asList(
+                            noteTitle, // 0 string
+                            note, // 1 string
+                            tickerText, // 2 string
+                            d, // 3 int
+                            color, // 4 int
+                            fullIconName, // 5 string
+                            priority, // 6 int
+                            imageButtonNumber, // 7 int
+                            alarm_time, // 8 string
+                            repeat_time // 9 int
+                    );
+
+                    //save to sharedprefs
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(list);
+                    prefsEditor.putString("notification" + Integer.toString(id), json);
+                    prefsEditor.apply();
                 }
-                //same as above, but use LargeIcon instead of SetColor
-                else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare) // share button
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
-                } else if (pref_expand && pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings_jb_kk allowed && share action button is enabled
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_share_white_24dp,
-                                    getString(R.string.share), piShare) // share button
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
+                // alarm time has past, show toast
+                else if (!alarmTimeIsGreaterThanCurrentTime) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.alarm_not_set), Toast.LENGTH_SHORT).show();
                 }
-                // same as above, but without share action button. lollipop only
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setColor(color)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
-                }
-                //same as above, but use LargeIcon instead of SetColor
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) {
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
-                }
-                // same as above, but without share action button. jelly bean and kitkat.
-                else if (pref_expand && !pref_share_action && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) {
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .addAction(R.drawable.ic_edit_white_24dp,
-                                    getString(R.string.edit), piEdit) //edit button on notification
-                            .addAction(R.drawable.ic_delete_white_24dp,
-                                    getString(R.string.remove), piDismiss) //remove button
-                            .build();
-                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setColor(color)
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                }
-                //same as above, but use LargeIcon instead of SetColor
-                else if (!pref_expand && CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                } else if (!pref_expand && CURRENT_ANDROID_VERSION >= 16 && CURRENT_ANDROID_VERSION < 21) { //not expandable, but still able to set priority. jb and kitkat.
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setAutoCancel(false)
-                            .setPriority(priority)
-                            .build();
-                } else { //if api < 16. they cannot have expandable notifs or any type of priority
-                    n = new NotificationCompat.Builder(this)
-                            .setContentTitle(noteTitle)
-                            .setContentText(note)
-                            .setTicker(tickerText)
-                            .setSmallIcon(d)
-                            .setLargeIcon(bm)
-                            .setAutoCancel(false)
-                            .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle))
-                            .setDeleteIntent(piDismiss)
-                            .setOngoing(!pref_swipe)
-                            .build();
-                }
-                nm.notify(id, n);
-                db.close();
-                finish();
-            }
-            // alarm time has past, show toast
-            else if (!alarmTimeIsGreaterThanCurrentTime) {
-                Toast.makeText(getApplicationContext(), getString(R.string.alarm_not_set), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -637,7 +478,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     md.dismiss();
                 }
             });
-
         }
     }
 
@@ -667,10 +507,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     iconColor = v.getTag().toString();
                     setImageButtonsBasedOffIconSelection();
                     md.dismiss();
-
-                    //highlight the correct image button
-//                    MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
-//                    rip.setRadius(1000);
                 }
             });
         }
@@ -881,8 +717,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         if (editIntentFlag) {
             String icons[] = getResources().getStringArray(R.array.icons_array_pro);
             int selected = Arrays.asList(icons).indexOf(iconName);
-//            ImageButton ib = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + Integer.toString(selected + 1), "id", getPackageName()));
-//            ib.setBackgroundColor(getResources().getColor(R.color.md_grey_600));
             MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(getResources().getIdentifier("ripple_imageButton" + Integer.toString(selected + 1), "id", getPackageName()));
             rip.setRadius(1000);
             selectedRippleButtonId = rip.getId();
@@ -1235,53 +1069,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         return PendingIntent.getBroadcast(context.getApplicationContext(), notificationId, intent, 0);
     }
 
-    private PendingIntent createEditIntent() {
-        Intent editIntent = new Intent(this, MainActivity.class);
-        editIntent.putExtra("editNotificationID", id);
-        editIntent.putExtra("editButton", imageButtonNumber);
-        editIntent.putExtra("editAlarm", alarm_time);
-        editIntent.putExtra("editRepeat", repeat_time);
-        editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
-
-        return PendingIntent.getActivity(getApplicationContext(), id, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent createInfoScreenIntent(String note, String title) {
-        Intent infoIntent = new Intent(this, InfoScreenActivity.class);
-        infoIntent.putExtra("infoNotificationID", id);
-        infoIntent.putExtra("infoNote", note);
-//        infoIntent.putExtra("infoLoc", spinnerLocation);
-        infoIntent.putExtra("infoButton", imageButtonNumber);
-        infoIntent.putExtra("infoTitle", title);
-        infoIntent.putExtra("infoAlarm", alarm_time);
-        infoIntent.putExtra("infoRepeat", repeat_time);
-        infoIntent.putExtra("infoAlarmPendingIntent", alarmPendingIntent);
-        return PendingIntent.getActivity(getApplicationContext(), id, infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent createShareIntent(String note) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, note);
-        sendIntent.setType("text/plain");
-        return PendingIntent.getActivity(this, id, sendIntent, 0);
-    }
-
-    private PendingIntent onNotifClickPI(String clickNotif, String note, String title) {
-        switch (clickNotif) {
-            case "info":
-                return createInfoScreenIntent(note, title);
-            case "edit":
-                return createEditIntent();
-            case "remove":
-                return createOnDismissedIntent(this, id);
-            case "shortcut":
-                return PendingIntent.getActivity(getApplicationContext(), SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-            default:
-                return null;
-        }
-    }
-
     private void handleSendText(Intent intent) { //for intents from other apps who want to share text to notey
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
@@ -1605,8 +1392,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     editor.putBoolean("pref_shortcut", false);
                     editor.apply();
                 }
-                //set spinner icons back to default five
-//                pref_icons = Arrays.asList(getResources().getStringArray(R.array.default_icons));
             }
 
             Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
@@ -1654,9 +1439,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     };
 
     private static void setUpProGUI() {
-        //make all the icons enabled initially
-//        pref_icons = Arrays.asList(appContext.getResources().getStringArray(R.array.pro_icons_values));
-
         //when upgrading to pro, adding more icons to the spinner alters the spinner location's number. this is to fix that
         MySQLiteHelper db = new MySQLiteHelper(appContext);
         List<NoteyNote> allNoteys = db.getAllNoteys();
@@ -1718,10 +1500,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         // if settings_jb_kk activity was called, reset the ui
         if (settings_activity_flag) {
             initializeSettings();
-//            if (spinnerChanged) { //if the spinner was altered then refresh it
-//                setUpSpinner();
-//                spinnerChanged = false;
-//            }
             settings_activity_flag = false;
         }
         if (about_activity_flag) { // if about activity was called, check to see if the user had typed in the secret code and are now Pro. if yes, set up everything like a normal pro purchase.

@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:id="@+id/undo_delete_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/deleted"
+            android:textColor="@color/md_black_1000"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:paddingLeft="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/undo_delete_undo_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/undo_caps"
+            android:textColor="@color/md_grey_500"
+            android:textSize="@dimen/abc_text_size_medium_material"
+            android:paddingRight="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"/>
+    </RelativeLayout>
+</LinearLayout>
