@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference android:key="pref_changelog"
+    <com.jenzz.materialpreference.Preference android:key="pref_changelog"
         android:title="@string/changelog"
         android:summary="@string/changelogSummary"/>
 
-    <Preference android:key="pref_open_source_licenses"
+    <com.jenzz.materialpreference.Preference android:key="pref_open_source_licenses"
         android:title="@string/opensource"
         android:summary="@string/opensourceSummary"/>
 
-    <Preference android:key="pref_translations"
+    <com.jenzz.materialpreference.Preference android:key="pref_translations"
         android:title="@string/translations"/>
 
-    <Preference android:key="pref_github"
+    <com.jenzz.materialpreference.Preference android:key="pref_github"
         android:title="@string/github"
         android:summary="@string/githubSummary"/>
 
-    <Preference android:key="pref_contact"
+    <com.jenzz.materialpreference.Preference android:key="pref_contact"
         android:title="@string/contact"
         android:summary="@string/email"/>
 
-    <Preference android:key="pref_rate"
+    <com.jenzz.materialpreference.Preference android:key="pref_rate"
         android:title="@string/rate"
         android:summary="@string/rateSummary"/>
 
-    <Preference android:key="pref_pro"
+    <com.jenzz.materialpreference.Preference android:key="pref_pro"
         android:title="@string/pro"/>
 
-    <Preference android:key="pref_ver_num"
+    <com.jenzz.materialpreference.Preference android:key="pref_ver_num"
         android:title="@string/verNum"
         android:summary="@string/version"/>
 </PreferenceScreen>

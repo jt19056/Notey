@@ -8,30 +8,32 @@
         android:id="@+id/layout_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/md_blue_500">
+        android:background="@color/md_blue_500"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/mainTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="15dp"
             android:text="@string/app_name"
-            android:textColor="@android:color/white"
+            android:textColor="@color/md_white_1000"
             android:textIsSelectable="false"
-            android:textSize="25sp" />
+            android:textSize="@dimen/material_text_headline" />
 
         <ImageButton
             android:id="@+id/menuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="17dp"
             android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_action_overflow_white" />
+            android:src="@drawable/ic_more_vert_white_24dp" />
     </RelativeLayout>
 
     <HorizontalScrollView
@@ -49,7 +51,7 @@
                 android:id="@+id/ripple_imageButton1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="10dp"
+                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -66,7 +68,7 @@
                 android:id="@+id/ripple_imageButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="10dp"
+                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -83,7 +85,7 @@
                 android:id="@+id/ripple_imageButton3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="10dp"
+                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -140,7 +142,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:visibility="gone"
                     android:src="@drawable/ic_alarm_white_36dp"
                     android:tag="ic_alarm_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -157,7 +158,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="20"
-                    android:visibility="gone"
                     android:src="@drawable/ic_favorite_white_36dp"
                     android:tag="ic_favorite_" />
             </com.balysv.materialripple.MaterialRippleLayout>

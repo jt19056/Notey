@@ -248,59 +248,6 @@ public class NotificationBootService extends IntentService {
         pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
     }
 
-    private PendingIntent createOnDismissedIntent(int notificationId) {
-        Intent intent = new Intent(this, NotificationDismiss.class);
-        intent.putExtra("NotificationID", notificationId);
-        return PendingIntent.getBroadcast(getApplicationContext(), notificationId, intent, 0);
-    }
-
-    private PendingIntent createEditIntent(NoteyNote n) {
-        Intent editIntent = new Intent(this, MainActivity.class);
-        editIntent.putExtra("editNotificationID", n.getId());
-        editIntent.putExtra("editNote", n.getNote());
-        editIntent.putExtra("editLoc", n.getSpinnerLoc());
-        editIntent.putExtra("editButton", n.getImgBtnNum());
-        editIntent.putExtra("editTitle", n.getTitle());
-        editIntent.putExtra("editAlarm", n.getAlarm());
-        editIntent.putExtra("editRepeat", repeatTime);
-        editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
-        return PendingIntent.getActivity(getApplicationContext(), n.getId(), editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent createShareIntent(NoteyNote n) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, n.getNote());
-        sendIntent.setType("text/plain");
-        return PendingIntent.getActivity(this, n.getId(), sendIntent, 0);
-    }
-
-    private PendingIntent createInfoScreenIntent(NoteyNote n) {
-        Intent infoIntent = new Intent(this, InfoScreenActivity.class);
-        infoIntent.putExtra("infoNotificationID", n.getId());
-        infoIntent.putExtra("infoNote", n.getNote());
-        infoIntent.putExtra("infoLoc", n.getSpinnerLoc());
-        infoIntent.putExtra("infoButton", n.getImgBtnNum());
-        infoIntent.putExtra("infoTitle", n.getTitle());
-        infoIntent.putExtra("infoAlarm", n.getAlarm());
-        infoIntent.putExtra("infoRepeat", repeatTime);
-        infoIntent.putExtra("infoAlarmPendingIntent", alarmPendingIntent);
-        return PendingIntent.getActivity(getApplicationContext(), n.getId(), infoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent onNotifClickPI(String clickNotif, NoteyNote n) {
-        switch (clickNotif) {
-            case "info":
-                return createInfoScreenIntent(n);
-            case "edit":
-                return createEditIntent(n);
-            case "remove":
-                return createOnDismissedIntent(n.getId());
-            default:
-                return null;
-        }
-    }
-
     @Override
     protected void onHandleIntent(Intent intent) { /*empty*/ }
 }

@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <notices>
     <notice>
-        <name>android-support-v4</name>
+        <name>android-support-v4/android-support-v7</name>
         <copyright>Copyright (C) 2014 The Android Open Source Project</copyright>
         <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Android - MaterialPreference</name>
+        <url>https://github.com/jenzz/Android-MaterialPreference</url>
+        <copyright>Copyright (c) 2015 Jens Driller</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>Calligraphy</name>
@@ -40,16 +46,28 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>LicensesDialog </name>
+        <name>Gson</name>
+        <url>https://github.com/google/gson</url>
+        <copyright>Copyright 2008 Google Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
         <url>https://github.com/PSDev/LicensesDialog</url>
         <copyright>Copyright 2013 Philip Schiffer</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Materials</name>
+        <name>Material</name>
         <url>https://github.com/rey5137/material</url>
         <copyright>Copyright (c) 2015 Rey Pham</copyright>
         <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Material DateTime Picker</name>
+        <url>https://github.com/wdullaer/MaterialDateTimePicker</url>
+        <copyright>Copyright (c) 2015 Wouter Dullaert</copyright>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>Material Dialogs</name>
@@ -60,7 +78,13 @@
     <notice>
         <name>Material Design Icons</name>
         <url>https://github.com/google/material-design-icons</url>
-        <copyright>Google.  Attribution 4.0 International License</copyright>
+        <copyright>Google Inc. - Attribution 4.0 International License</copyright>
+    </notice>
+    <notice>
+        <name>Material Ripple</name>
+        <url>https://github.com/balysv/material-ripple</url>
+        <copyright>Copyright 2015 Balys Valentukevicius</copyright>
+        <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Roboto Fonts</name>

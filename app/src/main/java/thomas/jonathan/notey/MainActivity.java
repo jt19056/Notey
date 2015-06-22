@@ -8,7 +8,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -16,20 +15,15 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.CursorIndexOutOfBoundsException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
-import android.support.v4.app.NotificationCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,10 +49,6 @@ import com.easyandroidanimations.library.ScaleInAnimation;
 import com.google.gson.Gson;
 import com.rey.material.widget.FloatingActionButton;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +73,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private ImageButton ib1;
     private MaterialRippleLayout mrl_ib1;
     private Set<Integer> buttons;
-    private Set<Integer> rippleButtons;
     private ImageButton send_btn;
     private ImageButton menu_btn;
     private ImageButton alarm_btn;
@@ -97,7 +86,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private boolean pref_enter;
     private boolean pref_use_colored_icons;
     private boolean pref_large_icons;
-    private boolean pref_share_action;
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
     private boolean editIntentFlag = false;
@@ -110,8 +98,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private final MySQLiteHelper db = new MySQLiteHelper(this);
     private RelativeLayout layout_bottom;
     private PendingIntent alarmPendingIntent;
-    //    private static List<String> pref_icons;
-//    private List<String> spinnerPositionList;
     private static Context appContext;
     public static final SimpleDateFormat format_short_date = new SimpleDateFormat("MMM dd"), format_short_time = new SimpleDateFormat("hh:mm a");
     private static SharedPreferences sharedPreferences;
@@ -152,13 +138,13 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 //        doInAppBillingStuff();
 
         /*** For free Pro users, enable this and setProImageButtons() on line 149 ***/
-        proVersionEnabled = true;
+//        proVersionEnabled = true;
 
         initializeSettings();
         initializeGUI();
 
         /*** For free Pro users, enable this too! ***/
-        setProImageButtons();
+//        setProImageButtons();
 
         setLayout();
 
@@ -224,15 +210,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     public void onClick(View v) {
         //if one horizontal scroll are clicked, highlight them and un-highlight the previous selection.
         if (buttons.contains(v.getId())) {
-            //highlight selected
-//            ImageButton ib = (ImageButton) findViewById(v.getId());
-//            ib.setBackgroundColor(getResources().getColor(R.color.grey_600));
-
-            //un-highlight old. if user clicks on same icon twice in a row,  don't dun-highlight it
-//            if(v.getId() != selectedImageButtonId) {
-//                ImageButton ib2 = (ImageButton) findViewById(selectedImageButtonId);
-//                ib2.setBackgroundColor(Color.TRANSPARENT);
-//            }
             if (v.getId() != selectedRippleButtonId + 1) {
                 MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(selectedRippleButtonId);
                 rip.setRadius(0);
@@ -311,7 +288,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     int d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
                     int color = getResources().getColor(R.color.md_grey_500); // grey, for grey background with white icons
                     //if not greater than lollipop set the colors. otherwise, use white and set the background icon color
-                    d = getResources().getIdentifier(fullIconName, "drawable", getPackageName());
 
                     //get string color for lollipop notification background color
                     // converts ex. red -> md_red_A400  or  blue -> md_blue_500
@@ -361,9 +337,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     //add alarm to db and set it
                     if (alarm_time != null && !alarm_time.equals("")) {  //if alarm time is valid, and if we are not in and editIntent
                         notey.setAlarm(alarm_time); // add to db
-
-                        // add the alarm date/time to the notification
-                        Date date = new Date(Long.valueOf(alarm_time));
 
                         // intent for alarm service to launch
                         Intent myIntent = new Intent(this, AlarmService.class);
@@ -488,6 +461,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
                 .customView(view, false)
+                .backgroundColor(darkTheme ? getResources().getColor(R.color.md_grey_800) : getResources().getColor(R.color.md_grey_700))
                 .build();
         md.show();
 
@@ -530,9 +504,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         layout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom); //row containing the text box
         RelativeLayout.LayoutParams parms = (RelativeLayout.LayoutParams) layout_bottom.getLayoutParams();
         parms.addRule(RelativeLayout.BELOW, R.id.horizontal_scroll_view);
-//        final int spinnerHeight = spinner.getLayoutParams().height;
-//        layout_bottom.getLayoutParams().height = spinnerHeight + (int) convertDpToPixel(10, this); //get spinner height + 10dp
-//        et.getLayoutParams().height = spinnerHeight; //set the row's height to that of the spinner's + 10dp
 
         /* resizing the window when more/less text is added */
         final RelativeLayout relativeLayoutCopy = layout_bottom;
@@ -665,9 +636,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 if (proVersionEnabled)
                     icons = getResources().getStringArray(R.array.icons_array_pro);
                 else icons = getResources().getStringArray(R.array.icons_array_standard);
-                int selected = Arrays.asList(icons).indexOf(iconName);
-//                ImageButton ib = (ImageButton) findViewById(getResources().getIdentifier("imageButton" + Integer.toString(selected+1), "id", getPackageName()));
-//                ib.setBackgroundColor(getResources().getColor(R.color.md_grey_600));
 
                 imageButtonNumber = nTemp.getImgBtnNum();
                 noteTitle = nTemp.getTitle();
@@ -762,13 +730,27 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         ImageButton ib3 = (ImageButton) findViewById(R.id.imageButton3);
         ImageButton ib4 = (ImageButton) findViewById(R.id.imageButton4);
         ImageButton ib5 = (ImageButton) findViewById(R.id.imageButton5);
+        ImageButton ib6 = (ImageButton) findViewById(R.id.imageButton6);
+        ImageButton ib7 = (ImageButton) findViewById(R.id.imageButton7);
         mrl_ib1 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton1);
         MaterialRippleLayout mrl_ib2 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton2);
         MaterialRippleLayout mrl_ib3 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton3);
         MaterialRippleLayout mrl_ib4 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton4);
         MaterialRippleLayout mrl_ib5 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton5);
+        MaterialRippleLayout mrl_ib6 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton6);
+        MaterialRippleLayout mrl_ib7 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton7);
         selectedRippleButtonId = mrl_ib1.getId();
-//        iconPickerFAB = (FloatingActionButton) findViewById(R.id.mainactivity_icon_picker_fab);
+
+        if (!proVersionEnabled && isTablet(this)) { //spread out the 7 non-pro icons for tablets
+            float twentyDP = 20 * getResources().getDisplayMetrics().density;
+            mrl_ib1.setPadding((int) twentyDP, 0, (int) twentyDP, 0); //left, top, right, bottom
+            mrl_ib2.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib3.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib4.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib5.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib6.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+            mrl_ib7.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+        }
 
         send_btn = (ImageButton) findViewById(R.id.btn); //send button
         menu_btn = (ImageButton) findViewById(R.id.menuButton);
@@ -806,6 +788,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         mrl_ib4.setOnLongClickListener(this);
         mrl_ib5.setOnClickListener(this);
         mrl_ib5.setOnLongClickListener(this);
+        mrl_ib6.setOnClickListener(this);
+        mrl_ib6.setOnLongClickListener(this);
+        mrl_ib7.setOnClickListener(this);
+        mrl_ib7.setOnLongClickListener(this);
 
         send_btn.setOnClickListener(this);
         menu_btn.setOnClickListener(this);
@@ -819,19 +805,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         ib3.setBackgroundColor(Color.TRANSPARENT);
         ib4.setBackgroundColor(Color.TRANSPARENT);
         ib5.setBackgroundColor(Color.TRANSPARENT);
+        ib6.setBackgroundColor(Color.TRANSPARENT);
+        ib7.setBackgroundColor(Color.TRANSPARENT);
 
-        if (!proVersionEnabled && isTablet(this)) { //spread out the 5 non-pro icons for tablets
-            tableRow.setGravity(Gravity.CENTER);
-            float twentyDP = 20 * getResources().getDisplayMetrics().density;
-            mrl_ib1.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib2.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib3.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib4.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib5.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-        }
-
-        buttons = new HashSet<>(Arrays.asList(R.id.imageButton1, R.id.imageButton2, R.id.imageButton3, R.id.imageButton4, R.id.imageButton5));
-        rippleButtons = new HashSet<>(Arrays.asList(R.id.ripple_imageButton1, R.id.ripple_imageButton2, R.id.ripple_imageButton3, R.id.ripple_imageButton4, R.id.ripple_imageButton5));
+        buttons = new HashSet<>(Arrays.asList(R.id.imageButton1, R.id.imageButton2, R.id.imageButton3, R.id.imageButton4, R.id.imageButton5, R.id.imageButton6, R.id.imageButton7));
 
         impossible_to_delete = false; //set setting for unable to delete notifications to false, will be checked before pressing send
 
@@ -878,7 +855,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
 
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
-        pref_share_action = sharedPreferences.getBoolean("pref_share_action", true);
         pref_large_icons = sharedPreferences.getBoolean("pref_large_icons", false); //icon size for notifications
 
 
@@ -890,14 +866,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 R.id.imageButton6, R.id.imageButton7, R.id.imageButton8, R.id.imageButton9, R.id.imageButton10, R.id.imageButton11, R.id.imageButton12, R.id.imageButton13, R.id.imageButton14, R.id.imageButton15,
                 R.id.imageButton16, R.id.imageButton17, R.id.imageButton18, R.id.imageButton19, R.id.imageButton20, R.id.imageButton21, R.id.imageButton22, R.id.imageButton23, R.id.imageButton24, R.id.imageButton25));
 
-        rippleButtons = new HashSet<>(Arrays.asList(R.id.ripple_imageButton1, R.id.ripple_imageButton2, R.id.ripple_imageButton3, R.id.ripple_imageButton4, R.id.ripple_imageButton5,
-                R.id.ripple_imageButton6, R.id.ripple_imageButton7, R.id.ripple_imageButton8, R.id.ripple_imageButton9, R.id.ripple_imageButton10, R.id.ripple_imageButton11, R.id.ripple_imageButton12, R.id.ripple_imageButton13, R.id.ripple_imageButton14, R.id.ripple_imageButton15,
-                R.id.ripple_imageButton16, R.id.ripple_imageButton17, R.id.ripple_imageButton18, R.id.ripple_imageButton19, R.id.ripple_imageButton20, R.id.ripple_imageButton21, R.id.ripple_imageButton22, R.id.ripple_imageButton23, R.id.ripple_imageButton24, R.id.ripple_imageButton25));
-
-        ImageButton ib6 = (ImageButton) findViewById(R.id.imageButton6);
-        ib6.setVisibility(View.VISIBLE);
-        ImageButton ib7 = (ImageButton) findViewById(R.id.imageButton7);
-        ib7.setVisibility(View.VISIBLE);
         ImageButton ib8 = (ImageButton) findViewById(R.id.imageButton8);
         ib8.setVisibility(View.VISIBLE);
         ImageButton ib9 = (ImageButton) findViewById(R.id.imageButton9);
@@ -935,8 +903,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         ImageButton ib25 = (ImageButton) findViewById(R.id.imageButton25);
         ib25.setVisibility(View.VISIBLE);
 
-        MaterialRippleLayout mrl_ib6 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton6);
-        MaterialRippleLayout mrl_ib7 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton7);
         MaterialRippleLayout mrl_ib8 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton8);
         MaterialRippleLayout mrl_ib9 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton9);
         MaterialRippleLayout mrl_ib10 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton10);
@@ -956,10 +922,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         MaterialRippleLayout mrl_ib24 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton24);
         MaterialRippleLayout mrl_ib25 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton25);
 
-        ib6.setOnClickListener(this);
-        ib6.setOnLongClickListener(this);
-        ib7.setOnClickListener(this);
-        ib7.setOnLongClickListener(this);
         ib8.setOnClickListener(this);
         ib8.setOnLongClickListener(this);
         ib9.setOnClickListener(this);
@@ -997,10 +959,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         ib25.setOnClickListener(this);
         ib25.setOnLongClickListener(this);
 
-        mrl_ib6.setOnClickListener(this);
-        mrl_ib6.setOnLongClickListener(this);
-        mrl_ib7.setOnClickListener(this);
-        mrl_ib7.setOnLongClickListener(this);
         mrl_ib8.setOnClickListener(this);
         mrl_ib8.setOnLongClickListener(this);
         mrl_ib9.setOnClickListener(this);
@@ -1038,8 +996,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         mrl_ib25.setOnClickListener(this);
         mrl_ib25.setOnLongClickListener(this);
 
-        ib6.setBackgroundColor(Color.TRANSPARENT);
-        ib7.setBackgroundColor(Color.TRANSPARENT);
         ib8.setBackgroundColor(Color.TRANSPARENT);
         ib9.setBackgroundColor(Color.TRANSPARENT);
         ib10.setBackgroundColor(Color.TRANSPARENT);
@@ -1058,15 +1014,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         ib23.setBackgroundColor(Color.TRANSPARENT);
         ib24.setBackgroundColor(Color.TRANSPARENT);
         ib25.setBackgroundColor(Color.TRANSPARENT);
-    }
-
-    private PendingIntent createOnDismissedIntent(Context context, int notificationId) {
-        //we want to signal the NotificationDismiss receiver for removing notifications
-        Intent intent = new Intent(context, NotificationDismiss.class);
-        intent.putExtra("NotificationID", notificationId);
-        intent.putExtra("alarmPendingIntent", alarmPendingIntent);
-
-        return PendingIntent.getBroadcast(context.getApplicationContext(), notificationId, intent, 0);
     }
 
     private void handleSendText(Intent intent) { //for intents from other apps who want to share text to notey

@@ -22,6 +22,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_red_500"
             app:fab_elevation="2dp"
+            android:tag="md_red_500"
             />
 
         <com.rey.material.widget.FloatingActionButton
@@ -32,7 +33,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_pink_500"
-            app:fab_elevation="2dp"/>
+            app:fab_elevation="2dp"
+            android:tag="md_pink_500"/>
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -42,7 +44,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_purple_500"
-            app:fab_elevation="2dp"/>
+            app:fab_elevation="2dp"
+            android:tag="md_purple_500"/>
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -52,7 +55,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_deep_purple_500"
-            app:fab_elevation="2dp"/>
+            app:fab_elevation="2dp"
+            android:tag="md_deep_purple_500"/>
 
     </TableRow>
 
@@ -74,7 +78,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_indigo_500"
-            app:fab_elevation="2dp"/>
+            app:fab_elevation="2dp"
+            android:tag="md_indigo_500"/>
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -84,7 +89,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_blue_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_blue_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -94,7 +100,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_light_blue_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_light_blue_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -104,7 +111,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_cyan_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_cyan_500" />
     </TableRow>
 
     <TableRow
@@ -125,7 +133,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_teal_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_teal_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -135,7 +144,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_green_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_green_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -145,7 +155,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_light_green_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_light_green_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -155,7 +166,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_lime_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_lime_500" />
     </TableRow>
 
     <TableRow
@@ -176,7 +188,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_yellow_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_yellow_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -186,7 +199,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_amber_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_amber_500"/>
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -196,7 +210,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_orange_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_orange_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -206,7 +221,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_deep_orange_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_deep_orange_500"/>
     </TableRow>
 
     <TableRow
@@ -227,7 +243,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_brown_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_brown_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -237,7 +254,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_grey_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_grey_500" />
 
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
@@ -247,7 +265,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_blue_grey_500"
-            app:fab_elevation="2dp" />
+            app:fab_elevation="2dp"
+            android:tag="md_blue_grey_500" />
     </TableRow>
 
     <TableRow
@@ -260,7 +279,7 @@
         android:gravity="center_horizontal"
         android:layout_below="@id/color_row_5">
 
-        <CheckBox
+        <com.rey.material.widget.CheckBox
             android:id="@+id/dark_check_box"
             style="@style/Material.Drawable.CheckBox"
             android:layout_width="wrap_content"

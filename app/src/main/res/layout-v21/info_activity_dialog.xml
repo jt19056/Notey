@@ -13,21 +13,22 @@
             android:text="@string/app_name"
             android:id="@+id/info_mainTitle"
             android:layout_marginBottom="15dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:textSize="25sp"
+            android:textSize="@dimen/material_text_headline"
             android:textIsSelectable="false"
-            android:textColor="@android:color/white"/>
+            android:textColor="@color/md_white_1000"/>
 
         <ImageButton
             android:id="@+id/info_menuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_overflow_white"
+            android:src="@drawable/ic_more_vert_white_24dp"
+            android:padding="5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="17dp"
             android:background="?android:selectableItemBackgroundBorderless"/>
     </RelativeLayout>
 

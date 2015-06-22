@@ -8,7 +8,7 @@
         android:id="@+id/color_row_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal">
@@ -22,7 +22,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_white_1000"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="white"/>
 
         <com.rey.material.widget.FloatingActionButton
@@ -34,7 +34,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_yellow_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="yellow" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -46,9 +46,19 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_blue_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="blue"/>
-
+    </TableRow>
+    <TableRow
+        android:id="@+id/color_row_2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/color_row_1"
+        android:paddingTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center_horizontal">
         <com.rey.material.widget.FloatingActionButton
             style="@style/FloatingActionButton"
             android:id="@+id/icon_button_bt_float3"
@@ -58,7 +68,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_green_A700"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="green" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -70,7 +80,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_red_A400"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="red"
             />
 

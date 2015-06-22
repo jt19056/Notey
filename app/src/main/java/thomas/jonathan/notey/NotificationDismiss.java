@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteException;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -42,8 +43,10 @@ public class NotificationDismiss extends BroadcastReceiver{
         timer.schedule(timerTask, 5000, 5000);
 
         //undo notification layout
-        RemoteViews remoteViews = new RemoteViews(paramContext.getPackageName(),
-                R.layout.undo_delete_layout);
+        RemoteViews remoteViews;
+        if(MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP)
+            remoteViews= new RemoteViews(paramContext.getPackageName(), R.layout.undo_delete_layout_lollipop);
+        else remoteViews= new RemoteViews(paramContext.getPackageName(), R.layout.undo_delete_layout_ics_jb_kk);
 
         //intent to rebuild the notification
         Intent intent = new Intent(paramContext, NotificationBuild.class);

@@ -82,18 +82,22 @@ public class NotificationBuild extends BroadcastReceiver {
             bundle.putInt("alarmID", id);
             myIntent.putExtras(bundle);
 
-            //set alarm
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(MainActivity.ALARM_SERVICE);
-            alarmPendingIntent = PendingIntent.getService(context, id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            alarmManager.cancel(alarmPendingIntent); // cancel any alarm that might already exist
+            // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
+            boolean alarmTimeIsGreaterThanCurrentTime;
+            alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
+
+            //if alarm_time is old, don't set pending intent. in this case, the alarm hasn't occured, so set the alarm
+            if (alarmTimeIsGreaterThanCurrentTime) {
+                //set alarm
+                alarmPendingIntent = PendingIntent.getService(context, id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                alarmManager.cancel(alarmPendingIntent); // cancel any alarm that might already exist
+            }
 
             //set repeating alarm or set regular alarm
             if (repeat_time != 0) {
-
-                // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
-                boolean alarmTimeIsGreaterThanCurrentTime;
-                alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
                 
                 //if alarm_time is old, set alarm_time to currTime+repeat_time to avoid alarm going off directly after user creates note
                 if (!alarmTimeIsGreaterThanCurrentTime) {

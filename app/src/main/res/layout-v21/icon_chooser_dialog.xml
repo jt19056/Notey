@@ -8,9 +8,10 @@
         android:id="@+id/icon_chooser_dialog_imageview__row_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
         android:gravity="center_horizontal">
 
         <ImageView

@@ -24,7 +24,7 @@
     </style>
 
     <style name="MySettingsTheme" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
@@ -185,184 +185,289 @@
     <!--  Themes based on light/dark and color -->
     <!-- ************************************* -->
 
-    <style name="MySettingsTheme_md_red_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_red_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_red_500</item>
+        <item name="mp_colorAccent">@color/md_red_500</item>
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorAccent">@color/md_red_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_red_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_red_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_red_500</item>
+        <item name="mp_colorAccent">@color/md_red_500</item>
+        <item name="colorPrimary">@color/md_red_500</item>
+        <item name="colorAccent">@color/md_red_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_pink_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_pink_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_pink_500</item>
+        <item name="mp_colorAccent">@color/md_pink_500</item>
+        <item name="colorPrimary">@color/md_pink_500</item>
+        <item name="colorAccent">@color/md_pink_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_pink_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_pink_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_pink_500</item>
+        <item name="mp_colorAccent">@color/md_pink_500</item>
+        <item name="colorPrimary">@color/md_pink_500</item>
+        <item name="colorAccent">@color/md_pink_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_purple_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_purple_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_purple_500</item>
+        <item name="mp_colorAccent">@color/md_purple_500</item>
+        <item name="colorPrimary">@color/md_purple_500</item>
+        <item name="colorAccent">@color/md_purple_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_purple_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_purple_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_purple_500</item>
+        <item name="mp_colorAccent">@color/md_purple_500</item>
+        <item name="colorPrimary">@color/md_purple_500</item>
+        <item name="colorAccent">@color/md_purple_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_deep_purple_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_deep_purple_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_deep_purple_500</item>
+        <item name="mp_colorAccent">@color/md_deep_purple_500</item>
+        <item name="colorPrimary">@color/md_deep_purple_500</item>
+        <item name="colorAccent">@color/md_deep_purple_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_deep_purple_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_deep_purple_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_deep_purple_500</item>
+        <item name="mp_colorAccent">@color/md_deep_purple_500</item>
+        <item name="colorPrimary">@color/md_deep_purple_500</item>
+        <item name="colorAccent">@color/md_deep_purple_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_indigo_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_indigo_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_indigo_500</item>
+        <item name="mp_colorAccent">@color/md_indigo_500</item>
+        <item name="colorPrimary">@color/md_indigo_500</item>
+        <item name="colorAccent">@color/md_indigo_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_indigo_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_indigo_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_indigo_500</item>
+        <item name="mp_colorAccent">@color/md_indigo_500</item>
+        <item name="colorPrimary">@color/md_indigo_500</item>
+        <item name="colorAccent">@color/md_indigo_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_blue_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_blue_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_blue_500</item>
+        <item name="mp_colorAccent">@color/md_blue_500</item>
+        <item name="colorPrimary">@color/md_blue_500</item>
+        <item name="colorAccent">@color/md_blue_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_blue_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_blue_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_blue_500</item>
+        <item name="mp_colorAccent">@color/md_blue_500</item>
+        <item name="colorPrimary">@color/md_blue_500</item>
+        <item name="colorAccent">@color/md_blue_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_light_blue_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_light_blue_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_light_blue_500</item>
+        <item name="mp_colorAccent">@color/md_light_blue_500</item>
+        <item name="colorPrimary">@color/md_light_blue_500</item>
+        <item name="colorAccent">@color/md_light_blue_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_light_blue_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_light_blue_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_light_blue_500</item>
+        <item name="mp_colorAccent">@color/md_light_blue_500</item>
+        <item name="colorPrimary">@color/md_light_blue_500</item>
+        <item name="colorAccent">@color/md_light_blue_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_cyan_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_cyan_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_cyan_500</item>
+        <item name="mp_colorAccent">@color/md_cyan_500</item>
+        <item name="colorPrimary">@color/md_cyan_500</item>
+        <item name="colorAccent">@color/md_cyan_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_cyan_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_cyan_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_cyan_500</item>
+        <item name="mp_colorAccent">@color/md_cyan_500</item>
+        <item name="colorPrimary">@color/md_cyan_500</item>
+        <item name="colorAccent">@color/md_cyan_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_teal_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_teal_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_teal_500</item>
+        <item name="mp_colorAccent">@color/md_teal_500</item>
+        <item name="colorPrimary">@color/md_teal_500</item>
+        <item name="colorAccent">@color/md_teal_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_teal_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_teal_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_teal_500</item>
+        <item name="mp_colorAccent">@color/md_teal_500</item>
+        <item name="colorPrimary">@color/md_teal_500</item>
+        <item name="colorAccent">@color/md_teal_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_green_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_green_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_green_500</item>
+        <item name="mp_colorAccent">@color/md_green_500</item>
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorAccent">@color/md_green_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_green_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_green_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_green_500</item>
+        <item name="mp_colorAccent">@color/md_green_500</item>
+        <item name="colorPrimary">@color/md_green_500</item>
+        <item name="colorAccent">@color/md_green_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_light_green_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_light_green_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_light_green_500</item>
+        <item name="mp_colorAccent">@color/md_light_green_500</item>
+        <item name="colorPrimary">@color/md_light_green_500</item>
+        <item name="colorAccent">@color/md_light_green_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_light_green_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_light_green_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_light_green_500</item>
+        <item name="mp_colorAccent">@color/md_light_green_500</item>
+        <item name="colorPrimary">@color/md_light_green_500</item>
+        <item name="colorAccent">@color/md_light_green_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_lime_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_lime_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_lime_500</item>
+        <item name="mp_colorAccent">@color/md_lime_500</item>
+        <item name="colorPrimary">@color/md_lime_500</item>
+        <item name="colorAccent">@color/md_lime_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_lime_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_lime_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_lime_500</item>
+        <item name="mp_colorAccent">@color/md_lime_500</item>
+        <item name="colorPrimary">@color/md_lime_500</item>
+        <item name="colorAccent">@color/md_lime_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_yellow_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_yellow_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_yellow_500</item>
+        <item name="mp_colorAccent">@color/md_yellow_500</item>
+        <item name="colorPrimary">@color/md_yellow_500</item>
+        <item name="colorAccent">@color/md_yellow_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_yellow_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_yellow_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_yellow_500</item>
+        <item name="mp_colorAccent">@color/md_yellow_500</item>
+        <item name="colorPrimary">@color/md_yellow_500</item>
+        <item name="colorAccent">@color/md_yellow_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_amber_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_amber_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_amber_500</item>
+        <item name="mp_colorAccent">@color/md_amber_500</item>
+        <item name="colorPrimary">@color/md_amber_500</item>
+        <item name="colorAccent">@color/md_amber_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_amber_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_amber_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_amber_500</item>
+        <item name="mp_colorAccent">@color/md_amber_500</item>
+        <item name="colorPrimary">@color/md_amber_500</item>
+        <item name="colorAccent">@color/md_amber_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_orange_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_orange_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_orange_500</item>
+        <item name="mp_colorAccent">@color/md_orange_500</item>
+        <item name="colorPrimary">@color/md_orange_500</item>
+        <item name="colorAccent">@color/md_orange_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_orange_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_orange_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_orange_500</item>
+        <item name="mp_colorAccent">@color/md_orange_500</item>
+        <item name="colorPrimary">@color/md_orange_500</item>
+        <item name="colorAccent">@color/md_orange_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_deep_orange_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_deep_orange_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_deep_orange_500</item>
+        <item name="mp_colorAccent">@color/md_deep_orange_500</item>
+        <item name="colorPrimary">@color/md_deep_orange_500</item>
+        <item name="colorAccent">@color/md_deep_orange_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_deep_orange_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_deep_orange_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_deep_orange_500</item>
+        <item name="mp_colorAccent">@color/md_deep_orange_500</item>
+        <item name="colorPrimary">@color/md_deep_orange_500</item>
+        <item name="colorAccent">@color/md_deep_orange_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_brown_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_brown_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_brown_500</item>
+        <item name="mp_colorAccent">@color/md_brown_500</item>
+        <item name="colorPrimary">@color/md_brown_500</item>
+        <item name="colorAccent">@color/md_brown_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_brown_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_brown_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_brown_500</item>
+        <item name="mp_colorAccent">@color/md_brown_500</item>
+        <item name="colorPrimary">@color/md_brown_500</item>
+        <item name="colorAccent">@color/md_brown_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_grey_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_grey_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_grey_500</item>
+        <item name="mp_colorAccent">@color/md_grey_500</item>
+        <item name="colorPrimary">@color/md_grey_500</item>
+        <item name="colorAccent">@color/md_grey_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_grey_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_grey_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_grey_500</item>
+        <item name="mp_colorAccent">@color/md_grey_500</item>
+        <item name="colorPrimary">@color/md_grey_500</item>
+        <item name="colorAccent">@color/md_grey_500</item>
     </style>
 
-    <style name="MySettingsTheme_md_blue_grey_500" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsTheme_md_blue_grey_500" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_500</item>
+        <item name="mp_colorAccent">@color/md_blue_grey_500</item>
+        <item name="colorPrimary">@color/md_blue_grey_500</item>
+        <item name="colorAccent">@color/md_blue_grey_500</item>
     </style>
-    <style name="MySettingsThemeDark_md_blue_grey_500" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
+    <style name="MySettingsThemeDark_md_blue_grey_500" parent="Theme.AppCompat">
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp_padding</item>
         <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_500</item>
-    </style>
-
-    <style name="MySettingsTheme_md_blue_grey_900" parent="android:Theme.Holo.Light">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
-        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_900</item>
-    </style>
-    <style name="MySettingsThemeDark_md_blue_grey_900" parent="android:Theme.Holo">
-        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
-        <item name="android:actionBarStyle">@style/MyActionBar_md_blue_grey_900</item>
+        <item name="mp_colorAccent">@color/md_blue_grey_500</item>
+        <item name="colorPrimary">@color/md_blue_grey_500</item>
+        <item name="colorAccent">@color/md_blue_grey_500</item>
     </style>
 
     <!-- ************************************* -->

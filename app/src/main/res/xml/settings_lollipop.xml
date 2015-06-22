@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
+    <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_general_settings"
         android:title="@string/notifications">
 
-        <Preference android:key="pref_click_notif"
+        <com.jenzz.materialpreference.Preference android:key="pref_click_notif"
             android:title="@string/notifClick"
             android:summary="@string/notifClickSummary"/>
 
-        <Preference android:key="pref_priority"
+        <com.jenzz.materialpreference.Preference android:key="pref_priority"
             android:title="@string/priority"
             android:summary="@string/prioritySummary"/>
 
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
             android:key="pref_expand"
             android:summary="@string/expandNotifsSummary"
             android:title="@string/expandNotifs" />
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
             android:key="pref_share_action"
             android:summary="@string/share_button_summary"
             android:title="@string/share_button"
             android:dependency="pref_expand"/>
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:key="pref_swipe"
             android:summary="@string/swipeNotifsSummary"
             android:title="@string/swipeNotifs" />
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
 
-    <PreferenceCategory
+    <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_appearance"
         android:title="@string/appearance">
 
-        <Preference
+        <com.jenzz.materialpreference.Preference
             android:key="pref_theme"
             android:title="@string/theme_title"
             android:summary="@string/theme_summary"/>
 
-        <Preference
+        <com.jenzz.materialpreference.Preference
             android:key="pref_update_icon"
             android:title="@string/update_icon"
             android:summary="@string/update_to_match"/>
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
 
-    <PreferenceCategory
+    <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_pro"
         android:title="@string/pro_options">
 
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:enabled="false"
             android:key="pref_shortcut"
             android:summary="@string/shortcut_summary"
             android:title="@string/shortcut" />
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
 
-    <PreferenceCategory
+    <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
             android:key="pref_enter"
             android:summary="@string/enterToSendSummary"
             android:title="@string/enterToSend" />
 
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:key="pref_use_colored_icons"
             android:summary="@string/use_colored_icons_summary"
             android:title="@string/use_colored_icons" />
 
-        <CheckBoxPreference
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:key="pref_large_icons"
             android:summary="@string/large_icons_summary"
             android:title="@string/large_icons"
             android:dependency="pref_use_colored_icons" />
-    </PreferenceCategory>
+    </com.jenzz.materialpreference.PreferenceCategory>
 </PreferenceScreen>

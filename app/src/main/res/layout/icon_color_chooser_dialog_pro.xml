@@ -8,7 +8,7 @@
         android:id="@+id/color_row_1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal">
@@ -22,7 +22,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_white_1000"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="white"/>
 
 
@@ -35,7 +35,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_red_A400"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="red"
             />
 
@@ -48,7 +48,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_pink_A100"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="pink"/>
 
         <com.rey.material.widget.FloatingActionButton
@@ -60,7 +60,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_purple_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="purple"/>
 
     </TableRow>
@@ -69,7 +69,7 @@
         android:id="@+id/color_row_2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal"
@@ -84,7 +84,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_indigo_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="indigo"/>
 
         <com.rey.material.widget.FloatingActionButton
@@ -96,7 +96,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_blue_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="blue"/>
 
         <com.rey.material.widget.FloatingActionButton
@@ -108,7 +108,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_cyan_A400"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="cyan" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -120,7 +120,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_teal_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="teal" />
     </TableRow>
 
@@ -128,7 +128,7 @@
         android:id="@+id/color_row_3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:gravity="center_horizontal"
@@ -143,7 +143,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_green_A700"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="green" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -155,7 +155,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_light_green_A400"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="light_green" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -167,7 +167,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_yellow_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="yellow" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -179,7 +179,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_orange_A400"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="orange" />
     </TableRow>
 
@@ -187,9 +187,10 @@
         android:id="@+id/color_row_4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:paddingTop="15dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:paddingBottom="10dp"
         android:gravity="center_horizontal"
         android:layout_below="@id/color_row_3">
 
@@ -202,7 +203,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_deep_orange_A200"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="deep_orange" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -214,7 +215,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/md_blue_grey_500"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="bluegrey" />
 
         <com.rey.material.widget.FloatingActionButton
@@ -226,7 +227,7 @@
             android:layout_marginRight="5dp"
             app:fab_backgroundColor = "@color/black"
             app:fab_elevation="2dp"
-            app:fab_radius="25dp"
+            app:fab_radius="24dp"
             android:tag="black" />
     </TableRow>
 </RelativeLayout>
