@@ -9,9 +9,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="15"
         android:targetSdkVersion="22" />
 
     <application
@@ -21,6 +22,11 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon"
         >
+
+        <!-- Crashlytics API key -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="c6a1e52b93f6cd070ededf87bceb5fbf43dfe866" />
 
         <!-- Android Backup Service Key -->
         <meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAI30w-5DNhsLnp7yU4aEUP4UwT4HtjFKL4mtMFLQ" />
@@ -34,6 +40,7 @@
 
         <receiver android:name=".NotificationDismiss" android:enabled="true" android:exported="false" />
         <service android:name=".NotificationBootService" android:enabled="true"/>
+        <receiver android:name=".NotificationBuild" android:enabled="true" android:exported="false"/>
 
         <service android:name=".AlarmService" android:enabled="true" />
         <receiver android:name=".AlarmReceiver" android:enabled="true" android:exported="false" >

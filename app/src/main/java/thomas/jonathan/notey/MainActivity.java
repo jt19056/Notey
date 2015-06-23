@@ -58,6 +58,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics;
+
 import thomas.jonathan.notey.util.IabHelper;
 import thomas.jonathan.notey.util.IabResult;
 import thomas.jonathan.notey.util.Inventory;
@@ -122,6 +125,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
@@ -138,13 +142,13 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 //        doInAppBillingStuff();
 
         /*** For free Pro users, enable this and setProImageButtons() on line 149 ***/
-//        proVersionEnabled = true;
+        proVersionEnabled = true;
 
         initializeSettings();
         initializeGUI();
 
         /*** For free Pro users, enable this too! ***/
-//        setProImageButtons();
+        setProImageButtons();
 
         setLayout();
 

@@ -72,10 +72,6 @@ public class NotificationBuild extends BroadcastReceiver {
         if (alarm_time != null && !alarm_time.equals("")) {  //if alarm time is valid, and if we are not in and editIntent
             notey.setAlarm(alarm_time); // add to db
 
-            // add the alarm date/time to the notification
-            Date date = new Date(Long.valueOf(alarm_time));
-            noteForNotification += "\n" + context.getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date);
-
             // intent for alarm service to launch
             Intent myIntent = new Intent(context, AlarmService.class);
             Bundle bundle = new Bundle();
@@ -116,6 +112,10 @@ public class NotificationBuild extends BroadcastReceiver {
                 else
                     alarmManager.set(AlarmManager.RTC, Long.valueOf(alarm_time), alarmPendingIntent);
             }
+
+            // add the alarm date/time to the notification
+            Date date = new Date(Long.valueOf(alarm_time));
+            noteForNotification += "\n" + context.getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date);
         }
 
         PendingIntent piDismiss = createOnDismissedIntent(context, id);

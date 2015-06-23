@@ -37,7 +37,12 @@ public class NotificationDismiss extends BroadcastReceiver{
             @Override
             public void run() {
                 nm.cancel(id);
+                // remove the no longer needed sharedprefs
                 editor.remove("notification" + Integer.toString(id)).apply();
+                editor.remove("vibrate" + Integer.toString(id)).apply();
+                editor.remove("wake" + Integer.toString(id)).apply();
+                editor.remove("sound" + Integer.toString(id)).apply();
+                editor.remove("repeat" + Integer.toString(id)).apply();
             }
         };
         timer.schedule(timerTask, 5000, 5000);
@@ -77,12 +82,6 @@ public class NotificationDismiss extends BroadcastReceiver{
         if (alarmPendingIntent != null) {
             AlarmManager alarmManager = (AlarmManager) paramContext.getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(alarmPendingIntent);
-
-            // remove the no longer needed sharedprefs
-            editor.remove("vibrate" + Integer.toString(id)).apply();
-            editor.remove("wake" + Integer.toString(id)).apply();
-            editor.remove("sound" + Integer.toString(id)).apply();
-            editor.remove("repeat" + Integer.toString(id)).apply();
 
             clearNotificationLED(paramContext);
         }
