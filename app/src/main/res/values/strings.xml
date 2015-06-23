@@ -72,15 +72,16 @@
     <string name="opensourceSummary">License details for open source software.</string>
     <string name="verNum">Version Number</string>
     <string name="contact">Contact</string>
-    <string name="email" translatable="false">jt19056@gmail.com</string>
+    <string name="email" translatable="false">noteyapp@gmail.com</string>
     <string name="rate">Rate</string>
     <string name="rateSummary">Hope you enjoy the app!</string>
     <string name="sendemail">Send email…</string>
     <string name="playstore_url">https://play.google.com/store/apps/details?id=thomas.jonathan.notey</string>
     <string name="github">GitHub</string>
-    <string name="githubSummary">Track development, create bug tickets, request features.</string>
+    <string name="githubSummary">Track development, report bugs, request features.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
     <string name="translations">Translations</string>
+    <string name="translations_summary">Languages translated by the community.</string>
     <string name="translations_thank_you">
         Thank you to the following users:\n\n
         Alex Besov - Russian (русский)\n
@@ -94,7 +95,24 @@
     <string name="icon">Icon</string>
     <string name="icon_summary">Icon to be displayed on DashClock Widget.</string>
     <string name="top_icon">Your oldest note\'s icon</string>
+    <string name="notey_logo">Notey logo</string>
     <string name="notey_extension_settings">Notey Extension Settings</string>
+    <string name="pencil">Pencil</string>
+    <string name="clipboard">Clipboard</string>
+    <string name="dollar_sign">Dollar sign</string>
+    <string name="book">Book</string>
+    <string name="sun">Sun</string>
+    <string name="phone">Phone</string>
+    <string name="car">Car</string>
+    <string name="calendar">Calendar</string>
+    <string name="flag">Flag</string>
+    <string name="lightning_bolt">Lightning bolt</string>
+    <string name="drink">Drink</string>
+    <string name="flower">Flower</string>
+    <string name="music_note">Music Note</string>
+    <string name="bell">Bell</string>
+    <string name="reply_arrow">Reply arrow</string>
+    <string name="spinner">Spinner</string>
 
     <!-- Icons -->
     <string name="check">Check</string>

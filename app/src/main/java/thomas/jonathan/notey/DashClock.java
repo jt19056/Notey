@@ -22,15 +22,15 @@ public class DashClock extends DashClockExtension {
         dashclock_icon = sharedPref.getString("pref_dashclock_icon", "topIcon");
 
         // set icon
-        if (dashclock_icon.equals("check")) icon = R.drawable.ic_check_white_36dp;
-        else if (dashclock_icon.equals("warning")) icon = R.drawable.ic_warning_white_36dp;
-        else if (dashclock_icon.equals("edit")) icon = R.drawable.ic_edit_white_36dp;
-        else if (dashclock_icon.equals("star")) icon = R.drawable.ic_star_white_36dp;
-        else if (dashclock_icon.equals("whatshot")) icon = R.drawable.ic_whatshot_white_36dp;
-        else if (dashclock_icon.equals("alarm")) icon = R.drawable.ic_alarm_white_36dp;
-        else if (dashclock_icon.equals("heart")) icon = R.drawable.ic_favorite_white_36dp;
+        //this is the new way of finding icons
+        if(!dashclock_icon.equals("topIcon") && !dashclock_icon.equals("noteyLogo"))
+            icon = getResources().getIdentifier("ic_" + dashclock_icon + "_white_36dp", "drawable", getPackageName());
+        else if(dashclock_icon.equals("noteyLogo"))
+            icon = R.drawable.ic_launcher_dashclock;
+
+        //legacy checks becuase I changed the way icons are read in v2.4
+        if (dashclock_icon.equals("heart")) icon = R.drawable.ic_favorite_white_36dp;
         else if (dashclock_icon.equals("note")) icon = R.drawable.ic_note_add_white_36dp;
-        else if (dashclock_icon.equals("shopping_cart")) icon = R.drawable.ic_shopping_cart_white_36dp;
         else if (dashclock_icon.equals("smile")) icon = R.drawable.ic_mood_white_36dp;
 
         if (allNoteys.size() > 0) {

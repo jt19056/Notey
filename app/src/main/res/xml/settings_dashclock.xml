@@ -3,7 +3,7 @@
         <ListPreference android:title="@string/icon"
             android:summary="@string/icon_summary"
             android:key="pref_dashclock_icon"
-            android:defaultValue="check"
+            android:defaultValue="topIcon"
             android:entries="@array/dashclock_icon_array"
             android:entryValues="@array/dashclock_icon_values"
             />

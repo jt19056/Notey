@@ -47,47 +47,85 @@
     <!-- Dashclock icons-->
     <string-array name="dashclock_icon_array">
         <item>@string/top_icon</item>
+        <item>@string/notey_logo</item>
         <item>@string/check</item>
-        <item>@string/edit</item>
+        <item>@string/pencil</item>
         <item>@string/star</item>
         <item>@string/warning</item>
         <item>@string/flame</item>
+        <item>@string/alarm</item>
+        <item>@string/heart</item>
     </string-array>
     <string-array name="dashclock_icon_values">
         <item>topIcon</item>
+        <item>noteyLogo</item>
         <item>check</item>
         <item>edit</item>
         <item>star</item>
         <item>warning</item>
         <item>whatshot</item>
+        <item>alarm</item>
+        <item>favorite</item>
     </string-array>
 
     <!-- Dashclock icons for Pro -->
     <string-array name="dashclock_pro_icon_array">
         <item>@string/top_icon</item>
+        <item>@string/notey_logo</item>
         <item>@string/check</item>
+        <item>@string/pencil</item>
+        <item>@string/star</item>
+        <item>@string/warning</item>
+        <item>@string/flame</item>
         <item>@string/alarm</item>
-        <item>@string/edit</item>
         <item>@string/heart</item>
         <item>@string/note</item>
         <item>@string/shopping_cart</item>
         <item>@string/smile</item>
-        <item>@string/star</item>
-        <item>@string/warning</item>
-        <item>@string/flame</item>
+        <item>@string/clipboard</item>
+        <item>@string/dollar_sign</item>
+        <item>@string/book</item>
+        <item>@string/sun</item>
+        <item>@string/phone</item>
+        <item>@string/car</item>
+        <item>@string/calendar</item>
+        <item>@string/flag</item>
+        <item>@string/lightning_bolt</item>
+        <item>@string/drink</item>
+        <item>@string/flower</item>
+        <item>@string/music_note</item>
+        <item>@string/bell</item>
+        <item>@string/reply_arrow</item>
+        <item>@string/spinner</item>
     </string-array>
     <string-array name="dashclock_pro_icon_values">
         <item>topIcon</item>
+        <item>noteyLogo</item>
         <item>check</item>
-        <item>alarm</item>
         <item>edit</item>
-        <item>heart</item>
-        <item>note</item>
-        <item>shopping_cart</item>
-        <item>smile</item>
         <item>star</item>
         <item>warning</item>
         <item>whatshot</item>
+        <item>alarm</item>
+        <item>favorite</item>
+        <item>note_add</item>
+        <item>shopping_cart</item>
+        <item>mood</item>
+        <item>assignment</item>
+        <item>attach_money</item>
+        <item>book</item>
+        <item>brightness_low</item>
+        <item>call</item>
+        <item>directions_car</item>
+        <item>event</item>
+        <item>flag</item>
+        <item>flash_on</item>
+        <item>bar</item>
+        <item>local_florist</item>
+        <item>music_note</item>
+        <item>notifications</item>
+        <item>reply</item>
+        <item>toys</item>
     </string-array>
 
     <string-array name="recurrence_array">
