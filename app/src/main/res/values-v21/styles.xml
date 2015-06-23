@@ -294,7 +294,6 @@
         <item name="colorPrimary">@color/md_red_500</item>
         <item name="colorPrimaryDark">@color/md_red_700</item>
         <item name="colorAccent">@color/md_red_500</item>
-        <item name="android:navigationBarColor">@color/md_red_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -307,7 +306,6 @@
         <item name="colorPrimary">@color/md_red_500</item>
         <item name="colorPrimaryDark">@color/md_red_700</item>
         <item name="colorAccent">@color/md_red_500</item>
-        <item name="android:navigationBarColor">@color/md_red_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -321,7 +319,6 @@
         <item name="colorPrimary">@color/md_pink_500</item>
         <item name="colorPrimaryDark">@color/md_pink_700</item>
         <item name="colorAccent">@color/md_pink_500</item>
-        <item name="android:navigationBarColor">@color/md_pink_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -334,7 +331,6 @@
         <item name="colorPrimary">@color/md_pink_500</item>
         <item name="colorPrimaryDark">@color/md_pink_700</item>
         <item name="colorAccent">@color/md_pink_500</item>
-        <item name="android:navigationBarColor">@color/md_pink_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -348,7 +344,6 @@
         <item name="colorPrimary">@color/md_purple_500</item>
         <item name="colorPrimaryDark">@color/md_purple_700</item>
         <item name="colorAccent">@color/md_purple_500</item>
-        <item name="android:navigationBarColor">@color/md_purple_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -361,7 +356,6 @@
         <item name="colorPrimary">@color/md_purple_500</item>
         <item name="colorPrimaryDark">@color/md_purple_700</item>
         <item name="colorAccent">@color/md_purple_500</item>
-        <item name="android:navigationBarColor">@color/md_purple_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -375,7 +369,6 @@
         <item name="colorPrimary">@color/md_deep_purple_500</item>
         <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
         <item name="colorAccent">@color/md_deep_purple_500</item>
-        <item name="android:navigationBarColor">@color/md_deep_purple_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -388,7 +381,6 @@
         <item name="colorPrimary">@color/md_deep_purple_500</item>
         <item name="colorPrimaryDark">@color/md_deep_purple_700</item>
         <item name="colorAccent">@color/md_deep_purple_500</item>
-        <item name="android:navigationBarColor">@color/md_deep_purple_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -402,7 +394,6 @@
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryDark">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_indigo_500</item>
-        <item name="android:navigationBarColor">@color/md_indigo_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -415,7 +406,6 @@
         <item name="colorPrimary">@color/md_indigo_500</item>
         <item name="colorPrimaryDark">@color/md_indigo_700</item>
         <item name="colorAccent">@color/md_indigo_500</item>
-        <item name="android:navigationBarColor">@color/md_indigo_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -429,7 +419,6 @@
         <item name="colorPrimary">@color/md_blue_500</item>
         <item name="colorPrimaryDark">@color/md_blue_700</item>
         <item name="colorAccent">@color/md_blue_500</item>
-        <item name="android:navigationBarColor">@color/md_blue_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -442,7 +431,6 @@
         <item name="colorPrimary">@color/md_blue_500</item>
         <item name="colorPrimaryDark">@color/md_blue_700</item>
         <item name="colorAccent">@color/md_blue_500</item>
-        <item name="android:navigationBarColor">@color/md_blue_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -456,7 +444,6 @@
         <item name="colorPrimary">@color/md_light_blue_500</item>
         <item name="colorPrimaryDark">@color/md_light_blue_700</item>
         <item name="colorAccent">@color/md_light_blue_500</item>
-        <item name="android:navigationBarColor">@color/md_light_blue_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -469,7 +456,6 @@
         <item name="colorPrimary">@color/md_light_blue_500</item>
         <item name="colorPrimaryDark">@color/md_light_blue_700</item>
         <item name="colorAccent">@color/md_light_blue_500</item>
-        <item name="android:navigationBarColor">@color/md_light_blue_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -483,7 +469,6 @@
         <item name="colorPrimary">@color/md_cyan_500</item>
         <item name="colorPrimaryDark">@color/md_cyan_700</item>
         <item name="colorAccent">@color/md_cyan_500</item>
-        <item name="android:navigationBarColor">@color/md_cyan_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -496,7 +481,6 @@
         <item name="colorPrimary">@color/md_cyan_500</item>
         <item name="colorPrimaryDark">@color/md_cyan_700</item>
         <item name="colorAccent">@color/md_cyan_500</item>
-        <item name="android:navigationBarColor">@color/md_cyan_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -510,7 +494,6 @@
         <item name="colorPrimary">@color/md_teal_500</item>
         <item name="colorPrimaryDark">@color/md_teal_700</item>
         <item name="colorAccent">@color/md_teal_500</item>
-        <item name="android:navigationBarColor">@color/md_teal_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -523,7 +506,6 @@
         <item name="colorPrimary">@color/md_teal_500</item>
         <item name="colorPrimaryDark">@color/md_teal_700</item>
         <item name="colorAccent">@color/md_teal_500</item>
-        <item name="android:navigationBarColor">@color/md_teal_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -537,7 +519,6 @@
         <item name="colorPrimary">@color/md_green_500</item>
         <item name="colorPrimaryDark">@color/md_green_700</item>
         <item name="colorAccent">@color/md_green_500</item>
-        <item name="android:navigationBarColor">@color/md_green_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -550,7 +531,6 @@
         <item name="colorPrimary">@color/md_green_500</item>
         <item name="colorPrimaryDark">@color/md_green_700</item>
         <item name="colorAccent">@color/md_green_500</item>
-        <item name="android:navigationBarColor">@color/md_green_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -564,7 +544,6 @@
         <item name="colorPrimary">@color/md_light_green_500</item>
         <item name="colorPrimaryDark">@color/md_light_green_700</item>
         <item name="colorAccent">@color/md_light_green_500</item>
-        <item name="android:navigationBarColor">@color/md_light_green_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -577,7 +556,6 @@
         <item name="colorPrimary">@color/md_light_green_500</item>
         <item name="colorPrimaryDark">@color/md_light_green_700</item>
         <item name="colorAccent">@color/md_light_green_500</item>
-        <item name="android:navigationBarColor">@color/md_light_green_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -591,7 +569,6 @@
         <item name="colorPrimary">@color/md_lime_500</item>
         <item name="colorPrimaryDark">@color/md_lime_700</item>
         <item name="colorAccent">@color/md_lime_500</item>
-        <item name="android:navigationBarColor">@color/md_lime_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -604,7 +581,6 @@
         <item name="colorPrimary">@color/md_lime_500</item>
         <item name="colorPrimaryDark">@color/md_lime_700</item>
         <item name="colorAccent">@color/md_lime_500</item>
-        <item name="android:navigationBarColor">@color/md_lime_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -618,7 +594,6 @@
         <item name="colorPrimary">@color/md_yellow_500</item>
         <item name="colorPrimaryDark">@color/md_yellow_700</item>
         <item name="colorAccent">@color/md_yellow_500</item>
-        <item name="android:navigationBarColor">@color/md_yellow_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -631,7 +606,6 @@
         <item name="colorPrimary">@color/md_yellow_500</item>
         <item name="colorPrimaryDark">@color/md_yellow_700</item>
         <item name="colorAccent">@color/md_yellow_500</item>
-        <item name="android:navigationBarColor">@color/md_yellow_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -645,7 +619,6 @@
         <item name="colorPrimary">@color/md_amber_500</item>
         <item name="colorPrimaryDark">@color/md_amber_700</item>
         <item name="colorAccent">@color/md_amber_500</item>
-        <item name="android:navigationBarColor">@color/md_amber_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -658,7 +631,6 @@
         <item name="colorPrimary">@color/md_amber_500</item>
         <item name="colorPrimaryDark">@color/md_amber_700</item>
         <item name="colorAccent">@color/md_amber_500</item>
-        <item name="android:navigationBarColor">@color/md_amber_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -672,7 +644,6 @@
         <item name="colorPrimary">@color/md_orange_500</item>
         <item name="colorPrimaryDark">@color/md_orange_700</item>
         <item name="colorAccent">@color/md_orange_500</item>
-        <item name="android:navigationBarColor">@color/md_orange_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -685,7 +656,6 @@
         <item name="colorPrimary">@color/md_orange_500</item>
         <item name="colorPrimaryDark">@color/md_orange_700</item>
         <item name="colorAccent">@color/md_orange_500</item>
-        <item name="android:navigationBarColor">@color/md_orange_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -699,7 +669,6 @@
         <item name="colorPrimary">@color/md_deep_orange_500</item>
         <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
         <item name="colorAccent">@color/md_deep_orange_500</item>
-        <item name="android:navigationBarColor">@color/md_deep_orange_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -712,7 +681,6 @@
         <item name="colorPrimary">@color/md_deep_orange_500</item>
         <item name="colorPrimaryDark">@color/md_deep_orange_700</item>
         <item name="colorAccent">@color/md_deep_orange_500</item>
-        <item name="android:navigationBarColor">@color/md_deep_orange_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -726,7 +694,6 @@
         <item name="colorPrimary">@color/md_brown_500</item>
         <item name="colorPrimaryDark">@color/md_brown_700</item>
         <item name="colorAccent">@color/md_brown_500</item>
-        <item name="android:navigationBarColor">@color/md_brown_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -739,7 +706,6 @@
         <item name="colorPrimary">@color/md_brown_500</item>
         <item name="colorPrimaryDark">@color/md_brown_700</item>
         <item name="colorAccent">@color/md_brown_500</item>
-        <item name="android:navigationBarColor">@color/md_brown_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -753,7 +719,6 @@
         <item name="colorPrimary">@color/md_grey_500</item>
         <item name="colorPrimaryDark">@color/md_grey_700</item>
         <item name="colorAccent">@color/md_grey_500</item>
-        <item name="android:navigationBarColor">@color/md_grey_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -766,7 +731,6 @@
         <item name="colorPrimary">@color/md_grey_500</item>
         <item name="colorPrimaryDark">@color/md_grey_700</item>
         <item name="colorAccent">@color/md_grey_500</item>
-        <item name="android:navigationBarColor">@color/md_grey_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -780,7 +744,6 @@
         <item name="colorPrimary">@color/md_blue_grey_500</item>
         <item name="colorPrimaryDark">@color/md_blue_grey_700</item>
         <item name="colorAccent">@color/md_blue_grey_500</item>
-        <item name="android:navigationBarColor">@color/md_blue_grey_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
@@ -793,7 +756,6 @@
         <item name="colorPrimary">@color/md_blue_grey_500</item>
         <item name="colorPrimaryDark">@color/md_blue_grey_700</item>
         <item name="colorAccent">@color/md_blue_grey_500</item>
-        <item name="android:navigationBarColor">@color/md_blue_grey_500</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
