@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/alarm_activity_dialog"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="fill_parent">
 
     <RelativeLayout
         android:id="@+id/alarm_layout_top"
@@ -16,13 +16,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/alarm"
-            android:textColor="@android:color/white"
+            android:textColor="@color/md_white_1000"
             android:textIsSelectable="false"
-            android:textSize="25sp" />
+            android:textSize="@dimen/material_text_headline" />
 
         <ImageButton
             android:id="@+id/alarm_delete"
@@ -31,7 +31,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
+            android:padding="8dp"
             android:background="?android:selectableItemBackground"
             android:src="@drawable/ic_delete_white_24dp" />
     </RelativeLayout>
@@ -43,7 +44,7 @@
         android:layout_below="@+id/alarm_layout_top"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="16dp"
         android:text="@string/no_alarm_set"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -52,7 +53,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alarm_set_tv"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true">
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -69,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:padding="4dp"
             android:gravity="center"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
@@ -90,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:padding="4dp"
             android:gravity="center"
             android:background="?android:selectableItemBackground"
             android:clickable="true"
@@ -110,56 +114,39 @@
         android:id="@+id/div"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_below="@id/alarm_date_and_time_layout"
-        android:background="@android:color/darker_gray" />
+        android:background="@color/md_divider_black" />
 
     <LinearLayout
         android:id="@+id/alarm_checkboxes_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alarm_date_and_time_layout"
-        android:layout_marginTop="15dp">
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:clickable="false" />
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true">
 
         <CheckBox
             android:id="@+id/alarm_wake"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/wake_screen"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:clickable="false"
-            android:text="" />
+            android:layout_marginLeft="-4dp"
+            />
 
         <CheckBox
             android:id="@+id/alarm_vibrate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/vibrate"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="15dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:clickable="false"
-            android:text="" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
@@ -168,24 +155,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alarm_checkboxes_layout"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentLeft="true">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:clickable="false"
-            android:text="" />
-
-
-        <ImageButton
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/alarm_sound_btn"
-            android:background="@drawable/ic_volume_up_grey600_24dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="4dp"
             android:clickable="false"
             />
 
@@ -193,6 +171,7 @@
             android:id="@+id/alarm_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="4dp"
             android:text=""
             android:enabled="false"
             android:clickable="false"
@@ -203,54 +182,54 @@
 
     <LinearLayout
         android:id="@+id/alarm_layout_pro2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarm_layout_pro1"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="12dp">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/alarm_repeat_iv"
+            android:clickable="true"
+            android:onClick="onClick"
+            android:src="@drawable/ic_refresh_grey600_24dp"
+            android:background="?android:selectableItemBackground"
+            android:padding="4dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alarm_layout_pro3"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alarm_layout_pro1"
-        android:layout_marginTop="5dp">
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:clickable="false"
-            android:text=""
-            android:layout_weight="1"/>
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/alarm_repeat_iv"
-            android:layout_gravity="center_vertical"
-            android:clickable="true"
-            android:onClick="onClick"
-            android:background="?android:selectableItemBackground"
-            android:layout_weight="1"
-            />
+        android:layout_toRightOf="@id/alarm_layout_pro2"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_alignBottom="@+id/alarm_layout_pro2">
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:id="@+id/discrete_bar"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-5dp"
-            android:layout_marginRight="-10dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="50"
             app:dsb_indicatorTextAppearance="@color/md_white_1000"
+            android:layout_marginRight="-16dp"
+            android:layout_weight="2"
             />
 
         <com.rey.material.widget.Spinner
             style="@style/Widget.AppCompat.Spinner"
             android:id="@+id/reccurence_spinner"
-            android:layout_width="150dp"
+            android:layout_width="144dp"
             android:layout_height="wrap_content"
             app:rd_style="@style/Material.Drawable.Ripple.Wave"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_marginRight="10dp"
+            android:layout_weight="1"
             />
     </LinearLayout>
 
@@ -259,7 +238,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/alarm_layout_pro2"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="16dp">
 
         <Button
             android:id="@+id/alarm_cancel_btn"
@@ -268,7 +247,8 @@
             android:layout_weight="1"
             android:background="?android:selectableItemBackground"
             android:text="@string/cancel"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
 
         <Button
             android:id="@+id/alarm_set_btn"
@@ -279,5 +259,4 @@
             android:text="@string/set"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
-
 </RelativeLayout>

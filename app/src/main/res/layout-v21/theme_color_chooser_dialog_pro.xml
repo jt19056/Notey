@@ -296,6 +296,7 @@
             android:textSize="@dimen/abc_text_size_medium_material"
             android:layout_marginLeft="5dp"
             android:layout_gravity="center_vertical"
+            android:background="?android:selectableItemBackgroundBorderless"
             />
 
     </TableRow>

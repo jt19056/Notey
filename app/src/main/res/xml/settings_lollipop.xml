@@ -41,8 +41,14 @@
 
         <com.jenzz.materialpreference.Preference
             android:key="pref_update_icon"
-            android:title="@string/update_icon"
+            android:title="@string/update_logo"
             android:summary="@string/update_to_match"/>
+
+        <com.jenzz.materialpreference.Preference
+            android:enabled="false"
+            android:key="pref_accent"
+            android:summary="@string/accent_color_summary"
+            android:title="@string/accent_color" />
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory
@@ -55,16 +61,23 @@
             android:key="pref_shortcut"
             android:summary="@string/shortcut_summary"
             android:title="@string/shortcut" />
+
+        <com.jenzz.materialpreference.Preference
+            android:enabled="false"
+            android:key="pref_default_icon_color"
+            android:summary="@string/default_icons_color_summary"
+            android:title="@string/default_icons_color" />
     </com.jenzz.materialpreference.PreferenceCategory>
 
     <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
-            android:key="pref_enter"
-            android:summary="@string/enterToSendSummary"
-            android:title="@string/enterToSend" />
+            android:key="pref_keyboard"
+            android:summary="@string/open_keyboard_summary"
+            android:title="@string/open_keyboard" />
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"

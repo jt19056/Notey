@@ -6,8 +6,10 @@
         android:id="@+id/info_layout_top"
         android:layout_width="fill_parent"
         android:layout_height = "wrap_content"
-        android:background="@color/blue_500">
-        <TextView
+        android:background="@color/blue_500"
+        android:gravity="center_vertical"
+        android:elevation="4dp">
+        <com.rey.material.widget.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
@@ -15,6 +17,7 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="15dp"
+			
             android:textSize="@dimen/material_text_headline"
             android:textIsSelectable="false"
             android:textColor="@color/md_white_1000"/>
@@ -46,60 +49,73 @@
             android:id="@+id/info_imageView"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
+			
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="5dp"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp">
 
-            <TextView
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_title_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"/>
+                android:scrollbars="vertical"
+                android:maxLines="3"
 
-            <TextView
+                android:background="@drawable/rectangle"
+                android:padding="8dp"
+                android:elevation="3dp"
+                />
+
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_note_text"
                 android:layout_below="@id/info_title_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:textSize="20sp"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:scrollbars="vertical"
-                android:maxLines="15"
-                android:background="?android:selectableItemBackground"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:maxLines="10"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+
+                android:background="@drawable/rectangle"
+                android:padding="8dp"
+                android:elevation="3dp"
                 />
 
-            <TextView
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_alarm_text"
                 android:layout_below="@id/info_note_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
                 android:gravity="center"
                 android:maxLines="1"
-                android:background="?android:selectableItemBackground"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:layout_marginBottom="4dp"
+
+                android:background="@drawable/rectangle"
+                android:padding="8dp"
+                android:elevation="3dp"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -110,8 +126,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/info_linear_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         >

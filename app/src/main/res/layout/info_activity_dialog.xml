@@ -6,15 +6,17 @@
         android:id="@+id/info_layout_top"
         android:layout_width="fill_parent"
         android:layout_height = "wrap_content"
-        android:background="@color/blue_500">
-        <TextView
+        android:background="@color/blue_500"
+        android:gravity="center_vertical">
+        <com.rey.material.widget.TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/app_name"
             android:id="@+id/info_mainTitle"
-            android:paddingBottom="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="15dp"
+
             android:textSize="@dimen/material_text_headline"
             android:textIsSelectable="false"
             android:textColor="@color/md_white_1000"/>
@@ -23,13 +25,13 @@
             android:id="@+id/info_menuButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:src="@drawable/ic_more_vert_white_24dp"
+            android:padding="5dp"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="7dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="14dp"
-            android:background="?android:selectableItemBackground"
-            android:src="@drawable/ic_more_vert_white_24dp"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="11dp"
+            android:layout_marginTop="17dp"
+            android:background="?android:selectableItemBackground"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -45,61 +47,70 @@
             android:layout_height="wrap_content"
             android:id="@+id/info_imageView"
             android:layout_gravity="center"
-            android:padding="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"/>
+            android:padding="10dp"
+
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="5dp"
-            android:layout_marginRight="10dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp">
 
-            <TextView
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_title_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"/>
+                android:scrollbars="vertical"
+                android:maxLines="3"
 
-            <TextView
+                android:background="@drawable/rectangle_pre_lollipop"
+                android:padding="8dp"
+                />
+
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_note_text"
                 android:layout_below="@id/info_title_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:textSize="20sp"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
+                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:scrollbars="vertical"
-                android:maxLines="15"
-                android:background="?android:selectableItemBackground"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:maxLines="10"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+
+                android:background="@drawable/rectangle_pre_lollipop"
+                android:padding="8dp"
                 />
 
-            <TextView
+            <com.rey.material.widget.TextView
                 android:id="@+id/info_alarm_text"
                 android:layout_below="@id/info_note_text"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15sp"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/material_text_subhead"
                 android:clickable="false"
                 android:onClick="onClick"
                 android:gravity="center"
                 android:maxLines="1"
-                android:background="?android:selectableItemBackground"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:layout_marginBottom="4dp"
+
+                android:background="@drawable/rectangle_pre_lollipop"
+                android:padding="8dp"/>
         </RelativeLayout>
 
     </LinearLayout>
@@ -110,9 +121,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/info_linear_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:paddingBottom="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         >
 
         <ImageButton
@@ -121,40 +133,35 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_arrow_back_grey600_24dp"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:padding="5dp"/>
+            android:layout_weight="20"/>
         <ImageButton
             android:id="@+id/info_edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_edit_grey600_24dp"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:padding="5dp"/>
+            android:layout_weight="20"/>
         <ImageButton
             android:id="@+id/info_copy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_content_copy_grey600_24dp"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:padding="5dp"/>
+            android:layout_weight="20"/>
         <ImageButton
             android:id="@+id/info_share_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_share_grey600_24dp"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:padding="5dp"/>
+            android:layout_weight="20"/>
         <ImageButton
             android:id="@+id/info_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_delete_grey600_24dp"
             android:background="?android:selectableItemBackground"
-            android:layout_weight="20"
-            android:padding="5dp"/>
+            android:layout_weight="20"/>
     </TableRow>
 
 </RelativeLayout>

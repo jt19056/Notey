@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.rey.material.app.Dialog;
 import com.rey.material.widget.Spinner;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -43,7 +42,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private TextView date_tv;
     private TextView time_tv;
     private TextView sound_tv;
-    private ImageButton sound_btn;
+    private ImageView sound_iv;
     private Spinner recurrenceSpinner;
     private int year, month, day, hour, minute, repeatTime = 0, spinnerSelectedValue;
     private PendingIntent alarmPendingIntent;
@@ -61,7 +60,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         themeStuffBeforeSetContentView();
         setContentView(R.layout.alarm_activity_dialog);
         themeStuffAfterSetContentView();
-
 
         Intent i = getIntent();
 
@@ -96,21 +94,24 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         vibrate_cb = (CheckBox) findViewById(R.id.alarm_vibrate);
         wake_cb = (CheckBox) findViewById(R.id.alarm_wake);
         sound_tv = (TextView) findViewById(R.id.alarm_sound);
-        sound_btn = (ImageButton) findViewById(R.id.alarm_sound_btn);
+        sound_iv = (ImageView) findViewById(R.id.alarm_sound_btn);
         ImageView repeat_iv = (ImageView) findViewById(R.id.alarm_repeat_iv);
-        repeat_iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_refresh_grey600_24dp));
         recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
 
         setUpSeekbar();
         setUpRecurrenceSpinner();
 
-        int color = getResources().getColor(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName()));
+        int color = getResources().getColor(getResources().getIdentifier(MainActivity.accentColor, "color", getPackageName()));
         seekBar.setScrubberColor(color);
         seekBar.setThumbColor(color, color);
         //dark theme stuffs
         if(MainActivity.darkTheme){
             wake_cb.setTextColor(getResources().getColor(R.color.md_grey_400));
             vibrate_cb.setTextColor(getResources().getColor(R.color.md_grey_400));
+            findViewById(R.id.div).setBackgroundColor(getResources().getColor(R.color.md_divider_white));
+        }
+        else{
+            findViewById(R.id.div).setBackgroundColor(getResources().getColor(R.color.md_divider_black));
         }
 
         //if a pro user, enable the sound and repeat option
@@ -122,7 +123,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             if(MainActivity.darkTheme) sound_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
             else sound_tv.setTextColor(Color.BLACK);
         } else { //fade the icons if not pro
-            sound_btn.setAlpha(0.3f);
+            sound_iv.setAlpha(0.3f);
             repeat_iv.setAlpha(0.3f);
             seekBar.setAlpha(0.3f);
             recurrenceSpinner.setEnabled(false);
@@ -173,15 +174,15 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
             if(temp_string.contains("notification")) {
                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.notification_sound));
-                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                sound_iv.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
             }
             else if(temp_string.contains("alarm")) {
                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.alarm_beep));
-                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                sound_iv.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
             }
             else {
                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
-                sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
+                sound_iv.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
             }
         }
 
@@ -303,15 +304,15 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                             if (which == 1) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.notification_sound));
-                                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                                sound_iv.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
                             } else if (which == 2) {
                                 alarm_uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.alarm_beep));
-                                sound_btn.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
+                                sound_iv.setImageResource(R.drawable.ic_volume_up_grey600_24dp);
                             } else {
                                 alarm_uri = null;
                                 sound_tv.setText(getString(R.string.sound) + " " + getString(R.string.none));
-                                sound_btn.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
+                                sound_iv.setImageResource(R.drawable.ic_volume_off_grey600_24dp);
                             }
                             return true;
                         }
@@ -457,7 +458,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         seekBar = (DiscreteSeekBar) findViewById(R.id.discrete_bar);
         seekBar.setMin(0);
         seekBar.setMax(5);
-       //set what the seekbar bubble displays based on the time option selected in the spinner
+        //set what the seekbar bubble displays based on the time option selected in the spinner
         seekBar.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
             @Override
             public int transform(int value) {
@@ -584,10 +585,10 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
 
         //set light/dark theme
         if(MainActivity.darkTheme) {
-            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
         else {
-            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
     }
 

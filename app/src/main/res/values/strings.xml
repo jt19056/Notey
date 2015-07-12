@@ -36,8 +36,6 @@
     <string name="expandNotifsSummary">Allow notifications to be expandable.</string>
     <string name="swipeNotifs">Swipe to Remove</string>
     <string name="swipeNotifsSummary">Allow notifications to be deleted by swiping.</string>
-    <string name="enterToSend">Enter to Send</string>
-    <string name="enterToSendSummary">If unchecked, pressing Enter will create a new line.</string>
     <string name="impossibleToDelete">You have made it impossible to remove any Noteys. Please change a setting to make this possible before exiting.</string>
     <string name="long_press_for_voice">Long press for voice input</string>
     <string name="long_press_for_voice_summary">Long press on microphone button to activate voice.</string>
@@ -56,13 +54,19 @@
     <string name="color_chooser">Color Chooser</string>
     <string name="dark_theme">Dark theme</string>
     <string name="appearance">Appearance</string>
-    <string name="update_icon">Update Icon Color</string>
+    <string name="update_logo">Update Logo Color</string>
     <string name="update_to_match">Update the launcher icon to match your color scheme.</string>
     <string name="your_new_icon">Your new icon:</string>
     <string name="use_colored_icons">Colored Icons</string>
     <string name="use_colored_icons_summary">Use colored icons instead of white icon with colored background.  If you are not seeing your icons in the notification tray, try having this checked.</string>
     <string name="large_icons">Large Icons</string>
-    <string name="large_icons_summary">Bigger icons in the notification tray</string>
+    <string name="large_icons_summary">Bigger icons in the notification tray.</string>
+    <string name="open_keyboard">Open Keyboard on Start</string>
+    <string name="open_keyboard_summary">Open keyboard on app launch.</string>
+    <string name="accent_color">Accent Color</string>
+    <string name="accent_color_summary">Choose your accent color.</string>
+    <string name="default_icons_color">Default Icons Color</string>
+    <string name="default_icons_color_summary">Icons color first shown on app launch.</string>
 
     <!-- About strings -->
     <string name="about">About</string>
@@ -81,13 +85,7 @@
     <string name="githubSummary">Track development, report bugs, request features.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
     <string name="translations">Translations</string>
-    <string name="translations_summary">Languages translated by the community.</string>
-    <string name="translations_thank_you">
-        Thank you to the following users:\n\n
-        Alex Besov - Russian (русский)\n
-        Diego Andrés Nieves - Spanish (Español)\n\n
-        If you would like to help with any translations, please send me an email.
-    </string>
+    <string name="translations_summary">Help translate Notey.</string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Displays your current reminders.</string>

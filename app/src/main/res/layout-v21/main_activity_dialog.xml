@@ -9,7 +9,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/md_blue_500"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/mainTitle"
@@ -34,14 +35,42 @@
             android:layout_marginTop="17dp"
             android:background="?android:selectableItemBackgroundBorderless"
             android:src="@drawable/ic_more_vert_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/alarm_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/menuButton"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_alarm_add_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/pallete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/alarm_btn"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_palette_white_24dp"
+            />
     </RelativeLayout>
 
     <HorizontalScrollView
         android:id="@+id/horizontal_scroll_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_below="@+id/layout_top">
+        android:scrollbars="horizontal"
+        android:layout_below="@+id/layout_top"
+        android:elevation="3dp">
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="fill_parent"
@@ -51,7 +80,6 @@
                 android:id="@+id/ripple_imageButton1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -59,7 +87,7 @@
                     android:id="@+id/imageButton1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_check_white_36dp"
                     android:tag="ic_check_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -68,7 +96,6 @@
                 android:id="@+id/ripple_imageButton2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -76,7 +103,7 @@
                     android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_edit_white_36dp"
                     android:tag="ic_edit_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -85,7 +112,6 @@
                 android:id="@+id/ripple_imageButton3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:mrl_rippleDimension="5dp"
                 app:mrl_rippleColor="@color/md_grey_500"
                 app:mrl_rippleHover="false"
                 app:mrl_ripplePersistent="true">
@@ -93,7 +119,7 @@
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_star_white_36dp"
                     android:tag="ic_star_" />
         </com.balysv.materialripple.MaterialRippleLayout>
@@ -109,7 +135,7 @@
                     android:id="@+id/imageButton4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_warning_white_36dp"
                     android:tag="ic_warning_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -125,7 +151,7 @@
                     android:id="@+id/imageButton5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_whatshot_white_36dp"
                     android:tag="ic_whatshot_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -141,7 +167,7 @@
                     android:id="@+id/imageButton6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_alarm_white_36dp"
                     android:tag="ic_alarm_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -157,7 +183,7 @@
                     android:id="@+id/imageButton7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:src="@drawable/ic_favorite_white_36dp"
                     android:tag="ic_favorite_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -173,7 +199,7 @@
                     android:id="@+id/imageButton8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_note_add_white_36dp"
                     android:tag="ic_note_add_" />
@@ -190,7 +216,7 @@
                     android:id="@+id/imageButton9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_shopping_cart_white_36dp"
                     android:tag="ic_shopping_cart_" />
@@ -207,7 +233,7 @@
                     android:id="@+id/imageButton10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_mood_white_36dp"
                     android:tag="ic_mood_" />
@@ -224,7 +250,7 @@
                     android:id="@+id/imageButton11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_assignment_white_36dp"
                     android:tag="ic_assignment_" />
@@ -241,7 +267,7 @@
                     android:id="@+id/imageButton12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_attach_money_white_36dp"
                     android:tag="ic_attach_money_" />
@@ -258,7 +284,7 @@
                     android:id="@+id/imageButton13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_book_white_36dp"
                     android:tag="ic_book_" />
@@ -275,7 +301,7 @@
                     android:id="@+id/imageButton14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_brightness_low_white_36dp"
                     android:tag="ic_brightness_low_" />
@@ -292,7 +318,7 @@
                     android:id="@+id/imageButton15"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_call_white_36dp"
                     android:tag="ic_call_" />
@@ -309,7 +335,7 @@
                     android:id="@+id/imageButton16"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_directions_car_white_36dp"
                     android:tag="ic_directions_car_" />
@@ -326,7 +352,7 @@
                     android:id="@+id/imageButton17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_event_white_36dp"
                     android:tag="ic_event_" />
@@ -343,7 +369,7 @@
                     android:id="@+id/imageButton18"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_flag_white_36dp"
                     android:tag="ic_flag_" />
@@ -360,7 +386,7 @@
                     android:id="@+id/imageButton19"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_flash_on_white_36dp"
                     android:tag="ic_flash_on_" />
@@ -377,7 +403,7 @@
                     android:id="@+id/imageButton20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_bar_white_36dp"
                     android:tag="ic_bar_" />
@@ -394,7 +420,7 @@
                     android:id="@+id/imageButton21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_local_florist_white_36dp"
                     android:tag="ic_local_florist_" />
@@ -411,7 +437,7 @@
                     android:id="@+id/imageButton22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_music_note_white_36dp"
                     android:tag="ic_music_note_" />
@@ -428,7 +454,7 @@
                     android:id="@+id/imageButton23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_notifications_white_36dp"
                     android:tag="ic_notifications_" />
@@ -445,7 +471,7 @@
                     android:id="@+id/imageButton24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_reply_white_36dp"
                     android:tag="ic_reply_" />
@@ -462,7 +488,7 @@
                     android:id="@+id/imageButton25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="20"
+                    android:layout_weight="1"
                     android:visibility="gone"
                     android:src="@drawable/ic_toys_white_36dp"
                     android:tag="ic_toys_" />
@@ -473,45 +499,32 @@
     <RelativeLayout
         android:id="@+id/layout_middle"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/horizontal_scroll_view"
         android:animateLayoutChanges="true"
-        android:paddingBottom="2dp"
-        android:paddingTop="5dp">
-
-        <ImageButton
-            android:id="@+id/alarm_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="3dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="5dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_alarm_add_grey600_36dp" />
-
-        <EditText
+        android:gravity="center_vertical">
+        <com.rey.material.widget.EditText
             android:id="@+id/editText_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/alarm_btn"
-            android:layout_toStartOf="@id/alarm_btn"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="66dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_centerVertical="true"
+
+            android:background="@drawable/rectangle"
+            android:padding="10dp"
+            android:elevation="3dp"
+
             android:ems="10"
+            android:inputType="textCapSentences|textAutoCorrect"
             android:hint="@string/title"
-            android:maxLength="20"
+            android:textColorHint="@color/hint_foreground_material_light"
             android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:scrollbars="horizontal"
-            android:textColorHint="#9E9E9E"
-            android:textSelectHandle="@drawable/text_handler_24dp"
-            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
-            android:textSelectHandleRight="@drawable/text_handler_right_24dp"
-            android:inputType="textCapSentences"/>
+            android:scrollHorizontally="false"/>
     </RelativeLayout>
 
     <View
@@ -519,62 +532,55 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@id/layout_middle"
-        android:background="@android:color/darker_gray" />
+        android:background="@color/md_divider_black"/>
+
+    <com.rey.material.widget.FloatingActionButton
+        android:id="@+id/btn"
+        style="@style/FloatingActionButton"
+        app:fab_elevation="3dp"
+        app:fab_iconSrc="@drawable/ic_mic_white_36dp"
+        app:fab_radius="23dp"
+        app:rd_rippleAnimDuration="500"
+        app:rd_delayClick="untilRelease"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/divider"
+        android:layout_marginBottom="-24dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/layout_bottom"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/layout_middle"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="55dp"
+        android:layout_below="@+id/divider"
+        android:gravity="center_vertical"
         android:animateLayoutChanges="true">
-
-        <ImageButton
-            android:id="@+id/pallete_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="2dp"
-            android:elevation="2dp"
-            android:clickable="true"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_palette_grey600_36dp"
-            />
-
-        <ImageButton
-            android:id="@+id/btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="5dp"
-            android:background="?android:selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_mic_grey600_36dp" />
-
-        <EditText
+        <com.rey.material.widget.EditText
             android:id="@+id/editText1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="5dp"
-            android:layout_toLeftOf="@id/btn"
-            android:layout_toRightOf="@id/pallete_btn"
-            android:ems="10"
-            android:inputType="textMultiLine|textCapSentences"
-            android:maxLines="15"
-            android:textSelectHandle="@drawable/text_handler_24dp"
-            android:textSelectHandleLeft="@drawable/text_handler_left_24dp"
-            android:textSelectHandleRight="@drawable/text_handler_right_24dp">
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="66dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
 
+            android:background="@drawable/rectangle"
+            android:padding="10dp"
+            android:elevation="3dp"
+
+            android:hint="@string/note"
+            android:textColorHint="@color/hint_foreground_material_light"
+            android:ems="10"
+            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
+            android:maxLines="15"
+            android:scrollbars="vertical" >
             <requestFocus />
-        </EditText>
+        </com.rey.material.widget.EditText>
 
     </RelativeLayout>
 </RelativeLayout>

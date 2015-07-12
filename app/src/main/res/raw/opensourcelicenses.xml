@@ -12,21 +12,9 @@
         <license>MIT License</license>
     </notice>
     <notice>
-        <name>Calligraphy</name>
-        <url>https://github.com/chrisjenx/Calligraphy</url>
-        <copyright>Copyright 2013 Christopher Jenkins</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
         <name>DashClock API</name>
         <url>https://code.google.com/p/dashclock/</url>
         <copyright>Copyright (C) 2013 Roman Nurik</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
-        <name>DateTimePicker</name>
-        <url>https://github.com/flavienlaurent/datetimepicker</url>
-        <copyright>Copyright 2013 Flavien Laurent (DatePicker) edisonw (TimePicker)</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>

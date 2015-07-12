@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.webkit.WebView;
-import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -45,22 +44,21 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.vending.billing.IInAppBillingService;
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.crashlytics.android.Crashlytics;
 import com.easyandroidanimations.library.ScaleInAnimation;
 import com.google.gson.Gson;
+import com.rey.material.widget.EditText;
 import com.rey.material.widget.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric.sdk.android.Fabric;
-import com.crashlytics.android.Crashlytics;
-
 import thomas.jonathan.notey.util.IabHelper;
 import thomas.jonathan.notey.util.IabResult;
 import thomas.jonathan.notey.util.Inventory;
@@ -76,19 +74,19 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private ImageButton ib1;
     private MaterialRippleLayout mrl_ib1;
     private Set<Integer> buttons;
-    private ImageButton send_btn;
+    private FloatingActionButton send_btn;
     private ImageButton menu_btn;
     private ImageButton alarm_btn;
     private int selectedRippleButtonId;
     private EditText et, et_title;
     private PopupMenu mPopupMenu;
-    private int imageButtonNumber = 1, id = (int) (Math.random() * 10000), priority; //spinnerLocation = 0,
+    private int imageButtonNumber = 1, id = (int) (Math.random() * 10000), priority;
     private boolean pref_expand;
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
-    private boolean pref_enter;
     private boolean pref_use_colored_icons;
     private boolean pref_large_icons;
+    private boolean pref_keyboard;
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
     private boolean editIntentFlag = false;
@@ -106,7 +104,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private static SharedPreferences sharedPreferences;
     private String iconName = "ic_check_", fullIconName = "ic_check_white_24dp", iconColor = "white";
     private HorizontalScrollView hsv;
-    private TableRow tableRow;
+    public static String defaultIconsColor;
 
     /* in app billing variables */
     private static IabHelper mHelper;
@@ -120,6 +118,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     //theme variables
     public static String themeColor;
+    public static String accentColor;
     public static boolean darkTheme;
 
     @Override
@@ -164,20 +163,16 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button, then check the prefs for what to do (either new line or send).
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-                    pref_enter = sp.getBoolean("pref_enter", true);
-                    // enter to send, or new line
-                    if (pref_enter)
-                        send_btn.performClick();
-                    else et.append("\n");
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // enter to send
+                    send_btn.performClick();
                     return true;
                 }
                 //if hardware menu button, activate the menu button at the top of the app.
                 else if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_MENU)) {
                     menu_btn.performClick();
+                    return true;
                 }
                 return false;
             }
@@ -201,6 +196,18 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 }
             }
         });
+
+//        try {
+//            CustomTile customTile = new CustomTile.Builder(this)
+//                    .setOnClickIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+//                    .setLabel("Notey")
+//                    .setIcon(R.drawable.ic_whatshot_cyan_24dp)
+//                    .build();
+//
+//            CMStatusBarManager.getInstance(this).publishTile(1, customTile);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -233,6 +240,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
                     .customView(view, false)
                     .build();
+
             md.show();
 
             setIconColorOnClickListeners(md);
@@ -254,6 +262,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             }
 
             startActivityForResult(i, id);
+
             settings_activity_flag = false;
             about_activity_flag = false;
         }
@@ -446,7 +455,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         else colors = getResources().getStringArray(R.array.icon_colors_array_standard);
         for (int i = 0; i < colors.length; i++) {
             int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getPackageName());
-            FloatingActionButton fab = (FloatingActionButton) md.findViewById(id);
+            final FloatingActionButton fab = (FloatingActionButton) md.findViewById(id);
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -501,26 +510,32 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     private void setLayout() {
         //show keyboard at start
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if(pref_keyboard) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         et.setText("");
 
         //keep layout where it belongs on screen
-        layout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom); //row containing the text box
+        layout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom); //row containing the note text box
         RelativeLayout.LayoutParams parms = (RelativeLayout.LayoutParams) layout_bottom.getLayoutParams();
-        parms.addRule(RelativeLayout.BELOW, R.id.horizontal_scroll_view);
+        parms.addRule(RelativeLayout.BELOW, R.id.divider);
 
         /* resizing the window when more/less text is added */
         final RelativeLayout relativeLayoutCopy = layout_bottom;
         final EditText editTextCopy = et;
 
+        //for non-lollipop devices using dark theme, both text boxes lose their 10dp padding, must programattically set them
+        if(darkTheme && CURRENT_ANDROID_VERSION < Build.VERSION_CODES.LOLLIPOP) {
+            et.setPadding((int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density),
+                    (int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density));
+
+            et_title.setPadding((int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density),
+                    (int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density));
+        }
+
         //when text is added or deleted, count the num lines of text there are and adjust the size of the textbox accordingly.
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (et.getText().toString().equals("") && et_title.getText().toString().equals("")) { //if both note and title are blank, set to mic
-                    new ScaleInAnimation(send_btn).setDuration(250).animate();
-                    send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
-                    if (darkTheme)
-                        send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp), true);
                 }
 
                 if (et.getLineCount() > 1) {
@@ -537,11 +552,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if (before == 0 && start == 0) {
-                    if (!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())) { //switch it to the send icon if not already
-                        new ScaleInAnimation(send_btn).setDuration(250).animate();
-                        send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
-                        if (darkTheme)
-                            send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    if (!send_btn.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_white_36dp).getConstantState())) { //switch it to the send icon if not already
+                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), true);
                     }
                 }
             }
@@ -551,10 +563,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et_title.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (et_title.getText().toString().equals("") && et.getText().toString().equals("")) {
-                    new ScaleInAnimation(send_btn).setDuration(250).animate();
-                    send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mic_grey600_36dp));
-                    if (darkTheme)
-                        send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp),true);
                 }
             }
 
@@ -563,11 +572,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if (before == 0 && start == 0) {
-                    if (!send_btn.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_grey600_36dp).getConstantState())) {
-                        new ScaleInAnimation(send_btn).setDuration(250).animate();
-                        send_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_send_grey600_36dp));
-                        if (darkTheme)
-                            send_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    if (!send_btn.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_white_36dp).getConstantState())) {
+                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), true);
                     }
                 }
             }
@@ -653,9 +659,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 // switch alarm button icon to show an alarm is set
                 if ((alarm_time != null && !alarm_time.equals("")) || repeat_time != 0) {
                     new ScaleInAnimation(alarm_btn).setDuration(250).animate();
-                    alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
-                    if (darkTheme)
-                        alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                    alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp));
                 }
 
                 setImageButtonsBasedOffIconSelection();
@@ -673,7 +677,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     handleSendText(i); // Handle text being sent
                     //resize window for amount of text
                     et.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
-                    et.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
+//                    et.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                     layout_bottom.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 }
             }
@@ -727,6 +731,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         sharedPref.edit().putInt("VERSION_CODE", versionCode).apply();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeGUI() {
         //setup the five icons
         ib1 = (ImageButton) findViewById(R.id.imageButton1);
@@ -756,17 +761,12 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             mrl_ib7.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
         }
 
-        send_btn = (ImageButton) findViewById(R.id.btn); //send button
+        send_btn = (FloatingActionButton) findViewById(R.id.btn); //send button
+        send_btn.setBackgroundColor(getResources().getColor(getResources().getIdentifier(accentColor, "color", getPackageName())));
+
         menu_btn = (ImageButton) findViewById(R.id.menuButton);
         alarm_btn = (ImageButton) findViewById(R.id.alarm_btn);
         ImageButton pallete_btn = (ImageButton) findViewById(R.id.pallete_btn);
-
-        //set button colors to grey500 instead of grey600 for dark theme
-        if (darkTheme) {
-            send_btn.setColorFilter(Color.argb(255, 158, 158, 158));
-            alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158));
-            pallete_btn.setColorFilter(Color.argb(255, 158, 158, 158));
-        }
 
         nm.cancel(id);
         id++;
@@ -821,10 +821,32 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et = (EditText) findViewById(R.id.editText1);
         et_title = (EditText) findViewById(R.id.editText_title);
 
+        //if dark theme, set backgrounds for the two text boxes
+        if(darkTheme){
+            et.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_dark));
+            et_title.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_dark));
+            //lollipop+ get elevation
+
+            if(CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP) {
+                et.setBackgroundResource(R.drawable.rectangle_dark);
+                et_title.setBackgroundResource(R.drawable.rectangle_dark);
+            }
+            else{
+                et.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                et_title.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+            }
+        }
+        else{
+            et.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_light));
+            et_title.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_light));
+        }
+
         Typeface font = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
         et.setTypeface(font);
         et_title.setTypeface(font);
         mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
+
+        setImageButtonsBasedOffIconSelection();
     }
 
     private static boolean isTablet(Context context) {
@@ -835,7 +857,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
-        if (CURRENT_ANDROID_VERSION >= 16) {
+        if (CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
             pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
@@ -860,7 +882,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_large_icons = sharedPreferences.getBoolean("pref_large_icons", false); //icon size for notifications
+        pref_keyboard = sharedPreferences.getBoolean("pref_keyboard", true); //launch keyboardd on start
 
+        iconColor = defaultIconsColor;
 
         userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
     }
@@ -1071,17 +1095,17 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             // switch alarm button icon to show an alarm is set. also show toast
             if ((alarm_time != null && !alarm_time.equals("")) || repeat_time != 0) {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
-                alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_grey600_36dp));
-                if (darkTheme)
-                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_on_white_24dp));
+//                if (darkTheme)
+//                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
 
                 showAlarmToast();
 
             } else {
                 new ScaleInAnimation(alarm_btn).setDuration(250).animate();
-                alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_add_grey600_36dp));
-                if (darkTheme)
-                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
+                alarm_btn.setImageDrawable(getResources().getDrawable(R.drawable.ic_alarm_add_white_24dp));
+//                if (darkTheme)
+//                    alarm_btn.setColorFilter(Color.argb(255, 158, 158, 158)); //use a lighter grey for icons while in dark theme (this is md_grey_500 in rgb)
             }
         }
 
@@ -1154,7 +1178,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                                 })
                                 .build();
                         WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-                        webView.loadUrl("file:///android_asset/ProFeatures.html");
+                        webView.loadUrl(darkTheme ? "file:///android_asset/ProFeaturesDark.html" : "file:///android_asset/ProFeatures.html");
                         md.show();
                         break;
                     case R.id.about:
@@ -1418,13 +1442,15 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private void themeStuffBeforeSetContentView() {
         //initialize theme preferences
         themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
+        accentColor = sharedPreferences.getString("pref_accent_color", themeColor);
         darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+        defaultIconsColor = sharedPreferences.getString("pref_default_icon_color", "white");
 
         //set light/dark theme
         if (darkTheme) {
-            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_" + themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_" + themeColor + "_Accent_" + accentColor, "style", getPackageName()));
         } else {
-            super.setTheme(getResources().getIdentifier("AppBaseTheme_" + themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_" + themeColor + "_Accent_" + accentColor, "style", getPackageName()));
         }
     }
 
@@ -1433,15 +1459,17 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         RelativeLayout r = (RelativeLayout) findViewById(R.id.layout_top);
         r.setBackgroundResource(getResources().getIdentifier(themeColor, "color", getPackageName()));
 
-        //re-color the icon row for dark theme
-        tableRow = (TableRow) findViewById(R.id.tableRow1);
+        TableRow tableRow = (TableRow) findViewById(R.id.tableRow1);
         hsv = (HorizontalScrollView) findViewById(R.id.horizontal_scroll_view);
+        View divider = findViewById(R.id.divider);
         if (darkTheme) {
             tableRow.setBackgroundResource(R.color.md_grey_800);
             hsv.setBackgroundResource(R.color.md_grey_800);
+            divider.setBackgroundColor(getResources().getColor(R.color.md_divider_white));
         } else {
             tableRow.setBackgroundResource(R.color.md_grey_700);
             hsv.setBackgroundResource(R.color.md_grey_700);
+            divider.setBackgroundColor(getResources().getColor(R.color.md_divider_black));
         }
     }
 
@@ -1451,6 +1479,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         // if settings_jb_kk activity was called, reset the ui
         if (settings_activity_flag) {
             initializeSettings();
+            setImageButtonsBasedOffIconSelection();
             settings_activity_flag = false;
         }
         if (about_activity_flag) { // if about activity was called, check to see if the user had typed in the secret code and are now Pro. if yes, set up everything like a normal pro purchase.

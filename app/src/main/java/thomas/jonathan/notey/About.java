@@ -10,6 +10,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -41,10 +45,10 @@ public class About extends ActionBarActivity {
 
         //set light/dark theme
         if(MainActivity.darkTheme) {
-            super.setTheme(getResources().getIdentifier("MySettingsThemeDark_" + MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("MySettingsThemeDark_" + MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
         else {
-            super.setTheme(getResources().getIdentifier("MySettingsTheme_" + MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("MySettingsTheme_" + MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
     }
 
@@ -57,7 +61,7 @@ public class About extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class SettingsFragment extends PreferenceFragment {
+    public static class SettingsFragment extends PreferenceFragment {
 
         @Override public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -72,42 +76,48 @@ public class About extends ActionBarActivity {
             Preference proPref = (Preference) findPreference("pref_pro");
 
             //dialog pop-up for 'open sources' preference
-            new AlertDialog.Builder(getApplicationContext());
+            new AlertDialog.Builder(getActivity());
             openSourceLic.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    new LicensesDialog.Builder(About.this).setNotices(R.raw.opensourcelicenses).setTitle(R.string.opensource).setCloseText(R.string.ok).build().show();
+                    new LicensesDialog.Builder(getActivity())
+                        .setNotices(R.raw.opensourcelicenses)
+                        .setTitle(R.string.opensource)
+                        .setCloseText(R.string.ok)
+                        .build()
+                        .show();
                     return false;
                 }
             });
 
             //changelog dialog pop-up
-            new AlertDialog.Builder(getApplicationContext());
+            new AlertDialog.Builder(getActivity());
             changelogPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    MaterialDialog md = new MaterialDialog.Builder(About.this)
+                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
                             .title(getResources().getString(R.string.changelog))
                             .customView(R.layout.webview_dialog_layout, false)
                             .positiveText(getResources().getString(R.string.ok))
-                            .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
+                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-LIGHT.TTF"))
                             .build();
                     WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-                    webView.loadUrl("file:///android_asset/NoteyChangelog.html");
+                    webView.loadUrl(MainActivity.darkTheme ? "file:///android_asset/NoteyChangelogDark.html" : "file:///android_asset/NoteyChangelog.html");
                     md.show();
-
                     return false;
                 }
             });
 
             //translations dialog pop-up
-            new AlertDialog.Builder(getApplicationContext());
+            new AlertDialog.Builder(getActivity());
             translationsPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    MaterialDialog md = new MaterialDialog.Builder(About.this)
+                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
                             .title(getResources().getString(R.string.translations))
-                            .content(R.string.translations_thank_you)
-                            .positiveText(getResources().getString(R.string.dismiss))
-                            .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"))
+                            .customView(R.layout.webview_dialog_layout, false)
+                            .positiveText(getResources().getString(R.string.ok))
+                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-LIGHT.TTF"))
                             .build();
+                    WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
+                    webView.loadUrl(MainActivity.darkTheme ? "file:///android_asset/TranslationsThankYouDark.html" : "file:///android_asset/TranslationsThankYou.html");
                     md.show();
 
                     return false;
@@ -159,17 +169,17 @@ public class About extends ActionBarActivity {
             });
 
             //Pro - popup to show the pro features
-            new AlertDialog.Builder(getApplicationContext());
+            new AlertDialog.Builder(getActivity());
             proPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(android.preference.Preference preference) {
-                    MaterialDialog md = new MaterialDialog.Builder(About.this)
+                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
                             .title(getResources().getString(R.string.pro_features))
                             .customView(R.layout.webview_dialog_layout, false)
                             .positiveText(getResources().getString(R.string.ok))
-                            .typeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF"))
+                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-LIGHT.TTF"))
                             .build();
                     WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-                    webView.loadUrl("file:///android_asset/ProFeaturesInfo.html");
+                    webView.loadUrl(MainActivity.darkTheme ? "file:///android_asset/ProFeaturesInfoDark.html" : "file:///android_asset/ProFeaturesInfo.html");
                     md.show();
 
                     return false;
@@ -182,5 +192,9 @@ public class About extends ActionBarActivity {
                 proPref.setSummary(getString(R.string.not_a_pro));
             }
         }
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

@@ -51,7 +51,7 @@
     <string name="color_chooser">Выбор цвета</string>
     <string name="dark_theme">Тёмная тема</string>
     <string name="appearance">Оформление</string>
-    <string name="update_icon">Обновить цвет иконки</string>
+    <string name="update_logo">Обновить цвет иконки</string>
     <string name="update_to_match">Обновить цвет иконки в соответствии с темой.</string>
     <string name="your_new_icon">Ваша новая иконка:</string>
 
@@ -72,12 +72,6 @@
     <string name="githubSummary">Отслеживать развитие проекта, отчеты об ошибках, и заявки на добавление функций.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
 	<string name="translations">Переводы</string>
-	<string name="translations_thank_you">
-		Благодарность следующим пользователям:\n\n
-		Alex Besov - Russian (русский)\n
-		Diego Andrés Nieves - Spanish (Español)\n\n
-		Если вы хотите помочь с переводом на другие языки, пожалуйста напишите мне по электронной почте.
-	</string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Показывать текущие напоминания.</string>

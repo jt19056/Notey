@@ -9,7 +9,8 @@
         android:summary="@string/opensourceSummary"/>
 
     <com.jenzz.materialpreference.Preference android:key="pref_translations"
-        android:title="@string/translations"/>
+        android:title="@string/translations"
+        android:summary="@string/translations_summary"/>
 
     <com.jenzz.materialpreference.Preference android:key="pref_github"
         android:title="@string/github"

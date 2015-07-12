@@ -51,7 +51,7 @@
     <string name="color_chooser">Selector de Color</string>
     <string name="dark_theme">Tema oscuro</string>
     <string name="appearance">Apariencia</string>
-    <string name="update_icon">Actualización del color del icono</string>
+    <string name="update_logo">Actualización del color del icono</string>
     <string name="update_to_match">Actualizar el icono del launcher para que coincida con su esquema de color.</string>
     <string name="your_new_icon">Su nuevo icono:</string>
 
@@ -72,12 +72,6 @@
     <string name="githubSummary">Siga el desarrollo, cree entradas de errores, solicite características.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
     <string name="translations">Traducciones</string>
-    <string name="translations_thank_you">
-        Agradecimientos a los siguientes usuarios:\n\n
-        Alex Besov - Ruso (русский)\n
-        Diego Andrés Nieves - Spanish (Español)\n\n
-        Si desea colaborar con cualquier traducción, por favor envíeme un correo electrónico.
-    </string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Muestra tus recordatorios actuales.</string>

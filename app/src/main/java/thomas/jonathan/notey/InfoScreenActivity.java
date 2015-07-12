@@ -28,8 +28,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rey.material.widget.TextView;
 
 import java.util.Date;
 
@@ -162,6 +163,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         TextView alarmText = (TextView) findViewById(R.id.info_alarm_text);
         noteText.setMovementMethod(new ScrollingMovementMethod());
         TextView titleText = (TextView) findViewById(R.id.info_title_text);
+        titleText.setMovementMethod(new ScrollingMovementMethod());
         TextView mainTitle = (TextView) findViewById(R.id.info_mainTitle);
 
         ImageView imageView = (ImageView) findViewById(R.id.info_imageView);
@@ -206,6 +208,21 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 alarmText.setText(getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date));
                 alarmText.setClickable(true);
                 alarmText.setOnClickListener(this);
+            }
+
+            //if dark theme, set backgrounds for the two text boxes
+            if(MainActivity.darkTheme){
+                //lollipop+ get elevation
+                if(CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP) {
+                    titleText.setBackgroundResource(R.drawable.rectangle_dark);
+                    noteText.setBackgroundResource(R.drawable.rectangle_dark);
+                    alarmText.setBackgroundResource(R.drawable.rectangle_dark);
+                }
+                else{
+                    titleText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    noteText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    alarmText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                }
             }
 
             //show icon
@@ -256,22 +273,23 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 if (noteText.getText().toString().toLowerCase().contains(s)) {
                     noteText.setClickable(true);
 
-                    //selectable background. Only for jelly bean and above
-                    if (CURRENT_ANDROID_VERSION >= 16) {
-                        int[] attr = new int[]{android.R.attr.selectableItemBackground};
-                        TypedArray ta = obtainStyledAttributes(attr);
-                        Drawable draw = ta.getDrawable(0); //index zero
-                        noteText.setBackground(draw);
-                    }
+//                    //selectable background. Only for jelly bean and above
+//                    if (CURRENT_ANDROID_VERSION >= 16) {
+//                        int[] attr = new int[]{android.R.attr.selectableItemBackground};
+//                        TypedArray ta = obtainStyledAttributes(attr);
+//                        Drawable draw = ta.getDrawable(0); //index zero
+//                        noteText.setBackground(draw);
+//                    }
 
                     noteText.setOnClickListener(this);
                     break;
-                } else {
+                }
+                else {
                     noteText.setClickable(false);
 
                     //off set the selectable background from above
-                    if (CURRENT_ANDROID_VERSION >= 16)
-                        noteText.setBackgroundColor(Color.TRANSPARENT);
+//                    if (CURRENT_ANDROID_VERSION >= 16)
+//                        noteText.setBackgroundColor(Color.TRANSPARENT);
                     noteText.setOnClickListener(null);
                 }
         }
@@ -326,10 +344,10 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         });
 
         //set font
-        Typeface roboto_light = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
         Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
-        noteText.setTypeface(roboto_light);
-        titleText.setTypeface(roboto_reg);
+        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "ROBOTO-BOLD.ttf");
+        noteText.setTypeface(roboto_reg);
+        titleText.setTypeface(roboto_bold);
         mainTitle.setTypeface(roboto_reg);
     }
 
@@ -380,10 +398,10 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
         //set light/dark theme
         if(MainActivity.darkTheme) {
-            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseThemeDark_"+MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
         else {
-            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor, "style", getPackageName()));
+            super.setTheme(getResources().getIdentifier("AppBaseTheme_"+MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
     }
 
