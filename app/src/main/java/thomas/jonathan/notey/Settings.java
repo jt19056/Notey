@@ -31,6 +31,9 @@ import com.jenzz.materialpreference.SwitchPreference;
 import com.rey.material.widget.CheckBox;
 import com.rey.material.widget.FloatingActionButton;
 
+import cyanogenmod.app.CMStatusBarManager;
+import cyanogenmod.app.CustomTile;
+
 public class Settings extends ActionBarActivity{
     private static boolean impossible_to_delete = false;
     private static SharedPreferences sharedPreferences;
@@ -62,6 +65,7 @@ public class Settings extends ActionBarActivity{
 
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
         MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_blue_500");
 
         //set light/dark theme
         if(MainActivity.darkTheme) {
@@ -91,7 +95,9 @@ public class Settings extends ActionBarActivity{
 
         @Override public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP)
+            if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP && cyanogenmod.os.Build.CM_VERSION.SDK_INT > 0)
+                addPreferencesFromResource(R.xml.settings_lollipop_cm);  //show Cyanogenmod quick tile if user is running CM
+            else if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP)
                 addPreferencesFromResource(R.xml.settings_lollipop);
             else if(MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN)
                 addPreferencesFromResource(R.xml.settings_jb_kk);
@@ -99,7 +105,7 @@ public class Settings extends ActionBarActivity{
 
             final SwitchPreference pref_shortcut = (SwitchPreference) findPreference("pref_shortcut");
             //enable pro feature options
-            if (MainActivity.proVersionEnabled) {
+//            if (MainActivity.proVersionEnabled) {
                 final android.preference.Preference pref_accent = findPreference("pref_accent");
                 final android.preference.Preference pref_default_icon_color = findPreference("pref_default_icon_color");
 
@@ -112,11 +118,37 @@ public class Settings extends ActionBarActivity{
                     @Override
                     public boolean onPreferenceClick(android.preference.Preference preference) {
                         nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-                        if(pref_shortcut.isChecked()) buildShortcutNotification();
+                        if (pref_shortcut.isChecked()) buildShortcutNotification();
                         else nm.cancel(MainActivity.SHORTCUT_NOTIF_ID);
                         return false;
                     }
                 });
+
+            //CM quick tile build
+            if (cyanogenmod.os.Build.CM_VERSION.SDK_INT > 0) {
+                final com.jenzz.materialpreference.SwitchPreference pref_cm_tile = (com.jenzz.materialpreference.SwitchPreference) findPreference("pref_cm_quick_tile");
+                pref_cm_tile.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(android.preference.Preference preference) {
+                        try {
+                            if(sharedPreferences.getBoolean("pref_cm_quick_tile", false)) {
+                                CustomTile customTile = new CustomTile.Builder(getActivity())
+                                        .setOnClickIntent(PendingIntent.getActivity(getActivity(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(getActivity(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                                        .setLabel("Notey")
+                                        .setIcon(R.drawable.ic_new_note_white)
+                                        .build();
+                                CMStatusBarManager.getInstance(getActivity()).publishTile("notey_cm_quick_tile", 1, customTile); //tag, id, tile
+                            }
+                            else { //remove quick tile
+                                CMStatusBarManager.getInstance(getActivity()).removeTile("notey_cm_quick_tile", 1); //tag, id
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return  false;
+                    }
+                });
+            }
 
                 //accent color picker dialog
                 findPreference("pref_accent").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -236,7 +268,7 @@ public class Settings extends ActionBarActivity{
                         return false;
                     }
                 });
-            }
+//            }
 
             //listen for changes to preferences. Need to make sure users make it possible to delete notifications.
             SharedPreferences.OnSharedPreferenceChangeListener prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -359,8 +391,9 @@ public class Settings extends ActionBarActivity{
                     int accentId = getResources().getIdentifier(MainActivity.themeColor.replace("500", "300"), "color", getActivity().getPackageName());
 
                     int view; //layout for theme choose
-                    if(MainActivity.proVersionEnabled) view = R.layout.theme_color_chooser_dialog_pro;
-                    else view = R.layout.theme_color_chooser_dialog;
+//                    if(MainActivity.proVersionEnabled)
+                        view = R.layout.theme_color_chooser_dialog_pro;
+//                    else view = R.layout.theme_color_chooser_dialog;
 
                     final MaterialDialog md = new MaterialDialog.Builder(getActivity())
                             .customView(view, false)
@@ -418,26 +451,29 @@ public class Settings extends ActionBarActivity{
                     darkCheckBox.setChecked(MainActivity.darkTheme);
 
                     //enable/disable the checkbox and textview for dark theme based on pro status.
-                    darkCheckBox.setEnabled(MainActivity.proVersionEnabled);
-                    if(!MainActivity.proVersionEnabled) {
-                        darkCheckBox.setAlpha(0.15f); //fade the checkbox
-                        darkTextView.setEnabled(false);
-                    }
+//                    darkCheckBox.setEnabled(MainActivity.proVersionEnabled);
+//                    if(!MainActivity.proVersionEnabled) {
+//                        darkCheckBox.setAlpha(0.15f); //fade the checkbox
+//                        darkTextView.setEnabled(false);
+//                    }
 
                     int count; //number of theme choices
-                    if(MainActivity.proVersionEnabled) count = 19;
-                    else count = 4;
+//                    if(MainActivity.proVersionEnabled)
+                        count = 19;
+//                    else count = 4;
 
                     //create theme picker dialog
                     for (int i = 1; i <= count; i++) {
                         //fab button ids are weird
                         final int val;
-                        if(count == 4) {
-                            if (i == 1) val = 1;
-                            else if (i == 2) val = 6;
-                            else if (i == 3) val = 10;
-                            else val = 18;
-                        } else val = i;
+//                        if(count == 4) {
+//                            if (i == 1) val = 1;
+//                            else if (i == 2) val = 6;
+//                            else if (i == 3) val = 10;
+//                            else val = 18;
+//                        }
+//                        else
+                        val = i;
 
                         int id = getResources().getIdentifier("button_bt_float" + Integer.toString(val), "id", getActivity().getPackageName());
                         final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);

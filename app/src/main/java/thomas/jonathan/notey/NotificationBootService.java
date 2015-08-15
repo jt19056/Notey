@@ -18,10 +18,14 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.gson.Gson;
+import com.jenzz.materialpreference.Preference;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import cyanogenmod.app.CMStatusBarManager;
+import cyanogenmod.app.CustomTile;
 
 /* This service is used to restore all the notifications stored in the database*/
 public class NotificationBootService extends IntentService {
@@ -118,8 +122,25 @@ public class NotificationBootService extends IntentService {
                 nm.notify(MainActivity.SHORTCUT_NOTIF_ID, n);
             }
 
-            for (NoteyNote n : allNoteys) {
+            //CM quick tile build
+            if (cyanogenmod.os.Build.CM_VERSION.SDK_INT > 0) {
+                try {
+                    if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("pref_cm_quick_tile", false)) {
+                        CustomTile customTile = new CustomTile.Builder(this)
+                                .setOnClickIntent(PendingIntent.getActivity(this, MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
+                                .setLabel("Notey")
+                                .setIcon(R.drawable.ic_new_note_white)
+                                .build();
+                        CMStatusBarManager.getInstance(this).publishTile("notey_cm_quick_tile", 1, customTile); //tag, id, tile
+                    } else { //remove quick tile
+                        CMStatusBarManager.getInstance(this).removeTile("notey_cm_quick_tile", 1); //tag, id
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+            for (NoteyNote n : allNoteys) {
                 //for users on < v2.0.3, they didn't have 'title' column in db
                 if (n.getTitle() == null) {
                     n.setTitle(getString(R.string.app_name));

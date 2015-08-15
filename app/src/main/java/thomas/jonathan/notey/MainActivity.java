@@ -8,7 +8,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -31,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.webkit.WebView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,7 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.vending.billing.IInAppBillingService;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.crashlytics.android.Crashlytics;
 import com.easyandroidanimations.library.ScaleInAnimation;
@@ -59,17 +56,12 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import io.fabric.sdk.android.Fabric;
-import thomas.jonathan.notey.util.IabHelper;
-import thomas.jonathan.notey.util.IabResult;
-import thomas.jonathan.notey.util.Inventory;
-import thomas.jonathan.notey.util.Purchase;
 
 public class MainActivity extends Activity implements OnClickListener, View.OnLongClickListener {
-    public static final int CURRENT_ANDROID_VERSION = Build.VERSION.SDK_INT;
+    public static final int CURRENT_ANDROID_VERSION = android.os.Build.VERSION.SDK_INT;
     private static boolean justTurnedPro = false;
     private static final int REQUEST_CODE = 1234;
     public static final int SHORTCUT_NOTIF_ID = 314150413; //pi and bday
-    private final String TAG = "Notey_MainActivity";
     private NotificationManager nm;
     private ImageButton ib1;
     private MaterialRippleLayout mrl_ib1;
@@ -107,14 +99,14 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     public static String defaultIconsColor;
 
     /* in app billing variables */
-    private static IabHelper mHelper;
-    private static IInAppBillingService mService;
-    private static ServiceConnection mServiceConn;
-    private static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
-    private static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
-    public static boolean proVersionEnabled = false;
-    private static boolean userWasAlreadyAPro = false;
-    private static String payload = Integer.toString((int) (Math.random() * 1000000));
+//    private static IabHelper mHelper;
+//    private static IInAppBillingService mService;
+//    private static ServiceConnection mServiceConn;
+//    private static final String SKU_PRO_VERSION = "thomas.jonathan.notey.pro";
+//    private static final String SKU_TIP_VERSION = "thomas.jonathan.notey.tip";
+//    public static boolean proVersionEnabled = true;
+//    private static boolean userWasAlreadyAPro = true;
+//    private static String payload = Integer.toString((int) (Math.random() * 1000000));
 
     //theme variables
     public static String themeColor;
@@ -140,13 +132,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
 //        doInAppBillingStuff();
 
-        /*** For free Pro users, enable this and setProImageButtons() on line 149 ***/
-        proVersionEnabled = true;
-
         initializeSettings();
         initializeGUI();
 
-        /*** For free Pro users, enable this too! ***/
         setProImageButtons();
 
         setLayout();
@@ -196,18 +184,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 }
             }
         });
-
-//        try {
-//            CustomTile customTile = new CustomTile.Builder(this)
-//                    .setOnClickIntent(PendingIntent.getActivity(getApplicationContext(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
-//                    .setLabel("Notey")
-//                    .setIcon(R.drawable.ic_whatshot_cyan_24dp)
-//                    .build();
-//
-//            CMStatusBarManager.getInstance(this).publishTile(1, customTile);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
     }
 
     @Override
@@ -234,8 +210,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             selectedRippleButtonId = getResources().getIdentifier("ripple_" + imageButtonName, "id", getPackageName());
         } else if (v.getId() == R.id.pallete_btn) {
             int view; //layout for icons
-            if (MainActivity.proVersionEnabled) view = R.layout.icon_color_chooser_dialog_pro;
-            else view = R.layout.icon_color_chooser_dialog;
+//            if (MainActivity.proVersionEnabled)
+                view = R.layout.icon_color_chooser_dialog_pro;
+//            else view = R.layout.icon_color_chooser_dialog;
 
             final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
                     .customView(view, false)
@@ -306,18 +283,18 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     // converts ex. red -> md_red_A400  or  blue -> md_blue_500
                     if (CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
                         String colorArray[];
-                        if (proVersionEnabled)
+//                        if (proVersionEnabled)
                             colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
-                        else
-                            colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
+//                        else
+//                            colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
 
                         int c = Arrays.asList(colorArray).indexOf(iconColor);
 
                         String colorNames[];
-                        if (proVersionEnabled)
+//                        if (proVersionEnabled)
                             colorNames = getResources().getStringArray(R.array.icon_color_names_pro);
-                        else
-                            colorNames = getResources().getStringArray(R.array.icon_color_names_standard);
+//                        else
+//                            colorNames = getResources().getStringArray(R.array.icon_color_names_standard);
 
                         String colorString = Arrays.asList(colorNames).get(c);
 
@@ -450,9 +427,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     private void setIconColorOnClickListeners(final MaterialDialog md) {
         String colors[];
-        if (proVersionEnabled)
+//        if (proVersionEnabled)
             colors = getResources().getStringArray(R.array.icon_colors_array_pro);
-        else colors = getResources().getStringArray(R.array.icon_colors_array_standard);
+//        else colors = getResources().getStringArray(R.array.icon_colors_array_standard);
         for (int i = 0; i < colors.length; i++) {
             int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getPackageName());
             final FloatingActionButton fab = (FloatingActionButton) md.findViewById(id);
@@ -469,8 +446,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     private void createIconPickerDialog() {
         int view; //layout for icons
-        if (MainActivity.proVersionEnabled) view = R.layout.icon_chooser_dialog_pro;
-        else view = R.layout.icon_chooser_dialog;
+//        if (MainActivity.proVersionEnabled)
+            view = R.layout.icon_chooser_dialog_pro;
+//        else view = R.layout.icon_chooser_dialog;
 
         final MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
                 .customView(view, false)
@@ -480,9 +458,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         //based on the icon clicked, show all the color options for that icon
         String[] colorArray;
-        if (proVersionEnabled)
+//        if (proVersionEnabled)
             colorArray = getResources().getStringArray(R.array.icon_colors_array_pro);
-        else colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
+//        else colorArray = getResources().getStringArray(R.array.icon_colors_array_standard);
 
         for (int i = 0; i < colorArray.length; i++) {
             int id = getResources().getIdentifier("icon_chooser_dialog_imageview_" + Integer.toString(i + 1), "id", getPackageName());
@@ -523,7 +501,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         final EditText editTextCopy = et;
 
         //for non-lollipop devices using dark theme, both text boxes lose their 10dp padding, must programattically set them
-        if(darkTheme && CURRENT_ANDROID_VERSION < Build.VERSION_CODES.LOLLIPOP) {
+        if(darkTheme && CURRENT_ANDROID_VERSION < android.os.Build.VERSION_CODES.LOLLIPOP) {
             et.setPadding((int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density),
                     (int) (10 * getResources().getDisplayMetrics().density), (int) (10 * getResources().getDisplayMetrics().density));
 
@@ -643,9 +621,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 mrl_ib1.setRadius(0);
                 //highlight selected. this is done by getting the index of the icons array which contains the icon name. ex) check = image button 1 = icons array index 0
                 String icons[];
-                if (proVersionEnabled)
+//                if (proVersionEnabled)
                     icons = getResources().getStringArray(R.array.icons_array_pro);
-                else icons = getResources().getStringArray(R.array.icons_array_standard);
+//                else icons = getResources().getStringArray(R.array.icons_array_standard);
 
                 imageButtonNumber = nTemp.getImgBtnNum();
                 noteTitle = nTemp.getTitle();
@@ -731,7 +709,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         sharedPref.edit().putInt("VERSION_CODE", versionCode).apply();
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(android.os.Build.VERSION_CODES.JELLY_BEAN)
     private void initializeGUI() {
         //setup the five icons
         ib1 = (ImageButton) findViewById(R.id.imageButton1);
@@ -750,16 +728,16 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         MaterialRippleLayout mrl_ib7 = (MaterialRippleLayout) findViewById(R.id.ripple_imageButton7);
         selectedRippleButtonId = mrl_ib1.getId();
 
-        if (!proVersionEnabled && isTablet(this)) { //spread out the 7 non-pro icons for tablets
-            float twentyDP = 20 * getResources().getDisplayMetrics().density;
-            mrl_ib1.setPadding((int) twentyDP, 0, (int) twentyDP, 0); //left, top, right, bottom
-            mrl_ib2.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib3.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib4.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib5.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib6.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-            mrl_ib7.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
-        }
+//        if (!proVersionEnabled && isTablet(this)) { //spread out the 7 non-pro icons for tablets
+//            float twentyDP = 20 * getResources().getDisplayMetrics().density;
+//            mrl_ib1.setPadding((int) twentyDP, 0, (int) twentyDP, 0); //left, top, right, bottom
+//            mrl_ib2.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//            mrl_ib3.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//            mrl_ib4.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//            mrl_ib5.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//            mrl_ib6.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//            mrl_ib7.setPadding((int) twentyDP, 0, (int) twentyDP, 0);
+//        }
 
         send_btn = (FloatingActionButton) findViewById(R.id.btn); //send button
         send_btn.setBackgroundColor(getResources().getColor(getResources().getIdentifier(accentColor, "color", getPackageName())));
@@ -827,7 +805,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             et_title.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_dark));
             //lollipop+ get elevation
 
-            if(CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP) {
+            if(CURRENT_ANDROID_VERSION >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                 et.setBackgroundResource(R.drawable.rectangle_dark);
                 et_title.setBackgroundResource(R.drawable.rectangle_dark);
             }
@@ -855,9 +833,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(android.os.Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
-        if (CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (CURRENT_ANDROID_VERSION >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
             pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
@@ -885,8 +863,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         pref_keyboard = sharedPreferences.getBoolean("pref_keyboard", true); //launch keyboardd on start
 
         iconColor = defaultIconsColor;
-
-        userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
+//        userWasAlreadyAPro = sharedPreferences.getBoolean("proVersionEnabled", false); //see if the user was already a pro back when a shared pref was used to determine pro status (v2.2)
     }
 
     private void setProImageButtons() {
@@ -1066,6 +1043,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String TAG = "Notey_MainActivity";
         Log.i(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -1110,15 +1088,15 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
 
         //IAB stuff
-        if (mHelper == null) return;
-
-        // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data);
-            setUpMenu();
-        } else {
-            Log.d(TAG, "onActivityResult handled by IABUtil.");
-        }
+//        if (mHelper == null) return;
+//
+//        // Pass on the activity result to the helper for handling
+//        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+//            super.onActivityResult(requestCode, resultCode, data);
+//            setUpMenu();
+//        } else {
+//            Log.d(TAG, "onActivityResult handled by IABUtil.");
+//        }
 
     }
 
@@ -1126,9 +1104,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         MenuInflater menuInflater = mPopupMenu.getMenuInflater();
         mPopupMenu.getMenu().clear(); //clear the menu so list items aren't duplicated
         //if not a pro user, show the updgrade menu option
-        if (!proVersionEnabled) {
-            menuInflater.inflate(R.menu.menu, mPopupMenu.getMenu());
-        } else menuInflater.inflate(R.menu.menu_pro, mPopupMenu.getMenu());
+//        if (!proVersionEnabled) {
+//            menuInflater.inflate(R.menu.menu, mPopupMenu.getMenu());
+//        } else
+            menuInflater.inflate(R.menu.menu_pro, mPopupMenu.getMenu());
 
         mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
@@ -1138,49 +1117,49 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                         Intent intent = new Intent(MainActivity.this, Settings.class);
                         startActivity(intent);
                         break;
-                    case R.id.go_pro:
-                        try {
-                            doInAppBillingStuff();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
-                        }
-                        MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
-                                .title(getResources().getString(R.string.go_pro))
-                                .customView(R.layout.webview_dialog_layout, false)
-                                .positiveText(getResources().getString(R.string.tip))
-                                .negativeText(getResources().getString(R.string.pro))
-                                .neutralText(getResources().getString(R.string.no_thanks))
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        super.onPositive(dialog);
-                                        Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO + TIP upgrade.");
-                                        try {
-                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_TIP_VERSION, 10001, mPurchaseFinishedListener, payload);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        super.onNegative(dialog);
-                                        Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO upgrade.");
-                                        try {
-                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_PRO_VERSION, 10001, mPurchaseFinishedListener, payload);
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                })
-                                .build();
-                        WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-                        webView.loadUrl(darkTheme ? "file:///android_asset/ProFeaturesDark.html" : "file:///android_asset/ProFeatures.html");
-                        md.show();
-                        break;
+//                    case R.id.go_pro:
+//                        try {
+//                            doInAppBillingStuff();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+//                        }
+//                        MaterialDialog md = new MaterialDialog.Builder(MainActivity.this)
+//                                .title(getResources().getString(R.string.go_pro))
+//                                .customView(R.layout.webview_dialog_layout, false)
+//                                .positiveText(getResources().getString(R.string.tip))
+//                                .negativeText(getResources().getString(R.string.pro))
+//                                .neutralText(getResources().getString(R.string.no_thanks))
+//                                .callback(new MaterialDialog.ButtonCallback() {
+//                                    @Override
+//                                    public void onPositive(MaterialDialog dialog) {
+//                                        super.onPositive(dialog);
+//                                        Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO + TIP upgrade.");
+//                                        try {
+//                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_TIP_VERSION, 10001, mPurchaseFinishedListener, payload);
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onNegative(MaterialDialog dialog) {
+//                                        super.onNegative(dialog);
+//                                        Log.i(TAG, "Upgrade button clicked; launching purchase flow for PRO upgrade.");
+//                                        try {
+//                                            mHelper.launchPurchaseFlow(MainActivity.this, SKU_PRO_VERSION, 10001, mPurchaseFinishedListener, payload);
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                            Toast.makeText(getApplicationContext(), getString(R.string.play_store_fail), Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                })
+//                                .build();
+//                        WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
+//                        webView.loadUrl(darkTheme ? "file:///android_asset/ProFeaturesDark.html" : "file:///android_asset/ProFeatures.html");
+//                        md.show();
+//                        break;
                     case R.id.about:
                         about_activity_flag = true;
                         Intent i = new Intent(MainActivity.this, About.class);
@@ -1303,115 +1282,115 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
     }
 
-    private void doInAppBillingStuff() {
-        // get public key which was generated from my Dev Play Account. This is split up for security reasons.
-        String row3 = "kjbLj5687y153Ra3s64Mq+2ZZnWqEjY8PhDwEN2WNKhntBfBaRcGVD2FNpkcMeZdkv524e9O0VqJJCCLhyg9kil3Nx+h+pnbvtID5lwRIAbyPYbOn2xLXt";
-        String row1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApuEWdJzuPhdnu28kyd+8/GwNCjTXfMXfBST5+LgFYaljmb0ah7Op8gULgOeLGo1OeK4oLfKAWw";
-        String row4 = "LLB*AqB/w*8uNGl$F6$jI5*fYWl8eO2aF3*zKQI**DAQAB";
-        String row2 = "sfeDLPklID/xCkAsWVPAGfdiTsyIU83zxRMJc2jYUxcIbzUotWslQxaKVSaH35pcN+PqrG3eMOShTCHN9VxqMkn3Zr+g8HkiXOKMVduCgDFrWEtv8Xiqk1";
-        row4 = row4.replace("*", "");
-        String base64EncodedPublicKey = row1 + row2 + row3 + row4.replace("$", "");
-
-        Log.d(TAG, "Creating IAB helper.");
-        mHelper = new IabHelper(this, base64EncodedPublicKey);
-
-        mHelper.enableDebugLogging(true);
-
-        Log.d(TAG, "Starting setup.");
-        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
-            public void onIabSetupFinished(IabResult result) {
-                Log.d(TAG, "Setup finished.");
-
-                if (!result.isSuccess()) {
-                    // Oh noes, there was a problem.
-                    return;
-                }
-
-                if (mHelper == null) {
-                    return;
-                }
-                Log.d(TAG, "Setup successful. Querying inventory.");
-
-                // Hooray, IAB is fully set up!
-                mHelper.queryInventoryAsync(false, mQueryFinishedListener);
-            }
-
-        });
-    }
+//    private void doInAppBillingStuff() {
+//        // get public key which was generated from my Dev Play Account. This is split up for security reasons.
+//        String row3 = "kjbLj5687y153Ra3s64Mq+2ZZnWqEjY8PhDwEN2WNKhntBfBaRcGVD2FNpkcMeZdkv524e9O0VqJJCCLhyg9kil3Nx+h+pnbvtID5lwRIAbyPYbOn2xLXt";
+//        String row1 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApuEWdJzuPhdnu28kyd+8/GwNCjTXfMXfBST5+LgFYaljmb0ah7Op8gULgOeLGo1OeK4oLfKAWw";
+//        String row4 = "LLB*AqB/w*8uNGl$F6$jI5*fYWl8eO2aF3*zKQI**DAQAB";
+//        String row2 = "sfeDLPklID/xCkAsWVPAGfdiTsyIU83zxRMJc2jYUxcIbzUotWslQxaKVSaH35pcN+PqrG3eMOShTCHN9VxqMkn3Zr+g8HkiXOKMVduCgDFrWEtv8Xiqk1";
+//        row4 = row4.replace("*", "");
+//        String base64EncodedPublicKey = row1 + row2 + row3 + row4.replace("$", "");
+//
+//        Log.d(TAG, "Creating IAB helper.");
+//        mHelper = new IabHelper(this, base64EncodedPublicKey);
+//
+//        mHelper.enableDebugLogging(true);
+//
+//        Log.d(TAG, "Starting setup.");
+//        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+//            public void onIabSetupFinished(IabResult result) {
+//                Log.d(TAG, "Setup finished.");
+//
+//                if (!result.isSuccess()) {
+//                    // Oh noes, there was a problem.
+//                    return;
+//                }
+//
+//                if (mHelper == null) {
+//                    return;
+//                }
+//                Log.d(TAG, "Setup successful. Querying inventory.");
+//
+//                // Hooray, IAB is fully set up!
+//                mHelper.queryInventoryAsync(false, mQueryFinishedListener);
+//            }
+//
+//        });
+//    }
 
     // Listener that's called when we finish querying the items and subscriptions we own
-    private final IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
-        @Override
-        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-            Log.d(TAG, "Query inventory finished.");
-
-            if (mHelper == null || result.isFailure()) {
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-            Purchase proVersion = inv.getPurchase(SKU_PRO_VERSION);
-            Purchase tipVersion = inv.getPurchase(SKU_TIP_VERSION);
-
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
-                proVersionEnabled = true;
-                //if user was already a pro, don't bother fixing the spinner locations
-                if (!userWasAlreadyAPro) setUpProGUI();
-                setProImageButtons();
-                setUpMenu();
-            } else { //if user is not a pro, disable pro features
-                //set notification shortcut to false if it is set to true
-                if (sharedPreferences.getBoolean("pref_shortcut", false)) {
-                    editor.putBoolean("pref_shortcut", false);
-                    editor.apply();
-                }
-            }
-
-            Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
-        }
-    };
+//    private final IabHelper.QueryInventoryFinishedListener mQueryFinishedListener = new IabHelper.QueryInventoryFinishedListener() {
+//        @Override
+//        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+//            Log.d(TAG, "Query inventory finished.");
+//
+//            if (mHelper == null || result.isFailure()) {
+//                return;
+//            }
+//
+//            Log.d(TAG, "Query inventory was successful.");
+//            Purchase proVersion = inv.getPurchase(SKU_PRO_VERSION);
+//            Purchase tipVersion = inv.getPurchase(SKU_TIP_VERSION);
+//
+//            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            if ((proVersion != null && verifyDeveloperPayload(proVersion)) || (tipVersion != null && verifyDeveloperPayload(tipVersion))) {
+//                proVersionEnabled = true;
+//                //if user was already a pro, don't bother fixing the spinner locations
+////                if (!userWasAlreadyAPro) setUpProGUI();
+//                setProImageButtons();
+//                setUpMenu();
+//            } else { //if user is not a pro, disable pro features
+//                //set notification shortcut to false if it is set to true
+//                if (sharedPreferences.getBoolean("pref_shortcut", false)) {
+//                    editor.putBoolean("pref_shortcut", false);
+//                    editor.apply();
+//                }
+//            }
+//
+//            Log.d(TAG, "User is " + (proVersionEnabled ? "PREMIUM" : "NOT PREMIUM"));
+//            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
+//        }
+//    };
 
     // Callback for when a purchase is finished
-    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        @Override
-        public void onIabPurchaseFinished(IabResult result, Purchase info) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + info);
-
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-                Log.d(TAG, "Error purchasing: " + result);
-
-                return;
-            } else mHelper.queryInventoryAsync(false, mQueryFinishedListener);
-
-            if (!verifyDeveloperPayload(info)) {
-                Log.d(TAG, "Error purchasing. Authenticity verification failed.");
-                return;
-            }
-
-            Log.d(TAG, "Purchase successful.");
-
-            if (info.getSku().equals(SKU_PRO_VERSION)) {
-                Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
-
-                Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_pro), Toast.LENGTH_SHORT).show();
-                proVersionEnabled = true;
-                justTurnedPro = true;
-                setUpProGUI();
-            } else if (info.getSku().equals(SKU_TIP_VERSION)) {
-                Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
-
-                Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_contribution), Toast.LENGTH_SHORT).show();
-                proVersionEnabled = true;
-                justTurnedPro = true;
-                setUpProGUI();
-            }
-        }
-    };
+//    private final IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+//        @Override
+//        public void onIabPurchaseFinished(IabResult result, Purchase info) {
+//            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + info);
+//
+//            if (mHelper == null) return;
+//
+//            if (result.isFailure()) {
+//                Log.d(TAG, "Error purchasing: " + result);
+//
+//                return;
+//            } else mHelper.queryInventoryAsync(false, mQueryFinishedListener);
+//
+//            if (!verifyDeveloperPayload(info)) {
+//                Log.d(TAG, "Error purchasing. Authenticity verification failed.");
+//                return;
+//            }
+//
+//            Log.d(TAG, "Purchase successful.");
+//
+//            if (info.getSku().equals(SKU_PRO_VERSION)) {
+//                Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
+//
+//                Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_pro), Toast.LENGTH_SHORT).show();
+//                proVersionEnabled = true;
+//                justTurnedPro = true;
+//                setUpProGUI();
+//            } else if (info.getSku().equals(SKU_TIP_VERSION)) {
+//                Log.d(TAG, "Purchasing premium upgrade. Congratulating user.");
+//
+//                Toast.makeText(getApplicationContext(), getString(R.string.thank_you_for_contribution), Toast.LENGTH_SHORT).show();
+//                proVersionEnabled = true;
+//                justTurnedPro = true;
+//                setUpProGUI();
+//            }
+//        }
+//    };
 
     private static void setUpProGUI() {
         //when upgrading to pro, adding more icons to the spinner alters the spinner location's number. this is to fix that
@@ -1434,10 +1413,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
     }
 
-    private boolean verifyDeveloperPayload(Purchase p) {
-        payload = p.getDeveloperPayload();
-        return true;
-    }
+//    private boolean verifyDeveloperPayload(Purchase p) {
+//        payload = p.getDeveloperPayload();
+//        return true;
+//    }
 
     private void themeStuffBeforeSetContentView() {
         //initialize theme preferences
@@ -1492,18 +1471,18 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        //unbind from the In-app Billing service when done with the activity
-        Log.d(TAG, "Destroying helper.");
-        if (mHelper != null) mHelper.dispose();
-        mHelper = null;
-
-        if (mService != null) {
-            unbindService(mServiceConn);
-        }
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        //unbind from the In-app Billing service when done with the activity
+//        Log.d(TAG, "Destroying helper.");
+//        if (mHelper != null) mHelper.dispose();
+//        mHelper = null;
+//
+//        if (mService != null) {
+//            unbindService(mServiceConn);
+//        }
+//    }
 }
 
 

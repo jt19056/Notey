@@ -73,7 +73,7 @@ public class About extends ActionBarActivity {
             Preference githubPref = (Preference) findPreference("pref_github");
             Preference contactPref = (Preference) findPreference("pref_contact");
             Preference ratePref = (Preference) findPreference("pref_rate");
-            Preference proPref = (Preference) findPreference("pref_pro");
+//            Preference proPref = (Preference) findPreference("pref_pro");
 
             //dialog pop-up for 'open sources' preference
             new AlertDialog.Builder(getActivity());
@@ -169,28 +169,28 @@ public class About extends ActionBarActivity {
             });
 
             //Pro - popup to show the pro features
-            new AlertDialog.Builder(getActivity());
-            proPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(android.preference.Preference preference) {
-                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
-                            .title(getResources().getString(R.string.pro_features))
-                            .customView(R.layout.webview_dialog_layout, false)
-                            .positiveText(getResources().getString(R.string.ok))
-                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-LIGHT.TTF"))
-                            .build();
-                    WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
-                    webView.loadUrl(MainActivity.darkTheme ? "file:///android_asset/ProFeaturesInfoDark.html" : "file:///android_asset/ProFeaturesInfo.html");
-                    md.show();
-
-                    return false;
-                }
-            });
-
-            if (MainActivity.proVersionEnabled) {
-                proPref.setSummary(getString(R.string.yes_a_pro));
-            } else {
-                proPref.setSummary(getString(R.string.not_a_pro));
-            }
+//            new AlertDialog.Builder(getActivity());
+//            proPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                public boolean onPreferenceClick(android.preference.Preference preference) {
+//                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
+//                            .title(getResources().getString(R.string.pro_features))
+//                            .customView(R.layout.webview_dialog_layout, false)
+//                            .positiveText(getResources().getString(R.string.ok))
+//                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-LIGHT.TTF"))
+//                            .build();
+//                    WebView webView = (WebView) md.getCustomView().findViewById(R.id.pro_features_webview);
+//                    webView.loadUrl(MainActivity.darkTheme ? "file:///android_asset/ProFeaturesInfoDark.html" : "file:///android_asset/ProFeaturesInfo.html");
+//                    md.show();
+//
+//                    return false;
+//                }
+//            });
+//
+//            if (MainActivity.proVersionEnabled) {
+//                proPref.setSummary(getString(R.string.yes_a_pro));
+//            } else {
+//                proPref.setSummary(getString(R.string.not_a_pro));
+//            }
         }
     }
 

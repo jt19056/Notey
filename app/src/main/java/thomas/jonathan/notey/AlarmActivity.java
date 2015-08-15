@@ -115,24 +115,24 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         }
 
         //if a pro user, enable the sound and repeat option
-        if (MainActivity.proVersionEnabled) {
+//        if (MainActivity.proVersionEnabled) {
             sound_tv.setEnabled(true);
             sound_tv.setClickable(true);
             sound_tv.setOnClickListener(this);
 
             if(MainActivity.darkTheme) sound_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
             else sound_tv.setTextColor(Color.BLACK);
-        } else { //fade the icons if not pro
-            sound_iv.setAlpha(0.3f);
-            repeat_iv.setAlpha(0.3f);
-            seekBar.setAlpha(0.3f);
-            recurrenceSpinner.setEnabled(false);
-            recurrenceSpinner.setClickable(false);
-            recurrenceSpinner.setAlpha(0.3f);
-            seekBar.setEnabled(false);
-            repeat_iv.setClickable(false);
-            seekBar.setThumbColor(getResources().getColor(R.color.grey_600), getResources().getColor(R.color.grey_600));
-        }
+//        } else { //fade the icons if not pro
+//            sound_iv.setAlpha(0.3f);
+//            repeat_iv.setAlpha(0.3f);
+//            seekBar.setAlpha(0.3f);
+//            recurrenceSpinner.setEnabled(false);
+//            recurrenceSpinner.setClickable(false);
+//            recurrenceSpinner.setAlpha(0.3f);
+//            seekBar.setEnabled(false);
+//            repeat_iv.setClickable(false);
+//            seekBar.setThumbColor(getResources().getColor(R.color.grey_600), getResources().getColor(R.color.grey_600));
+//        }
 
         Typeface roboto_light = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
         Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
@@ -246,9 +246,11 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         if (view.getId() == R.id.date_tv) { //show the date picker
             DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day);
             datePickerDialog.setYearRange(1985, 2028);
+            if(MainActivity.darkTheme) datePickerDialog.setThemeDark(true);
             datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
         } else if (view.getId() == R.id.time_tv) { //show the time picker
             TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, DateFormat.is24HourFormat(this));
+            if(MainActivity.darkTheme) timePickerDialog.setThemeDark(true);
             timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
         } else if (view.getId() == R.id.alarm_set_btn) {
             calendar.set(year, month, day, hour, minute); //set the calendar for the new alarm time

@@ -394,7 +394,9 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
         //initialize theme preferences
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
+        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_blue_500");
         MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
+
 
         //set light/dark theme
         if(MainActivity.darkTheme) {
