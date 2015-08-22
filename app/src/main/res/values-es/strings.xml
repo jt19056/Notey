@@ -54,6 +54,18 @@
     <string name="update_logo">Actualización del color del icono</string>
     <string name="update_to_match">Actualizar el icono del launcher para que coincida con su esquema de color.</string>
     <string name="your_new_icon">Su nuevo icono:</string>
+	<string name="use_colored_icons">Iconos Coloreados</string>
+	<string name="use_colored_icons_summary">Usar iconos de colores en lugar de icono blanco sobre fondo coloreado. Si no ve sus iconos en la bandeja de notificaciónes, tilde esto.</string>
+	<string name="large_icons">Iconos Grandes</string>
+	<string name="large_icons_summary">Iconos más grandes en la bandeja de notificaciónes.</string>
+	<string name="open_keyboard">Abrir Teclado al Inicio</string>
+	<string name="open_keyboard_summary">Abrir Teclado al iniciar la aplicacón.</string>
+	<string name="accent_color">Color de Énfasis</string>
+	<string name="accent_color_summary">Elija su color de énfasis.</string>
+	<string name="default_icons_color">Color de Iconos por Defecto</string>
+	<string name="default_icons_color_summary">Color de iconos como la primer vez que inició la aplicación.</string>
+	<string name="cm_quick_tile">Acceso Rápido CM</string>
+	<string name="cm_quick_tile_summary">Habilitar accesos rápidos de CyanogenMod</string>
 
 
     <!-- About strings -->
@@ -72,6 +84,7 @@
     <string name="githubSummary">Siga el desarrollo, cree entradas de errores, solicite características.</string>
     <string name="github_url">https://github.com/jt19056/Notey</string>
     <string name="translations">Traducciones</string>
+	<string name="translations_summary">Ayuda a traducir Notey.</string>
 
     <!-- DashClock -->
     <string name="dashclock_description">Muestra tus recordatorios actuales.</string>
@@ -79,7 +92,24 @@
     <string name="icon">Icono</string>
     <string name="icon_summary">Icono que se mostrará en DashClock Widget.</string>
     <string name="top_icon">El icono de la nota más antigua</string>
-    <string name="notey_extension_settings">Ajustes de la extensión de Notey</string>
+	<string name="notey_logo">Logo de Notey</string>
+	<string name="notey_extension_settings">Ajustes de Extensiones de Notey</string>
+	<string name="pencil">Lápiz</string>
+	<string name="clipboard">Portapapeles</string>
+	<string name="dollar_sign">Simbolo del Dólar</string>
+	<string name="book">Libro</string>
+	<string name="sun">Sol</string>
+	<string name="phone">Teléfono</string>
+	<string name="car">Auto</string>
+	<string name="calendar">Calendario</string>
+	<string name="flag">Bandera</string>
+	<string name="lightning_bolt">Rayo</string>
+	<string name="drink">Trago</string>
+	<string name="flower">Flor</string>
+	<string name="music_note">Nota Musical</string>
+	<string name="bell">Campana</string>
+	<string name="reply_arrow">Flecha de Respuesta</string>
+	<string name="spinner">Ruleta</string>
 
     <!-- Icons -->
     <string name="check">Tilde</string>
@@ -138,6 +168,8 @@
     <string name="ok">Si</string>
     <string name="no">No</string>
     <string name="dismiss">Entendido</string>
+	<string name="deleted">Borrado</string>
+	<string name="undo_caps">DESHACER</string>
 
     <!-- Pro -->
     <string name="go_pro">Actualice a Pro</string>
@@ -150,5 +182,6 @@
     <string name="yes_a_pro">Características Pro habilitadas.</string>
     <string name="tip">Donación</string>
     <string name="play_store_fail">Algo salió mal al tratar de contactar con tienda Google Play.</string>
+	<string name="pro_features">Características Pro:</string>
 
 </resources>

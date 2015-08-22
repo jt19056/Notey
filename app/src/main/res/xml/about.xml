@@ -24,8 +24,8 @@
         android:title="@string/rate"
         android:summary="@string/rateSummary"/>
 
-    <com.jenzz.materialpreference.Preference android:key="pref_pro"
-        android:title="@string/pro"/>
+    <!--<com.jenzz.materialpreference.Preference android:key="pref_pro"-->
+        <!--android:title="@string/pro"/>-->
 
     <com.jenzz.materialpreference.Preference android:key="pref_ver_num"
         android:title="@string/verNum"

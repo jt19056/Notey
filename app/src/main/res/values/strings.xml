@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.4.b1</string>
+    <string name="version" translatable="false">2.4</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -67,6 +67,8 @@
     <string name="accent_color_summary">Choose your accent color.</string>
     <string name="default_icons_color">Default Icons Color</string>
     <string name="default_icons_color_summary">Icons color first shown on app launch.</string>
+    <string name="cm_quick_tile">CM Quick Tile</string>
+    <string name="cm_quick_tile_summary">Enable CyanogenMod Quick Tile</string>
 
     <!-- About strings -->
     <string name="about">About</string>

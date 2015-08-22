@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Timer;
 
 public class NotificationBuild extends BroadcastReceiver {
 
@@ -34,7 +33,6 @@ public class NotificationBuild extends BroadcastReceiver {
         final MySQLiteHelper db = new MySQLiteHelper(context);
 
         //cancel the 5 second delay for undo notification
-        Timer x = NotificationDismiss.timer;
         if(NotificationDismiss.timer != null) NotificationDismiss.timer.cancel();
         if(NotificationDismiss.timerTask != null) NotificationDismiss.timerTask.cancel();
 

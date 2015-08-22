@@ -513,7 +513,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (et.getText().toString().equals("") && et_title.getText().toString().equals("")) { //if both note and title are blank, set to mic
-                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp), true);
+                    new ScaleInAnimation(send_btn).setDuration(250).animate();
+                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp), false);
                 }
 
                 if (et.getLineCount() > 1) {
@@ -531,7 +532,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if (before == 0 && start == 0) {
                     if (!send_btn.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_white_36dp).getConstantState())) { //switch it to the send icon if not already
-                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), true);
+                        new ScaleInAnimation(send_btn).setDuration(250).animate();
+                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), false);
                     }
                 }
             }
@@ -541,7 +543,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et_title.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 if (et_title.getText().toString().equals("") && et.getText().toString().equals("")) {
-                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp),true);
+                    new ScaleInAnimation(send_btn).setDuration(250).animate();
+                    send_btn.setIcon(getResources().getDrawable(R.drawable.ic_mic_white_36dp), false);
                 }
             }
 
@@ -551,7 +554,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if (before == 0 && start == 0) {
                     if (!send_btn.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_white_36dp).getConstantState())) {
-                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), true);
+                        new ScaleInAnimation(send_btn).setDuration(250).animate();
+                        send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), false);
                     }
                 }
             }

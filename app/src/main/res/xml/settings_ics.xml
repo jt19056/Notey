@@ -38,18 +38,6 @@
             android:key="pref_accent"
             android:summary="@string/accent_color_summary"
             android:title="@string/accent_color" />
-    </com.jenzz.materialpreference.PreferenceCategory>
-
-    <com.jenzz.materialpreference.PreferenceCategory
-        android:key="pref_key_pro"
-        android:title="@string/pro_options">
-
-        <com.jenzz.materialpreference.SwitchPreference
-            android:defaultValue="false"
-            android:enabled="false"
-            android:key="pref_shortcut"
-            android:summary="@string/shortcut_summary"
-            android:title="@string/shortcut" />
 
         <com.jenzz.materialpreference.Preference
             android:enabled="false"
@@ -61,6 +49,14 @@
     <com.jenzz.materialpreference.PreferenceCategory
         android:key="pref_key_other"
         android:title="@string/other">
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="pref_shortcut"
+            android:summary="@string/shortcut_summary"
+            android:title="@string/shortcut" />
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
             android:key="pref_keyboard"

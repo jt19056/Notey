@@ -69,6 +69,12 @@
             android:title="@string/shortcut" />
 
         <com.jenzz.materialpreference.SwitchPreference
+            android:enabled="true"
+            android:key="pref_cm_quick_tile"
+            android:summary="@string/cm_quick_tile_summary"
+            android:title="@string/cm_quick_tile" />
+
+        <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="true"
             android:key="pref_keyboard"
             android:summary="@string/open_keyboard_summary"
@@ -76,8 +82,15 @@
 
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
+            android:key="pref_use_colored_icons"
+            android:summary="@string/use_colored_icons_summary"
+            android:title="@string/use_colored_icons" />
+
+        <com.jenzz.materialpreference.SwitchPreference
+            android:defaultValue="false"
             android:key="pref_large_icons"
             android:summary="@string/large_icons_summary"
-            android:title="@string/large_icons" />
+            android:title="@string/large_icons"
+            android:dependency="pref_use_colored_icons" />
     </com.jenzz.materialpreference.PreferenceCategory>
 </PreferenceScreen>
