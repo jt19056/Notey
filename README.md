@@ -1,6 +1,11 @@
 # Notey
 ![graphic2 4](https://cloud.githubusercontent.com/assets/5198078/9426284/f22a2e2c-4903-11e5-984b-e6ce83d2ecbb.png)
 
+<a href="https://play.google.com/store/apps/details?id=thomas.jonathan.notey">
+  <img alt="Get it on Google Play"
+       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
+</a>
+
 Write yourself a notification reminder and send it to the status bar and notification tray where your note will be until you decide to remove it. 
 
  
@@ -61,9 +66,3 @@ INTERNET - Used for Crashlytics
 PUBLISH_CUSTOM_TILE - CM 12.1+ Quick Tile
 
 *(Vibrate and screen on are options when setting your alarm for each note)
-
-
-<a href="https://play.google.com/store/apps/details?id=thomas.jonathan.notey">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-</a>
