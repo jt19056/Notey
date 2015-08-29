@@ -43,6 +43,7 @@ public class Settings extends ActionBarActivity{
     private static String selectedFab;
     private static String selectedAccentFab;
     private static String selectedDefaultColorFab;
+    private static String tempTheme;
     private static CheckBox darkCheckBox;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -404,6 +405,8 @@ public class Settings extends ActionBarActivity{
                             .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
                                 public void onPositive(MaterialDialog dialog) {
+                                    MainActivity.themeColor = tempTheme;
+                                    MainActivity.accentColor = tempTheme;
                                     if(darkCheckBox.isChecked()){
                                         editor.putBoolean("pref_theme_dark", true).apply();
                                     } else{
@@ -480,8 +483,7 @@ public class Settings extends ActionBarActivity{
                         newFab.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                MainActivity.themeColor = v.getTag().toString();
-                                MainActivity.accentColor = v.getTag().toString();
+                                tempTheme = v.getTag().toString();
 
                                 //show checkmark
                                 newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
