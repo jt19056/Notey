@@ -82,9 +82,11 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
     private boolean editIntentFlag = false;
+    private boolean rotateHasOccuredFlag = false;
     private boolean noteTextBoxHasFocus = true;
     private String clickNotif;
     private String noteTitle;
+    private String noteText;
     private String alarm_time = "";
     private int repeat_time = 0;
     private NoteyNote notey;
@@ -145,7 +147,15 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         checkForAppUpdate(); // restore notifications after app update
 
-        checkForAnyIntents(); //checking for intents of edit button clicks or received shares
+        rotateHasOccuredFlag = checkForAnyIntents(); //checking for intents of edit button clicks or received shares. will return false if there were no intents that happened.
+
+        if(!rotateHasOccuredFlag && savedInstanceState != null){
+            et.setText(savedInstanceState.getString("noteText"));
+            et_title.setText(savedInstanceState.getString("noteTitle"));
+            iconName = savedInstanceState.getString("iconName");
+            iconColor = savedInstanceState.getString("iconColor");
+            setImageButtonsBasedOffIconSelection();
+        }
 
         //button click listener. for Enter key and Menu key
         et.setOnKeyListener(new View.OnKeyListener() {
@@ -304,7 +314,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                         color = getResources().getColor(R.color.md_grey_500);
                     }
 
-                    String note = et.getText().toString(); //get the text
+                    noteText = et.getText().toString(); //get the text
 
                     //set title text
                     String tickerText;  //if title is there, set ticker to title. otherwise set it to the note
@@ -313,12 +323,12 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                         tickerText = noteTitle;
                     } else {
                         noteTitle = getString(R.string.app_name);
-                        tickerText = note;
+                        tickerText = noteText;
                     }
 
                     //set the notey object
                     notey.setId(id);
-                    notey.setNote(note);
+                    notey.setNote(noteText);
                     notey.setIcon(d);
                     notey.setImgBtnNum(imageButtonNumber);
                     notey.setTitle(noteTitle);
@@ -374,7 +384,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     // save all the info of the notification. this is for undo notification re-building
                     List list = Arrays.asList(
                             noteTitle, // 0 string
-                            note, // 1 string
+                            noteText, // 1 string
                             tickerText, // 2 string
                             d, // 3 int
                             color, // 4 int
@@ -562,7 +572,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         });
     }
 
-    private void checkForAnyIntents() {
+    private boolean checkForAnyIntents() {
         Intent i = this.getIntent();
         String action = i.getAction();
         String type = i.getType();
@@ -624,9 +634,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 ib1.setBackgroundColor(Color.TRANSPARENT);
                 mrl_ib1.setRadius(0);
                 //highlight selected. this is done by getting the index of the icons array which contains the icon name. ex) check = image button 1 = icons array index 0
-                String icons[];
+//                String icons[];
 //                if (proVersionEnabled)
-                    icons = getResources().getStringArray(R.array.icons_array_pro);
+//                    icons = getResources().getStringArray(R.array.icons_array_pro);
 //                else icons = getResources().getStringArray(R.array.icons_array_standard);
 
                 imageButtonNumber = nTemp.getImgBtnNum();
@@ -654,6 +664,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 if (doAlarmActivity) {
                     alarm_btn.performClick();
                 }
+                return true;
             } else if ((Intent.ACTION_SEND.equals(action) || action.equals("com.google.android.gm.action.AUTO_SEND")) && type != null) {
                 if ("text/plain".equals(type)) {
                     handleSendText(i); // Handle text being sent
@@ -662,17 +673,20 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 //                    et.getLayoutParams().width = RelativeLayout.LayoutParams.WRAP_CONTENT;
                     layout_bottom.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
                 }
+                return true;
             }
         } catch (CursorIndexOutOfBoundsException e) { //catches if the user deletes a note from the notfication tray while the info screen is active. then presses something on the info screen such as the alarm.
             e.printStackTrace();
+            return false;
         }
+        return false;
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        //scroll to the correct icon in the horizontal scroll view if we are opening an edit intent
-        if (editIntentFlag) {
+        //scroll to the correct icon in the horizontal scroll view if we are opening an edit intent OR if the user has rotated the screen
+        if (editIntentFlag || !rotateHasOccuredFlag) {
             String icons[] = getResources().getStringArray(R.array.icons_array_pro);
             int selected = Arrays.asList(icons).indexOf(iconName);
             MaterialRippleLayout rip = (MaterialRippleLayout) findViewById(getResources().getIdentifier("ripple_imageButton" + Integer.toString(selected + 1), "id", getPackageName()));
@@ -831,11 +845,11 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         setImageButtonsBasedOffIconSelection();
     }
 
-    private static boolean isTablet(Context context) {
-        return (context.getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-    }
+//    private static boolean isTablet(Context context) {
+//        return (context.getResources().getConfiguration().screenLayout
+//                & Configuration.SCREENLAYOUT_SIZE_MASK)
+//                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+//    }
 
     @TargetApi(android.os.Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
@@ -1475,7 +1489,16 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         }
     }
 
-//    @Override
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("noteText", et.getText().toString());
+        outState.putString("noteTitle", et_title.getText().toString());
+        outState.putString("iconName", iconName);
+        outState.putString("iconColor", iconColor);
+    }
+
+    //    @Override
 //    public void onDestroy() {
 //        super.onDestroy();
 //        //unbind from the In-app Billing service when done with the activity

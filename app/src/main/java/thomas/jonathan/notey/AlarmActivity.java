@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.RingtoneManager;
@@ -238,6 +239,10 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         date.setMinutes(minute);
         date_tv.setText(format_date.format(date));
         time_tv.setText(format_time.format(date));
+
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            alarm_set_tv.setVisibility(View.GONE);
+        }
 
     }
 
