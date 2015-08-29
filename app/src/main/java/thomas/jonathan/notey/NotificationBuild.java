@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 public class NotificationBuild extends BroadcastReceiver {
 
@@ -32,12 +33,16 @@ public class NotificationBuild extends BroadcastReceiver {
         NoteyNote notey = new NoteyNote();
         final MySQLiteHelper db = new MySQLiteHelper(context);
 
-        //cancel the 5 second delay for undo notification
-        if(NotificationDismiss.timer != null) NotificationDismiss.timer.cancel();
-        if(NotificationDismiss.timerTask != null) NotificationDismiss.timerTask.cancel();
-
         Bundle extras = intent.getExtras();
         int id = extras.getInt("id", 1);
+
+        //cancel the 5 second delay for undo notification
+        if(NotificationDismiss.timerHashMap.get(id) != null){
+            NotificationDismiss.timerHashMap.get(id).cancel();
+        }
+        if(NotificationDismiss.timerTaskHashMap.get(id) != null){
+            NotificationDismiss.timerTaskHashMap.get(id).cancel();
+        }
         
         // get all the info from the previously deleted notification
         Gson gson = new Gson();

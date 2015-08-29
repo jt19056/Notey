@@ -15,13 +15,16 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class NotificationDismiss extends BroadcastReceiver{
     NotificationManager nm;
-    public static Timer timer;
-    public static TimerTask timerTask;
+    public static Map<Integer, Timer> timerHashMap = new HashMap<>();
+    public static Map<Integer, TimerTask> timerTaskHashMap = new HashMap<>();
+
 
     @Override
     public void onReceive(final Context paramContext, final Intent paramIntent) {
@@ -32,8 +35,8 @@ public class NotificationDismiss extends BroadcastReceiver{
         final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(paramContext).edit();
 
         //give the user 5 seconds before removing the notification
-        timer = new Timer();
-        timerTask = new TimerTask() {
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 nm.cancel(id);
@@ -46,6 +49,10 @@ public class NotificationDismiss extends BroadcastReceiver{
             }
         };
         timer.schedule(timerTask, 5000, 5000);
+
+        //put the timer and timertask into their hashmaps. this will be used to cancel the undo if necessary
+        timerHashMap.put(id,timer);
+        timerTaskHashMap.put(id, timerTask);
 
         //undo notification layout
         RemoteViews remoteViews;
