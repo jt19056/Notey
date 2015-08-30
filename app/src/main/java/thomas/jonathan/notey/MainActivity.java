@@ -12,11 +12,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
@@ -77,6 +75,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
     private boolean pref_use_colored_icons;
+    private String pref_default_note_type;
     private boolean pref_large_icons;
     private boolean pref_keyboard;
     private boolean settings_activity_flag;
@@ -84,6 +83,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private boolean editIntentFlag = false;
     private boolean rotateHasOccuredFlag = false;
     private boolean noteTextBoxHasFocus = true;
+    private boolean bulletListFlag = false;
+    private boolean numberedListFlag = false;
+    private int numberedListCounter = 1;
     private String clickNotif;
     private String noteTitle;
     private String noteText;
@@ -159,11 +161,11 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         //button click listener. for Enter key and Menu key
         et.setOnKeyListener(new View.OnKeyListener() {
+            @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                // If the event is a key-down event on the "enter" button, then check the prefs for what to do (either new line or send).
+                // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    // enter to send
-                    send_btn.performClick();
+                    et.append("\n"); // enter for new line
                     return true;
                 }
                 //if hardware menu button, activate the menu button at the top of the app.
@@ -195,6 +197,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             }
         });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -392,7 +396,10 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                             priority, // 6 int
                             imageButtonNumber, // 7 int
                             alarm_time, // 8 string
-                            repeat_time // 9 int
+                            repeat_time, // 9 int
+                            bulletListFlag, // 10 boolean
+                            numberedListFlag, // 11 boolean
+                            numberedListCounter //12 int
                     );
 
                     //save to sharedprefs
@@ -499,7 +506,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private void setLayout() {
         //show keyboard at start
         if(pref_keyboard) getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        et.setText("");
 
         //keep layout where it belongs on screen
         layout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom); //row containing the note text box
@@ -539,6 +545,34 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { /*do nothing*/ }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //check whether to add a bullet point or number
+                if(s.length() > 0 && before == 0 && s.toString().charAt(s.toString().length()-1) == '\n') {
+                    int lastIndex = 0;
+                    int numTimes = 0;
+                    char findStr = '\n';
+                    while(lastIndex != -1){
+
+                        lastIndex = s.toString().indexOf(findStr, lastIndex);
+
+                        if(lastIndex != -1){
+                            numTimes ++;
+                            lastIndex += 1;
+                        }
+                    }
+
+                    //basically, if text is not empty, continue counting. else start with 1)
+                    if(s.toString().length() >= 3 && s.toString().substring(0, Math.min(s.toString().length(), 2)).equals("\n1")) //if the first 3 chars are \n
+                        numberedListCounter = numTimes;
+                    else if(s.toString().contains("1"))
+                        numberedListCounter = numTimes +1;
+                    else numberedListCounter = 1;
+
+                    if (bulletListFlag)
+                        et.append("• ");
+                    else if (numberedListFlag)
+                        et.append(numberedListCounter++ + ") ");
+                }
+
                 //only animate the mic switching to the send button when the text starts at 0 (no text)
                 if (before == 0 && start == 0) {
                     if (!send_btn.getIcon().getConstantState().equals(getResources().getDrawable(R.drawable.ic_send_white_36dp).getConstantState())) { //switch it to the send icon if not already
@@ -591,6 +625,9 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
                 String editAlarm = i.getExtras().getString("editAlarm");
                 boolean doAlarmActivity = i.getExtras().getBoolean("doEditAlarmActivity", false);
+                bulletListFlag = i.getExtras().getBoolean("bulletListFlag", false);
+                numberedListFlag= i.getExtras().getBoolean("numberedListFlag", false);
+                numberedListCounter= i.getExtras().getInt("numberedListCounter", 1);
                 PendingIntent editAlarmPI = (PendingIntent) i.getExtras().get("editAlarmPendingIntent");
 
                 id = editID;
@@ -817,6 +854,22 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         et = (EditText) findViewById(R.id.editText1);
         et_title = (EditText) findViewById(R.id.editText_title);
 
+        if(bulletListFlag) {
+            et.setText("• ");
+            et.setSelection(et.getText().length());
+            new ScaleInAnimation(send_btn).setDuration(250).animate();
+            send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), false);
+        }
+        else if(numberedListFlag) {
+            et.setText("1) ");
+            et.setSelection(et.getText().length());
+            new ScaleInAnimation(send_btn).setDuration(250).animate();
+            send_btn.setIcon(getResources().getDrawable(R.drawable.ic_send_white_36dp), false);
+        }
+        else {
+            et.setText("");
+        }
+
         //if dark theme, set backgrounds for the two text boxes
         if(darkTheme){
             et.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_dark));
@@ -857,6 +910,22 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             pref_expand = sharedPreferences.getBoolean("pref_expand", true);
             pref_swipe = sharedPreferences.getBoolean("pref_swipe", false);
             pref_use_colored_icons = sharedPreferences.getBoolean("pref_use_colored_icons", false);
+
+            pref_default_note_type = sharedPreferences.getString("defaultNoteType", "plain");
+            switch(pref_default_note_type){
+                case "bullet":
+                    bulletListFlag = true;
+                    numberedListFlag = false;
+                    break;
+                case "number":
+                    numberedListFlag = true;
+                    bulletListFlag = false;
+                    break;
+                default: //plain
+                    bulletListFlag = false;
+                    numberedListFlag = false;
+                    break;
+            }
 
             String pref_priority = sharedPreferences.getString("pref_priority", "normal");
             switch (pref_priority) {
@@ -1130,6 +1199,24 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         mPopupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.plain_note:
+                        bulletListFlag = false;
+                        numberedListFlag = false;
+                        et.setText("");
+                        break;
+                    case R.id.bullet_list:
+                        bulletListFlag = true;
+                        numberedListFlag = false;
+                        et.setText("• ");
+                        et.setSelection(et.getText().length()); //set cursor to end
+                        break;
+                    case R.id.numbered_list:
+                        numberedListFlag = true;
+                        bulletListFlag = false;
+                        numberedListCounter = 1;
+                        et.setText(numberedListCounter++ + ") ");
+                        et.setSelection(et.getText().length()); //set cursor to end
+                        break;
                     case R.id.settings:
                         settings_activity_flag = true; //flag so mainActivity UI does get reset after settings_jb_kk is called
                         Intent intent = new Intent(MainActivity.this, Settings.class);

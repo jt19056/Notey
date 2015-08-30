@@ -60,6 +60,9 @@ public class NotificationBuild extends BroadcastReceiver {
         int imageButtonNumber = (int) ((double) list.get(7));
         String alarm_time = (String) list.get(8);
         int repeat_time = (int) ((double) list.get(9));
+        boolean bulletListFlag = (boolean) list.get(10);
+        boolean numberedListFlag = (boolean) list.get(11);
+        int numberedListCounter = (int) ((double) list.get(12));
 
         String clickNotif = mPrefs.getString("clickNotif", "info"); //notification click action
         boolean pref_swipe = mPrefs.getBoolean("pref_swipe", false);
@@ -119,7 +122,7 @@ public class NotificationBuild extends BroadcastReceiver {
         }
 
         PendingIntent piDismiss = createOnDismissedIntent(context, id);
-        PendingIntent piEdit = createEditIntent(id, imageButtonNumber, alarm_time, repeat_time, context);
+        PendingIntent piEdit = createEditIntent(id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context);
         PendingIntent piShare = createShareIntent(note, id, context);
 
 
@@ -151,7 +154,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -173,7 +176,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -194,7 +197,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -216,7 +219,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -236,7 +239,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -256,7 +259,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(noteForNotification))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .addAction(R.drawable.ic_edit_white_24dp,
@@ -273,7 +276,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setColor(color)
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .build();
@@ -288,7 +291,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setLargeIcon(bm)
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .build();
@@ -302,7 +305,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setLargeIcon(bm)
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
                     .setPriority(priority)
                     .build();
@@ -315,7 +318,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setSmallIcon(d)
                     .setLargeIcon(bm)
                     .setAutoCancel(false)
-                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, context))
+                    .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setDeleteIntent(piDismiss)
                     .setOngoing(!pref_swipe)
                     .build();
@@ -325,16 +328,19 @@ public class NotificationBuild extends BroadcastReceiver {
 
         // save all the info of the notification. this is for undo notification re-building
         list = Arrays.asList(
-                noteTitle, // 0 string
-                note, // 1 string
-                tickerText, // 2 string
-                d, // 3 int
-                color, // 4 int
-                fullIconName, // 5 string
-                priority, // 6 int
-                imageButtonNumber, // 7 int
-                alarm_time, // 8 string
-                repeat_time // 9 int
+            noteTitle, // 0 string
+            note, // 1 string
+            tickerText, // 2 string
+            d, // 3 int
+            color, // 4 int
+            fullIconName, // 5 string
+            priority, // 6 int
+            imageButtonNumber, // 7 int
+            alarm_time, // 8 string
+            repeat_time, // 9 int
+            bulletListFlag, //10 boolean
+            numberedListFlag, //11 boolean
+            numberedListCounter //12 int
         );
 
         //save to sharedprefs
@@ -354,13 +360,16 @@ public class NotificationBuild extends BroadcastReceiver {
         return PendingIntent.getBroadcast(context.getApplicationContext(), notificationId, intent, 0);
     }
 
-    private PendingIntent createEditIntent(int id, int imageButtonNumber, String alarm_time, int repeat_time, Context context) {
+    private PendingIntent createEditIntent(int id, int imageButtonNumber, String alarm_time, int repeat_time, boolean bulletListFlag, boolean numberedListFlag, int numberedListCounter, Context context) {
         Intent editIntent = new Intent(context, MainActivity.class);
         editIntent.putExtra("editNotificationID", id);
         editIntent.putExtra("editButton", imageButtonNumber);
         editIntent.putExtra("editAlarm", alarm_time);
         editIntent.putExtra("editRepeat", repeat_time);
         editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
+        editIntent.putExtra("bulletListFlag", bulletListFlag);
+        editIntent.putExtra("numberedListFlag", numberedListFlag);
+        editIntent.putExtra("numberedListCounter", numberedListCounter);
 
         return PendingIntent.getActivity(context, id, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -373,12 +382,12 @@ public class NotificationBuild extends BroadcastReceiver {
         return PendingIntent.getActivity(context, id, sendIntent, 0);
     }
 
-    private PendingIntent onNotifClickPI(String clickNotif, String note, String title, int id, int imageButtonNumber, String alarm_time, int repeat_time, Context context) {
+    private PendingIntent onNotifClickPI(String clickNotif, String note, String title, int id, int imageButtonNumber, String alarm_time, int repeat_time, boolean bulletListFlag, boolean numberedListFlag, int numberedListCounter, Context context) {
         switch (clickNotif) {
             case "info":
                 return createInfoScreenIntent(note, title, id, imageButtonNumber, alarm_time, repeat_time, context);
             case "edit":
-                return createEditIntent(id, imageButtonNumber, alarm_time, repeat_time, context);
+                return createEditIntent(id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context);
             case "remove":
                 return createOnDismissedIntent(context, id);
             default:

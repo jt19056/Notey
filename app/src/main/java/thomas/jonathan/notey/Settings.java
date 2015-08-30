@@ -535,6 +535,47 @@ public class Settings extends ActionBarActivity{
                     return false;
                 }
             });
+
+            //default note type
+            findPreference("pref_default_note_type").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    String temp_noteType = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("defaultNoteType", "plain");
+                    int i; //set the value of the selected choice when the dialog launches
+                    switch (temp_noteType) {
+                        case "bullet":
+                            i = 1;
+                            break;
+                        case "number":
+                            i = 2;
+                            break;
+                        default: //plain
+                            i = 0;
+                            break;
+                    }
+                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                            .title(getResources().getString(R.string.default_note_type))
+                            .items(getResources().getStringArray(R.array.defaultNoteArray))
+                            .itemsCallbackSingleChoice(i, new MaterialDialog.ListCallbackSingleChoice() {
+
+                                @Override
+                                public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                                    String s = charSequence.toString().toLowerCase();
+                                    if (s.contains("plain")) s = "plain";
+                                    else if (s.contains("bullet")) s = "bullet";
+                                    else if (s.contains("number")) s = "number";
+
+                                    editor.putString("defaultNoteType", s);
+                                    editor.apply();
+                                    return true;
+                                }
+                            })
+                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"))
+                            .build();
+                    md.show();
+
+                    return false;
+                }
+            });
         }
 
         private void buildShortcutNotification() {

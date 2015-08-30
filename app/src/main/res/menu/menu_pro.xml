@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+
+    <item android:id="@+id/menu_new" android:title="@string/new...">
+        <menu>
+            <group android:id="@+id/menu_new_group">
+                <item android:id="@+id/plain_note"
+                    android:title="@string/empty_note"
+                    />
+                <item android:id="@+id/bullet_list"
+                    android:title="@string/bullet_list"
+                    />
+                <item android:id="@+id/numbered_list"
+                    android:title="@string/numbered_list"
+                    />
+            </group>
+        </menu>
+    </item>
+
     <item android:id="@+id/settings"
         android:title="@string/settings"
         />

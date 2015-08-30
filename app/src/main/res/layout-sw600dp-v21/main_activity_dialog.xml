@@ -525,7 +525,8 @@
             android:hint="@string/title"
             android:textColorHint="@color/hint_foreground_material_light"
             android:maxLines="1"
-            android:scrollHorizontally="false"/>
+            android:scrollHorizontally="false"
+            android:saveEnabled="false"/>
     </RelativeLayout>
 
     <View
@@ -581,7 +582,8 @@
             android:ems="10"
             android:inputType="textMultiLine|textCapSentences|textAutoCorrect"
             android:maxLines="15"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical"
+            android:saveEnabled="false">
             <requestFocus />
         </com.rey.material.widget.EditText>
 
