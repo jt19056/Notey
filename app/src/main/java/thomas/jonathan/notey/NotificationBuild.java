@@ -49,6 +49,9 @@ public class NotificationBuild extends BroadcastReceiver {
         String json = mPrefs.getString("notification" + Integer.toString(id), "");
         List list = gson.fromJson(json, ArrayList.class);
 
+        boolean bulletListFlag = false;
+        boolean numberedListFlag = false;
+        int numberedListCounter = 1;
         //set all the notification variables
         String noteTitle = (String) list.get(0);
         String note = (String) list.get(1);
@@ -60,9 +63,13 @@ public class NotificationBuild extends BroadcastReceiver {
         int imageButtonNumber = (int) ((double) list.get(7));
         String alarm_time = (String) list.get(8);
         int repeat_time = (int) ((double) list.get(9));
-        boolean bulletListFlag = (boolean) list.get(10);
-        boolean numberedListFlag = (boolean) list.get(11);
-        int numberedListCounter = (int) ((double) list.get(12));
+        try { //necessary for when updating from v2.4 to 2.4.1+
+            bulletListFlag = (boolean) list.get(10);
+            numberedListFlag = (boolean) list.get(11);
+            numberedListCounter = (int) ((double) list.get(12));
+        }catch(IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
 
         String clickNotif = mPrefs.getString("clickNotif", "info"); //notification click action
         boolean pref_swipe = mPrefs.getBoolean("pref_swipe", false);

@@ -29,6 +29,18 @@
         <item>minimum</item>
     </string-array>
 
+    <!-- default note type-->
+    <string-array name="defaultNoteArray">
+        <item>@string/empty_note</item>
+        <item>@string/bullet_list</item>
+        <item>@string/numbered_list</item>
+    </string-array>
+    <string-array name="defaultNoteArrayValues">
+        <item>plain</item>
+        <item>bullet</item>
+        <item>number</item>
+    </string-array>
+
     <string-array name="default_icons">
         <item>check</item>
         <item>warning</item>

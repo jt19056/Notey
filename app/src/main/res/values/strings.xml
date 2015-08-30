@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.4</string>
+    <string name="version" translatable="false">2.4.1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -15,6 +15,7 @@
     <string name="impossibleToDeleteAtSend">You have made it impossible to remove this note. Please go into the settings and fix this.</string>
     <string name="title">Title</string>
     <string name="quick_note">Add new note</string>
+    <string name="new...">New…</string>
 
     <!-- Settings strings -->
     <string name="notifications">Notifications</string>
@@ -69,6 +70,11 @@
     <string name="default_icons_color_summary">Icons color first shown on app launch.</string>
     <string name="cm_quick_tile">CM Quick Tile</string>
     <string name="cm_quick_tile_summary">Enable CyanogenMod Quick Tile</string>
+    <string name="empty_note">Empty note</string>
+    <string name="bullet_list">Bullet list</string>
+    <string name="numbered_list">Numbered list</string>
+    <string name="default_note_type">Default Note Type</string>
+    <string name="default_note_type_summary">What type of note to start Notey with.</string>
 
     <!-- About strings -->
     <string name="about">About</string>

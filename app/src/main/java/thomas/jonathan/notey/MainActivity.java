@@ -551,9 +551,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                     int numTimes = 0;
                     char findStr = '\n';
                     while(lastIndex != -1){
-
                         lastIndex = s.toString().indexOf(findStr, lastIndex);
-
                         if(lastIndex != -1){
                             numTimes ++;
                             lastIndex += 1;

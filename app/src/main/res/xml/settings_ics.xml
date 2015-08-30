@@ -50,6 +50,10 @@
         android:key="pref_key_other"
         android:title="@string/other">
 
+        <com.jenzz.materialpreference.Preference android:key="pref_default_note_type"
+            android:title="@string/default_note_type"
+            android:summary="@string/default_note_type_summary"/>
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:enabled="false"
