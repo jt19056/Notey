@@ -23,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
+import io.fabric.sdk.android.services.common.Crash;
+
 public class NotificationBuild extends BroadcastReceiver {
 
     PendingIntent alarmPendingIntent;
@@ -85,19 +87,24 @@ public class NotificationBuild extends BroadcastReceiver {
             notey.setAlarm(alarm_time); // add to db
 
             // intent for alarm service to launch
-            Intent myIntent = new Intent(context, AlarmService.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("alarmID", id);
-            myIntent.putExtras(bundle);
+            Intent myIntent = null;
+            try {
+                myIntent = new Intent(context, AlarmService.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("alarmID", id);
+                myIntent.putExtras(bundle);
+            }catch (NullPointerException npe){
+                Crashlytics.logException(npe);
+            }
 
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(MainActivity.ALARM_SERVICE);
 
-            // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, dont set notificatin.
+            // if alarm time is empty, set the boolean to true, otherwise check if alarm time is greater than current time. if it is, don't set notification.
             boolean alarmTimeIsGreaterThanCurrentTime;
-            alarmTimeIsGreaterThanCurrentTime = alarm_time == null || alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
+            alarmTimeIsGreaterThanCurrentTime = alarm_time.equals("") || Long.valueOf(alarm_time) > System.currentTimeMillis();
 
             //if alarm_time is old, don't set pending intent. in this case, the alarm hasn't occured, so set the alarm
-            if (alarmTimeIsGreaterThanCurrentTime) {
+            if (alarmTimeIsGreaterThanCurrentTime && myIntent != null) {
                 //set alarm
                 alarmPendingIntent = PendingIntent.getService(context, id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
