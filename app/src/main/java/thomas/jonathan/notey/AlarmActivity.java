@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,9 +33,11 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class AlarmActivity extends FragmentActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public static final String DATEPICKER_TAG = "datepicker", TIMEPICKER_TAG = "timepicker";
@@ -48,7 +49,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private Spinner recurrenceSpinner;
     private int year, month, day, hour, minute, repeatTime = 0, spinnerSelectedValue;
     private PendingIntent alarmPendingIntent;
-    public static final SimpleDateFormat format_date = new SimpleDateFormat("EEE, MMM dd"), format_time = new SimpleDateFormat("hh:mm a");
     private CheckBox vibrate_cb, wake_cb;
     SharedPreferences sharedPref;
     private int id;
@@ -244,8 +244,14 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         }
 
         date.setMinutes(minute);
-        date_tv.setText(format_date.format(date));
-        time_tv.setText(format_time.format(date));
+
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+        DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
+        String formattedDate = dateFormat.format(date);
+        String formattedTime = timeFormat.format(date);
+
+        date_tv.setText(formattedDate);
+        time_tv.setText(formattedTime);
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             alarm_set_tv.setVisibility(View.GONE);
@@ -257,11 +263,13 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.date_tv) { //show the date picker
             DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day);
+            datePickerDialog.vibrate(false);
             datePickerDialog.setYearRange(1985, 2028);
             if(MainActivity.darkTheme) datePickerDialog.setThemeDark(true);
             datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
         } else if (view.getId() == R.id.time_tv) { //show the time picker
-            TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, DateFormat.is24HourFormat(this));
+            TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, android.text.format.DateFormat.is24HourFormat(this));
+            timePickerDialog.vibrate(false);
             if(MainActivity.darkTheme) timePickerDialog.setThemeDark(true);
             timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
         } else if (view.getId() == R.id.alarm_set_btn) {
@@ -564,7 +572,8 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         Calendar c = Calendar.getInstance();
         c.set(y, mo, d);
 
-        date_tv.setText(format_date.format(c.getTime()));
+        DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+        date_tv.setText(dateFormat.format(c.getTime()));
     }
 
     @Override
