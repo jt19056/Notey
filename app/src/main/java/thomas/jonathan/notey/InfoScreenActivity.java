@@ -30,6 +30,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.rey.material.widget.TextView;
 
 import java.util.Date;
@@ -69,8 +70,9 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         // wait a second then cancel the notification created to vibrate the device
         try {
             Thread.sleep(1000);
-        } catch(InterruptedException ex) {
+        } catch(InterruptedException e) {
             Thread.currentThread().interrupt();
+            Crashlytics.logException(e);
         }
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         nm.cancel(AlarmService.VIBRATE_NOTIFICATION_ID);
@@ -135,6 +137,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                     startActivity(viewIntent);
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(getApplicationContext(), getString(R.string.bad_url), Toast.LENGTH_SHORT).show();
+                    Crashlytics.logException(e);
                     e.printStackTrace();
                 }
             }

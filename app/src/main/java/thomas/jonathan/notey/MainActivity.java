@@ -70,7 +70,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private int selectedRippleButtonId;
     private EditText et, et_title;
     private PopupMenu mPopupMenu;
-    private int imageButtonNumber = 1, id = (int) (Math.random() * 10000), priority;
+    private int imageButtonNumber = 1, priority;
+    public static int id = (int) (Math.random() * 10000);
     private boolean pref_expand;
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
@@ -712,6 +713,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             }
         } catch (CursorIndexOutOfBoundsException e) { //catches if the user deletes a note from the notfication tray while the info screen is active. then presses something on the info screen such as the alarm.
             e.printStackTrace();
+            Crashlytics.logException(e);
             return false;
         }
         return false;
@@ -741,6 +743,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             versionCode = pInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         int userVersion = sharedPref.getInt("VERSION_CODE", -1);
@@ -1352,6 +1355,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             allNoteys = db.getAllNoteys();
         } catch (RuntimeException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
         int newIconInt;
         String newIconName;
@@ -1524,7 +1528,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private void themeStuffBeforeSetContentView() {
         //initialize theme preferences
         themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
-        accentColor = sharedPreferences.getString("pref_accent_color", themeColor);
+        accentColor = sharedPreferences.getString("pref_accent_color", "md_pink_500");
         darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
         defaultIconsColor = sharedPreferences.getString("pref_default_icon_color", "white");
 

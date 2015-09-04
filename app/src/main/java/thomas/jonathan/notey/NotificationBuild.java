@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class NotificationBuild extends BroadcastReceiver {
             numberedListCounter = (int) ((double) list.get(12));
         }catch(IndexOutOfBoundsException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         String clickNotif = mPrefs.getString("clickNotif", "info"); //notification click action

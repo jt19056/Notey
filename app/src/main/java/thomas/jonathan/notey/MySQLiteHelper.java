@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN title TEXT"); //add the 'title' column if on old version of db
             } catch (SQLiteException e) {
                 e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
         if (newVersion <= 3) {
@@ -60,6 +63,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN iconName TEXT"); //add the 'iconName' column if on old version of db
             } catch (SQLiteException e) {
                 e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
 
@@ -68,6 +72,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE NoteyTable ADD COLUMN alarm TEXT"); //add the 'alarm' column if on old version of db
             } catch (SQLiteException e) {
                 e.printStackTrace();
+                Crashlytics.logException(e);
             }
         }
         db.close();
@@ -200,6 +205,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                     new String[]{Integer.toString(id)}, null, null, null, null);
         } catch (SQLiteException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
         boolean exists;
         exists = (cursor != null) && (cursor.getCount() > 0);

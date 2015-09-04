@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.jenzz.materialpreference.Preference;
 
 import de.psdev.licensesdialog.LicensesDialog;
@@ -132,6 +133,7 @@ public class About extends ActionBarActivity {
                     try {
                         startActivity(intent);
                     } catch (android.content.ActivityNotFoundException e) {
+                        Crashlytics.logException(e);
                         e.printStackTrace();
                     }
                     return false;
@@ -148,6 +150,7 @@ public class About extends ActionBarActivity {
                     try {
                         startActivity(Intent.createChooser(i, getResources().getString(R.string.sendemail)));
                     } catch (android.content.ActivityNotFoundException e) {
+                        Crashlytics.logException(e);
                         e.printStackTrace();
                     }
                     return false;
@@ -162,6 +165,7 @@ public class About extends ActionBarActivity {
                     try {
                         startActivity(intent);
                     } catch (android.content.ActivityNotFoundException e) {
+                        Crashlytics.logException(e);
                         e.printStackTrace();
                     }
                     return false;

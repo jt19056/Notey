@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.jenzz.materialpreference.Preference;
 import com.jenzz.materialpreference.SwitchPreference;
 import com.rey.material.widget.CheckBox;
@@ -145,6 +146,7 @@ public class Settings extends ActionBarActivity{
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Crashlytics.logException(e);
                         }
                         return  false;
                     }

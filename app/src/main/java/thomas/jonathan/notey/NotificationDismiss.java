@@ -15,6 +15,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -74,6 +76,7 @@ public class NotificationDismiss extends BroadcastReceiver{
             if(notey != null) smallIcon = notey.getIcon();
         } catch (SQLiteException | CursorIndexOutOfBoundsException e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
 
         // build undo notification
@@ -97,6 +100,7 @@ public class NotificationDismiss extends BroadcastReceiver{
             if(notey != null)  db.deleteNotey(notey);
         } catch (Exception e) {
             e.printStackTrace();
+            Crashlytics.logException(e);
         }
     }
 

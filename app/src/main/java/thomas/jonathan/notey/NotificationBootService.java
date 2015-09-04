@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.jenzz.materialpreference.Preference;
 
@@ -137,6 +138,7 @@ public class NotificationBootService extends IntentService {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
             }
 
@@ -167,6 +169,7 @@ public class NotificationBootService extends IntentService {
                 } catch (Exception e) {
                     ico = R.drawable.ic_check_white_36dp;
                     e.printStackTrace();
+                    Crashlytics.logException(e);
                 }
 
                 //set background color if on lollipop or above

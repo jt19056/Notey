@@ -23,6 +23,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 
 public class AlarmService extends Service {
     final public static int LED_NOTIFICATION_ID = 0;
@@ -112,6 +114,7 @@ public class AlarmService extends Service {
             stopSelf();
         }catch (CursorIndexOutOfBoundsException e){ //*edit: fixed but kept just in case* after a user deletes a repeating alarm, it will try to call AlarmService (not sure why at the moment), but there's nothing in the database. this catches that and prevents the user from seeing any crash.
             Log.d(TAG, "CursorIndexOutOfBoundsException.  Repeating alarm deleted but AlarmService still trying to be called.");
+            Crashlytics.logException(e);
             e.printStackTrace();
             stopSelf();
         }

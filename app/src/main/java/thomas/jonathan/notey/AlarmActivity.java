@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.crashlytics.android.Crashlytics;
 import com.rey.material.widget.Spinner;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -62,10 +63,16 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         setContentView(R.layout.alarm_activity_dialog);
         themeStuffAfterSetContentView();
 
-        Intent i = getIntent();
+        Intent i = null;
+        try {
+            i = getIntent();
+        }catch(NullPointerException npe){
+            Crashlytics.logException(npe);
+        }
+
+        id = MainActivity.id;
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        id = i.getExtras().getInt("alarm_id", -1);
 
         if (savedInstanceState != null) {
             DatePickerDialog dpd = (DatePickerDialog) getFragmentManager().findFragmentByTag(DATEPICKER_TAG);
@@ -190,7 +197,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         Date date = new Date();
 
         // if an alarm is already set, show the set alarm date/time. also show the delete button
-        if (i.hasExtra("alarm_set_time")) {
+        if (i != null && i.hasExtra("alarm_set_time")) {
             alarm_set_tv.setText(getString(R.string.alarm_set_for));
             date = new Date(Long.valueOf(i.getExtras().getString("alarm_set_time")));
             repeatTime = i.getExtras().getInt("repeat_set_time", 0);
