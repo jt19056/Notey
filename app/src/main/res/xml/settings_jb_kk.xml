@@ -66,6 +66,9 @@
         <com.jenzz.materialpreference.Preference android:key="pref_default_led_color"
             android:title="@string/default_led_color"/>
 
+        <com.jenzz.materialpreference.Preference android:key="pref_font"
+            android:title="@string/font"/>
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
             android:key="pref_shortcut"

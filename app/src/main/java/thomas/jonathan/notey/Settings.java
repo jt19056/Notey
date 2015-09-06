@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -623,6 +624,39 @@ public class Settings extends ActionBarActivity {
                                 }
                             })
                             .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"))
+                            .build();
+                    md.show();
+
+                    return false;
+                }
+            });
+
+            //choose font
+            new AlertDialog.Builder(getActivity());
+            findPreference("pref_font").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    String font = PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("pref_font", "Roboto");
+                    String[] fontArray = getResources().getStringArray(R.array.font_array);
+                    int index = 0; //set default location to 0 which is Roboto
+                    for(int j = 0; j < fontArray.length; j++){
+                        if(fontArray[j].equals(font)){
+                            index = j;
+                        }
+                    }
+
+                    MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                            .items(getResources().getStringArray(R.array.font_array))
+                            .typeface(font + ".ttf", font + ".ttf")
+                            .itemsCallbackSingleChoice(index, new MaterialDialog.ListCallbackSingleChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                                    String s = charSequence.toString();
+
+                                    editor.putString("pref_font", s);
+                                    editor.apply();
+                                    return true;
+                                }
+                            })
                             .build();
                     md.show();
 

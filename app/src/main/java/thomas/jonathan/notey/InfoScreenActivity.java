@@ -351,11 +351,12 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         });
 
         //set font
-        Typeface roboto_reg = Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf");
-        Typeface roboto_bold = Typeface.createFromAsset(getAssets(), "ROBOTO-BOLD.ttf");
-        noteText.setTypeface(roboto_reg);
-        titleText.setTypeface(roboto_bold);
-        mainTitle.setTypeface(roboto_reg);
+        String fontString = sharedPreferences.getString("pref_font", "Roboto");
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/" + fontString + ".ttf");
+        Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/" + fontString + "-Bold.ttf");
+        noteText.setTypeface(font);
+        titleText.setTypeface(fontBold);
+        mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
     }
 
     private void setupLongClickListeners() {

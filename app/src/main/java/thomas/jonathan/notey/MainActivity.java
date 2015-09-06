@@ -45,6 +45,8 @@ import com.google.gson.Gson;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,6 +71,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private ImageButton alarm_btn;
     private int selectedRippleButtonId;
     private EditText et, et_title;
+    private TextView mainTitle;
     private PopupMenu mPopupMenu;
     private int imageButtonNumber = 1, priority;
     public static int id;
@@ -851,7 +854,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         impossible_to_delete = false; //set setting for unable to delete notifications to false, will be checked before pressing send
 
         //set textviews and change font
-        TextView mainTitle = (TextView) findViewById(R.id.mainTitle);
+        mainTitle = (TextView) findViewById(R.id.mainTitle);
         et = (EditText) findViewById(R.id.editText1);
         et_title = (EditText) findViewById(R.id.editText_title);
 
@@ -891,19 +894,18 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
             et_title.setHintTextColor(getResources().getColor(R.color.hint_foreground_material_light));
         }
 
-        Typeface font = Typeface.createFromAsset(getAssets(), "ROBOTO-LIGHT.TTF");
-        et.setTypeface(font);
-        et_title.setTypeface(font);
-        mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
+        setEditTextTypeFaces();
 
         setImageButtonsBasedOffIconSelection();
     }
 
-//    private static boolean isTablet(Context context) {
-//        return (context.getResources().getConfiguration().screenLayout
-//                & Configuration.SCREENLAYOUT_SIZE_MASK)
-//                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-//    }
+    private void setEditTextTypeFaces(){
+        String fontString = sharedPreferences.getString("pref_font", "Roboto");
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/" + fontString + ".ttf");
+        et.setTypeface(font);
+        et_title.setTypeface(font);
+        mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
+    }
 
     @TargetApi(android.os.Build.VERSION_CODES.JELLY_BEAN)
     private void initializeSettings() {
@@ -1565,6 +1567,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         // if settings_jb_kk activity was called, reset the ui
         if (settings_activity_flag) {
             initializeSettings();
+            setEditTextTypeFaces();
             setImageButtonsBasedOffIconSelection();
             settings_activity_flag = false;
         }

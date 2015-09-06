@@ -76,6 +76,7 @@
     <string name="default_note_type">Default Note Type</string>
     <string name="default_note_type_summary">What type of note to start Notey with.</string>
     <string name="default_led_color">Default LED Color</string>
+    <string name="font">Font</string>
 
     <!-- About strings -->
     <string name="about">About</string>

@@ -271,4 +271,18 @@
         <item>md_green_A700</item>
         <item>md_red_A400</item>
     </string-array>
+
+    <!-- fonts -->
+    <string-array name="font_array">
+        <item>Roboto</item>
+        <item>Action Man</item>
+        <item>Flux Architect</item>
+        <item>Juice</item>
+        <item>LobsterTwo</item>
+        <item>Mathlete</item>
+        <item>OpenSans</item>
+        <item>Quicksand</item>
+        <item>SF Burlington Script</item>
+        <item>Ubuntu</item>
+    </string-array>
 </resources>

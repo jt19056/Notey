@@ -267,6 +267,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         date_tv.setText(formattedDate);
         time_tv.setText(formattedTime);
 
+        //hide the 'alarm set for' textview  if the user is in landscape mode.  if this weren't here, the cancel/set buttons wouldn't be visible on smaller screens
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
             alarm_set_tv.setVisibility(View.GONE);
         }
@@ -279,11 +280,13 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(this, year, month, day);
             datePickerDialog.vibrate(false);
             datePickerDialog.setYearRange(1985, 2028);
+            datePickerDialog.setAccentColor(getResources().getColor(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName())));
             if(MainActivity.darkTheme) datePickerDialog.setThemeDark(true);
             datePickerDialog.show(getFragmentManager(), DATEPICKER_TAG);
         } else if (view.getId() == R.id.time_tv) { //show the time picker
             TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, hour, minute, android.text.format.DateFormat.is24HourFormat(this));
             timePickerDialog.vibrate(false);
+            timePickerDialog.setAccentColor(getResources().getColor(getResources().getIdentifier(MainActivity.themeColor, "color", getPackageName())));
             if(MainActivity.darkTheme) timePickerDialog.setThemeDark(true);
             timePickerDialog.show(getFragmentManager(), TIMEPICKER_TAG);
         } else if (view.getId() == R.id.alarm_set_btn) {
