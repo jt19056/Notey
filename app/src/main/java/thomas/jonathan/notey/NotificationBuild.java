@@ -17,10 +17,12 @@ import android.support.v4.app.NotificationCompat;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Timer;
 
 import io.fabric.sdk.android.services.common.Crash;
@@ -133,8 +135,10 @@ public class NotificationBuild extends BroadcastReceiver {
             }
 
             // add the alarm date/time to the notification
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+            DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
             Date date = new Date(Long.valueOf(alarm_time));
-            noteForNotification += "\n" + context.getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date);
+            noteForNotification += "\n" + context.getString(R.string.alarm) + ": " + dateFormat.format(date) + ", " + timeFormat.format(date);
         }
 
         PendingIntent piDismiss = createOnDismissedIntent(context, id);

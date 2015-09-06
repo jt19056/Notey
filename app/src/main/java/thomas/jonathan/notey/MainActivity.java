@@ -97,7 +97,6 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private RelativeLayout layout_bottom;
     private PendingIntent alarmPendingIntent;
     private static Context appContext;
-    public static final SimpleDateFormat format_short_date = new SimpleDateFormat("MMM dd"), format_short_time = new SimpleDateFormat("hh:mm a");
     private static SharedPreferences sharedPreferences;
     private String iconName = "ic_check_", fullIconName = "ic_check_white_24dp", iconColor = "white";
     private HorizontalScrollView hsv;

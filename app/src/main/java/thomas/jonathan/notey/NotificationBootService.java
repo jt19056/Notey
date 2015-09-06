@@ -21,9 +21,11 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.jenzz.materialpreference.Preference;
 
+import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
@@ -151,9 +153,11 @@ public class NotificationBootService extends IntentService {
 
                 noteString = n.getNote(); //temp note text to display alarm
                 if (n.getAlarm() != null) {
+                    DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+                    DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
                     Date date = new Date(Long.valueOf(n.getAlarm()));
                     // add the alarm info to the notification
-                    noteString += "\n" + getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date);
+                    noteString += "\n" + getString(R.string.alarm) + ": " + dateFormat.format(date) + ", " + timeFormat.format(date);
                 }
 
                 String tickerText;  //if title is there, set ticker to title. otherwise set it to the note

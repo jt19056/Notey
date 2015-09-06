@@ -33,7 +33,9 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.rey.material.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 // Toast.makeText(getApplicationContext(), "**", Toast.LENGTH_SHORT).show();
 public class InfoScreenActivity extends Activity implements OnClickListener {
@@ -206,9 +208,11 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 alarmText.setClickable(false);
                 alarmText.setOnClickListener(null);
             } else {
+                DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
+                DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
                 alarmText.setVisibility(View.VISIBLE);
                 Date date = new Date(Long.valueOf(infoAlarm));
-                alarmText.setText(getString(R.string.alarm) + ": " + MainActivity.format_short_date.format(date) + ", " + MainActivity.format_short_time.format(date));
+                alarmText.setText(getString(R.string.alarm) + ": " + dateFormat.format(date) + ", " + timeFormat.format(date));
                 alarmText.setClickable(true);
                 alarmText.setOnClickListener(this);
             }
