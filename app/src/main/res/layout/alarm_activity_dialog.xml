@@ -9,7 +9,8 @@
         android:id="@+id/alarm_layout_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_500">
+        android:background="@color/blue_500"
+        android:elevation="4dp">
 
         <TextView
             android:id="@+id/alarm_mainTitle"
@@ -147,7 +148,6 @@
             android:text="@string/vibrate"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_weight="1"/>
-
     </LinearLayout>
 
     <LinearLayout
@@ -162,9 +162,55 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/alarm_led_icon"
+            android:src="@drawable/ic_lightbulb_grey600_24dp"
+            android:layout_gravity="center_vertical"
+            android:clickable="false"
+            android:layout_marginRight="4dp"
+            />
+
+        <TextView
+            android:id="@+id/alarm_led_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="4dp"
+            android:layout_marginRight="8dp"
+            android:text="@string/led_color"
+            android:enabled="false"
+            android:clickable="false"
+            android:background="?android:selectableItemBackground"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+        <com.rey.material.widget.FloatingActionButton
+            android:id="@+id/led_fab"
+            style="@style/FloatingActionButton"
+            app:fab_elevation="2dp"
+            app:fab_radius="16dp"
+            app:rd_rippleAnimDuration="500"
+            app:rd_delayClick="untilRelease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/alarm_layout_pro2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/alarm_layout_pro1"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_alignParentLeft="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/alarm_sound_btn"
             android:layout_gravity="center_vertical"
             android:clickable="false"
+            android:layout_marginRight="4dp"
             />
 
         <TextView
@@ -179,25 +225,13 @@
             android:background="?android:selectableItemBackground"
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
-
-        <com.rey.material.widget.FloatingActionButton
-            android:id="@+id/led_fab"
-            style="@style/FloatingActionButton"
-            app:fab_elevation="2dp"
-            app:fab_radius="16dp"
-            app:rd_rippleAnimDuration="500"
-            app:rd_delayClick="untilRelease"
-            android:layout_marginLeft="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/alarm_layout_pro2"
+        android:id="@+id/alarm_layout_pro3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/alarm_layout_pro1"
+        android:layout_below="@id/alarm_layout_pro2"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="12dp">
@@ -211,20 +245,22 @@
             android:src="@drawable/ic_refresh_grey600_24dp"
             android:background="?android:selectableItemBackground"
             android:padding="4dp"
+            android:layout_marginRight="4dp"
             android:layout_weight="1"
+            android:layout_gravity="center_vertical"
             />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/alarm_layout_pro3"
+        android:id="@+id/alarm_layout_pro4"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/alarm_layout_pro1"
-        android:layout_toRightOf="@id/alarm_layout_pro2"
+        android:layout_below="@id/alarm_layout_pro2"
+        android:layout_toRightOf="@id/alarm_layout_pro3"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="-12dp"
-        android:layout_alignBottom="@+id/alarm_layout_pro2">
+        android:layout_alignBottom="@+id/alarm_layout_pro3">
 
         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
             android:id="@+id/discrete_bar"
@@ -233,16 +269,19 @@
             app:dsb_indicatorTextAppearance="@color/md_white_1000"
             android:layout_marginRight="-16dp"
             android:layout_weight="2"
+            android:layout_gravity="center_vertical"
             />
 
         <com.rey.material.widget.Spinner
             style="@style/Widget.AppCompat.Spinner"
             android:id="@+id/reccurence_spinner"
-            android:layout_width="144dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             app:rd_style="@style/Material.Drawable.Ripple.Wave"
             android:background="?android:selectableItemBackground"
             android:layout_weight="1"
+            app:spn_labelTextSize="@dimen/material_text_title"
+            android:layout_gravity="center_vertical"
             />
     </LinearLayout>
 
@@ -250,7 +289,7 @@
         android:id="@+id/alarm_bottom_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/alarm_layout_pro2"
+        android:layout_below="@id/alarm_layout_pro3"
         android:layout_marginTop="16dp">
 
         <Button

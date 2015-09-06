@@ -45,6 +45,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private TextView date_tv;
     private TextView time_tv;
     private TextView sound_tv;
+    private TextView led_tv;
     private ImageView sound_iv;
     private Spinner recurrenceSpinner;
     private int year, month, day, hour, minute, repeatTime = 0, spinnerSelectedValue;
@@ -104,6 +105,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         vibrate_cb = (CheckBox) findViewById(R.id.alarm_vibrate);
         wake_cb = (CheckBox) findViewById(R.id.alarm_wake);
         sound_tv = (TextView) findViewById(R.id.alarm_sound);
+        led_tv = (TextView) findViewById(R.id.alarm_led_tv);
         sound_iv = (ImageView) findViewById(R.id.alarm_sound_btn);
         recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
         ledFab = (FloatingActionButton) findViewById(R.id.led_fab);
@@ -135,8 +137,14 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             sound_tv.setClickable(true);
             sound_tv.setOnClickListener(this);
 
-            if(MainActivity.darkTheme) sound_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
-            else sound_tv.setTextColor(Color.BLACK);
+            if(MainActivity.darkTheme) {
+                sound_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
+                led_tv.setTextColor(getResources().getColor(R.color.md_grey_400));
+            }
+            else {
+                sound_tv.setTextColor(Color.BLACK);
+                led_tv.setTextColor(Color.BLACK);
+            }
 //        } else { //fade the icons if not pro
 //            sound_iv.setAlpha(0.3f);
 //            repeat_iv.setAlpha(0.3f);
@@ -162,6 +170,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         vibrate_cb.setTypeface(roboto_reg);
         wake_cb.setTypeface(roboto_reg);
         sound_tv.setTypeface(roboto_reg);
+        led_tv.setTypeface(roboto_reg);
 
         date_tv.setOnClickListener(this);
         time_tv.setOnClickListener(this);
@@ -382,7 +391,6 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         } else if (view.getId() == R.id.led_fab){
             final MaterialDialog md = new MaterialDialog.Builder(this)
                 .customView(R.layout.led_chooser_dialog, false)
-                .title(R.string.led_color)
                 .build();
 
             md.show();

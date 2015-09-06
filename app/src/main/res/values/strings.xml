@@ -169,7 +169,7 @@
     <string name="Days">Days</string>
     <string name="from_now">from now.</string>
     <string name="less_than_a_minute">less than a minute</string>
-    <string name="led_color">LED Color</string>
+    <string name="led_color">LED Color:</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>
