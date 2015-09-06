@@ -48,6 +48,7 @@ public class NotificationDismiss extends BroadcastReceiver{
                 editor.remove("wake" + Integer.toString(id)).apply();
                 editor.remove("sound" + Integer.toString(id)).apply();
                 editor.remove("repeat" + Integer.toString(id)).apply();
+                editor.remove("led" + Integer.toString(id)).apply();
             }
         };
         timer.schedule(timerTask, 5000, 5000);

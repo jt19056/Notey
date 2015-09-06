@@ -2,12 +2,10 @@ package thomas.jonathan.notey;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,7 +33,7 @@ import com.rey.material.widget.FloatingActionButton;
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
 
-public class Settings extends ActionBarActivity{
+public class Settings extends ActionBarActivity {
     private static boolean impossible_to_delete = false;
     private static SharedPreferences sharedPreferences;
     private static SharedPreferences.Editor editor;
@@ -44,12 +42,13 @@ public class Settings extends ActionBarActivity{
     private static String selectedFab;
     private static String selectedAccentFab;
     private static String selectedDefaultColorFab;
+    private static String selectedDefaultLEDColorFab;
     private static String tempTheme;
     private static CheckBox darkCheckBox;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         themeStuffBeforeSetContentView();
         super.onCreate(savedInstanceState);
 
@@ -62,7 +61,7 @@ public class Settings extends ActionBarActivity{
         }
     }
 
-    private void themeStuffBeforeSetContentView(){
+    private void themeStuffBeforeSetContentView() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
@@ -70,10 +69,9 @@ public class Settings extends ActionBarActivity{
         MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_blue_500");
 
         //set light/dark theme
-        if(MainActivity.darkTheme) {
+        if (MainActivity.darkTheme) {
             super.setTheme(getResources().getIdentifier("MySettingsThemeDark_" + MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
-        }
-        else {
+        } else {
             super.setTheme(getResources().getIdentifier("MySettingsTheme_" + MainActivity.themeColor + "_Accent_" + MainActivity.accentColor, "style", getPackageName()));
         }
     }
@@ -95,36 +93,34 @@ public class Settings extends ActionBarActivity{
     public static class SettingsFragment extends PreferenceFragment {
         private NotificationManager nm;
 
-        @Override public void onCreate(Bundle savedInstanceState) {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP && cyanogenmod.os.Build.CM_VERSION.SDK_INT > 0)
                 addPreferencesFromResource(R.xml.settings_lollipop_cm);  //show Cyanogenmod quick tile if user is running CM
             else if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.LOLLIPOP)
                 addPreferencesFromResource(R.xml.settings_lollipop);
-            else if(MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN)
+            else if (MainActivity.CURRENT_ANDROID_VERSION >= Build.VERSION_CODES.JELLY_BEAN)
                 addPreferencesFromResource(R.xml.settings_jb_kk);
             else addPreferencesFromResource(R.xml.settings_ics);
 
             final SwitchPreference pref_shortcut = (SwitchPreference) findPreference("pref_shortcut");
             //enable pro feature options
 //            if (MainActivity.proVersionEnabled) {
-                final android.preference.Preference pref_accent = findPreference("pref_accent");
-                final android.preference.Preference pref_default_icon_color = findPreference("pref_default_icon_color");
+            final android.preference.Preference pref_accent = findPreference("pref_accent");
+            final android.preference.Preference pref_default_icon_color = findPreference("pref_default_icon_color");
+            final android.preference.Preference pref_default_led_color = findPreference("pref_default_led_color");
 
-                pref_shortcut.setEnabled(true);
-                pref_accent.setEnabled(true);
-                pref_default_icon_color.setEnabled(true);
-
-                // Create new note shortcut in the notification tray
-                pref_shortcut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(android.preference.Preference preference) {
-                        nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-                        if (pref_shortcut.isChecked()) buildShortcutNotification();
-                        else nm.cancel(MainActivity.SHORTCUT_NOTIF_ID);
-                        return false;
-                    }
-                });
+            // Create new note shortcut in the notification tray
+            pref_shortcut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    nm = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+                    if (pref_shortcut.isChecked()) buildShortcutNotification();
+                    else nm.cancel(MainActivity.SHORTCUT_NOTIF_ID);
+                    return false;
+                }
+            });
 
             //CM quick tile build
             if (cyanogenmod.os.Build.CM_VERSION.SDK_INT > 0) {
@@ -133,144 +129,195 @@ public class Settings extends ActionBarActivity{
                     @Override
                     public boolean onPreferenceClick(android.preference.Preference preference) {
                         try {
-                            if(sharedPreferences.getBoolean("pref_cm_quick_tile", false)) {
+                            if (sharedPreferences.getBoolean("pref_cm_quick_tile", false)) {
                                 CustomTile customTile = new CustomTile.Builder(getActivity())
                                         .setOnClickIntent(PendingIntent.getActivity(getActivity(), MainActivity.SHORTCUT_NOTIF_ID, new Intent(getActivity(), MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT))
                                         .setLabel("Notey")
                                         .setIcon(R.drawable.ic_new_note_white)
                                         .build();
                                 CMStatusBarManager.getInstance(getActivity()).publishTile("notey_cm_quick_tile", 1, customTile); //tag, id, tile
-                            }
-                            else { //remove quick tile
+                            } else { //remove quick tile
                                 CMStatusBarManager.getInstance(getActivity()).removeTile("notey_cm_quick_tile", 1); //tag, id
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                             Crashlytics.logException(e);
                         }
-                        return  false;
+                        return false;
                     }
                 });
             }
 
-                //accent color picker dialog
-                findPreference("pref_accent").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    public boolean onPreferenceClick(final android.preference.Preference preference) {
-                        selectedFab = sharedPreferences.getString("pref_theme_fab", "button_bt_float6"); //fab6 is the default blue color for notey
-                        selectedAccentFab = sharedPreferences.getString("pref_accent_fab", selectedFab);
-                        int accentId = getResources().getIdentifier(MainActivity.accentColor, "color", getActivity().getPackageName());
+            //accent color picker dialog
+            findPreference("pref_accent").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(final android.preference.Preference preference) {
+                    selectedFab = sharedPreferences.getString("pref_theme_fab", "button_bt_float6"); //fab6 is the default blue color for notey
+                    selectedAccentFab = sharedPreferences.getString("pref_accent_fab", selectedFab);
+                    int accentId = getResources().getIdentifier(MainActivity.accentColor, "color", getActivity().getPackageName());
 
-                        final MaterialDialog md = new MaterialDialog.Builder(getActivity())
-                                .customView(R.layout.theme_color_chooser_dialog_pro, false)
-                                .autoDismiss(false)
-                                .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"))
-                                .positiveText(R.string.set)
-                                .negativeText(R.string.cancel)
-                                .callback(new MaterialDialog.ButtonCallback() {
-                                    @Override
-                                    public void onPositive(MaterialDialog dialog) {
-                                        editor.putString("pref_accent_fab", selectedAccentFab).apply();
-                                        editor.putString("pref_accent_color", MainActivity.accentColor).apply();
-
-                                        restartNotey(); //restart notey. re-launching the main activity along with the settings_jb_kk. that way the user returns to the settings_jb_kk screen
-                                        getActivity().finish();
-                                    }
-                                    @Override
-                                    public void onNegative(MaterialDialog dialog) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .positiveColorRes(accentId)
-                                .negativeColorRes(accentId)
-                                .build();
-
-                        // hide the dark theme check box, we dont need it here
-                        TextView darkTextView = (TextView) md.findViewById(R.id.dark_theme_tv);
-                        darkCheckBox = (CheckBox) md.findViewById(R.id.dark_check_box);
-                        darkTextView.setVisibility(View.GONE);
-                        darkCheckBox.setVisibility(View.GONE);
-
-                        md.show();
-
-                        //set icon for initial selected fab
-                        FloatingActionButton fab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedAccentFab, "id", getActivity().getPackageName()));
-                        fab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
-
-                        //create theme picker dialog
-                        for (int i = 1; i <= 19; i++) {
-                            //fab button ids are weird
-                            int id = getResources().getIdentifier("button_bt_float" + Integer.toString(i), "id", getActivity().getPackageName());
-                            final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
-                            final int finalI = i;
-                            newFab.setOnClickListener(new View.OnClickListener() {
+                    final MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                            .customView(R.layout.theme_color_chooser_dialog_pro, false)
+                            .autoDismiss(false)
+                            .typeface(Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"), Typeface.createFromAsset(getActivity().getAssets(), "ROBOTO-REGULAR.ttf"))
+                            .positiveText(R.string.set)
+                            .negativeText(R.string.cancel)
+                            .callback(new MaterialDialog.ButtonCallback() {
                                 @Override
-                                public void onClick(View v) {
-                                    MainActivity.accentColor = v.getTag().toString();
+                                public void onPositive(MaterialDialog dialog) {
+                                    editor.putString("pref_accent_fab", selectedAccentFab).apply();
+                                    editor.putString("pref_accent_color", MainActivity.accentColor).apply();
 
-                                    //show checkmark
-                                    newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
-                                    //remove previous selected fab's checkmark
-                                    FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedAccentFab, "id", getActivity().getPackageName()));
-                                    oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
-                                    selectedAccentFab = "button_bt_float" + Integer.toString(finalI);
+                                    restartNotey(); //restart notey. re-launching the main activity along with the settings_jb_kk. that way the user returns to the settings_jb_kk screen
+                                    getActivity().finish();
                                 }
-                            });
-                        }
 
-                        return false;
-                    }
-                });
-
-                //default icon color chooser dialog
-                pref_default_icon_color.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(android.preference.Preference preference) {
-                        selectedDefaultColorFab = sharedPreferences.getString("pref_default_color_fab", "icon_button_bt_float0"); //default is white
-
-                        final MaterialDialog md = new MaterialDialog.Builder(getActivity())
-                                .customView(R.layout.icon_color_chooser_dialog_pro, false)
-                                .build();
-
-                        md.show();
-
-                        //set icon for initial selected fab
-                        FloatingActionButton fab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultColorFab, "id", getActivity().getPackageName()));
-                        fab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
-                        String colors[] = getResources().getStringArray(R.array.icon_colors_array_pro);
-                        for (int i = 0; i < colors.length; i++) {
-                            int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getActivity().getPackageName());
-                            final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
-                            final int finalI = i;
-
-                            //color white fab a little grey, so we can see the checkmark. fab icon's are only white, so we can't change the checkmark color
-                            if(i==0) newFab.setBackgroundColor(getResources().getColor(R.color.md_grey_200));
-
-                            newFab.setOnClickListener(new View.OnClickListener() {
                                 @Override
-                                public void onClick(View v) {
-                                    MainActivity.defaultIconsColor = v.getTag().toString();
-
-                                    //show checkmark
-                                    newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
-                                    //remove previous selected fab's checkmark
-                                    FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultColorFab, "id", getActivity().getPackageName()));
-                                    oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
-                                    selectedDefaultColorFab = "icon_button_bt_float" + Integer.toString(finalI);
-
-                                    editor.putString("pref_default_color_fab", selectedDefaultColorFab).apply();
-                                    editor.putString("pref_default_icon_color", MainActivity.defaultIconsColor).apply();
-
-                                    md.dismiss();
+                                public void onNegative(MaterialDialog dialog) {
+                                    dialog.dismiss();
                                 }
-                            });
-                        }
-                        return false;
+                            })
+                            .positiveColorRes(accentId)
+                            .negativeColorRes(accentId)
+                            .build();
+
+                    // hide the dark theme check box, we dont need it here
+                    TextView darkTextView = (TextView) md.findViewById(R.id.dark_theme_tv);
+                    darkCheckBox = (CheckBox) md.findViewById(R.id.dark_check_box);
+                    darkTextView.setVisibility(View.GONE);
+                    darkCheckBox.setVisibility(View.GONE);
+
+                    md.show();
+
+                    //set icon for initial selected fab
+                    FloatingActionButton fab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedAccentFab, "id", getActivity().getPackageName()));
+                    fab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+
+                    //create theme picker dialog
+                    for (int i = 1; i <= 19; i++) {
+                        //fab button ids are weird
+                        int id = getResources().getIdentifier("button_bt_float" + Integer.toString(i), "id", getActivity().getPackageName());
+                        final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
+                        final int finalI = i;
+                        newFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                MainActivity.accentColor = v.getTag().toString();
+
+                                //show checkmark
+                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+                                //remove previous selected fab's checkmark
+                                FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedAccentFab, "id", getActivity().getPackageName()));
+                                oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
+                                selectedAccentFab = "button_bt_float" + Integer.toString(finalI);
+                            }
+                        });
                     }
-                });
+
+                    return false;
+                }
+            });
+
+            //default icon color chooser dialog
+            pref_default_icon_color.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    selectedDefaultColorFab = sharedPreferences.getString("pref_default_color_fab", "icon_button_bt_float0"); //default is white
+
+                    final MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                            .customView(R.layout.icon_color_chooser_dialog_pro, false)
+                            .build();
+
+                    md.show();
+
+                    //set icon for initial selected fab
+                    FloatingActionButton fab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultColorFab, "id", getActivity().getPackageName()));
+                    fab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+                    String colors[] = getResources().getStringArray(R.array.icon_colors_array_pro);
+                    for (int i = 0; i < colors.length; i++) {
+                        int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getActivity().getPackageName());
+                        final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
+                        final int finalI = i;
+
+                        //color white fab a little grey, so we can see the checkmark. fab icon's are only white, so we can't change the checkmark color
+                        if (i == 0)
+                            newFab.setBackgroundColor(getResources().getColor(R.color.md_grey_200));
+
+                        newFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                MainActivity.defaultIconsColor = v.getTag().toString();
+
+                                //show checkmark
+                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+                                //remove previous selected fab's checkmark
+                                FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultColorFab, "id", getActivity().getPackageName()));
+                                oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
+                                selectedDefaultColorFab = "icon_button_bt_float" + Integer.toString(finalI);
+
+                                editor.putString("pref_default_color_fab", selectedDefaultColorFab).apply();
+                                editor.putString("pref_default_icon_color", MainActivity.defaultIconsColor).apply();
+
+                                md.dismiss();
+                            }
+                        });
+                    }
+                    return false;
+                }
+            });
+
+            //default led color
+            pref_default_led_color.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    selectedDefaultLEDColorFab = sharedPreferences.getString("pref_default_led_color_fab", "icon_button_bt_float5"); //default is blue
+
+                    final MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                        .customView(R.layout.led_chooser_dialog, false)
+                        .title(R.string.default_led_color)
+                        .build();
+
+                    md.show();
+
+                    //set icon for initial selected fab
+                    FloatingActionButton fab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultLEDColorFab, "id", getActivity().getPackageName()));
+                    fab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+                    String colors[] = getResources().getStringArray(R.array.icon_colors_array_pro);
+                    for (int i = 0; i < colors.length; i++) {
+                        int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getActivity().getPackageName());
+                        final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
+                        final int finalI = i;
+
+                        //color white fab a little grey, so we can see the checkmark. fab icon's are only white, so we can't change the checkmark color
+                        if (i == 0)
+                            newFab.setBackgroundColor(getResources().getColor(R.color.md_grey_200));
+
+
+                        newFab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //show checkmark
+                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
+
+                                //remove previous selected fab's checkmark
+                                FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedDefaultLEDColorFab, "id", getActivity().getPackageName()));
+                                oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
+                                selectedDefaultLEDColorFab = "icon_button_bt_float" + Integer.toString(finalI);
+                                editor.putString("pref_default_led_color_fab", selectedDefaultLEDColorFab).apply();
+
+                                editor.putString("pref_default_led_color", v.getTag().toString()).apply();
+                                md.dismiss();
+                            }
+                        });
+                    }
+                    return false;
+                }
+            });
+
 //            }
 
             //listen for changes to preferences. Need to make sure users make it possible to delete notifications.
@@ -395,7 +442,7 @@ public class Settings extends ActionBarActivity{
 
                     int view; //layout for theme choose
 //                    if(MainActivity.proVersionEnabled)
-                        view = R.layout.theme_color_chooser_dialog_pro;
+                    view = R.layout.theme_color_chooser_dialog_pro;
 //                    else view = R.layout.theme_color_chooser_dialog;
 
                     final MaterialDialog md = new MaterialDialog.Builder(getActivity())
@@ -409,9 +456,9 @@ public class Settings extends ActionBarActivity{
                                 public void onPositive(MaterialDialog dialog) {
                                     MainActivity.themeColor = tempTheme;
                                     MainActivity.accentColor = tempTheme;
-                                    if(darkCheckBox.isChecked()){
+                                    if (darkCheckBox.isChecked()) {
                                         editor.putBoolean("pref_theme_dark", true).apply();
-                                    } else{
+                                    } else {
                                         editor.putBoolean("pref_theme_dark", false).apply();
                                     }
                                     editor.putString("pref_theme_fab", selectedFab).apply();
@@ -423,6 +470,7 @@ public class Settings extends ActionBarActivity{
                                     restartNotey(); //restart notey. re-launching the main activity along with the settings. that way the user returns to the settings screen
                                     getActivity().finish();
                                 }
+
                                 @Override
                                 public void onNegative(MaterialDialog dialog) {
                                     dialog.dismiss();
@@ -437,9 +485,9 @@ public class Settings extends ActionBarActivity{
                     darkTextView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            if(darkCheckBox.isChecked()){
+                            if (darkCheckBox.isChecked()) {
                                 darkCheckBox.setChecked(false);
-                            } else{
+                            } else {
                                 darkCheckBox.setChecked(true);
                             }
                         }
@@ -464,7 +512,7 @@ public class Settings extends ActionBarActivity{
 
                     int count; //number of theme choices
 //                    if(MainActivity.proVersionEnabled)
-                        count = 19;
+                    count = 19;
 //                    else count = 4;
 
                     //create theme picker dialog
@@ -520,6 +568,7 @@ public class Settings extends ActionBarActivity{
                                     setLauncherIcon();
                                     getActivity().finish();
                                 }
+
                                 @Override
                                 public void onNegative(MaterialDialog dialog) {
                                     dialog.dismiss();
@@ -531,8 +580,10 @@ public class Settings extends ActionBarActivity{
                     md.show();
 
                     ImageView iconImage = (ImageView) md.findViewById(R.id.update_icon_iv);
-                    if(MainActivity.darkTheme) iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor + "_dark", "drawable", getActivity().getPackageName()));
-                    else iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor, "drawable", getActivity().getPackageName()));
+                    if (MainActivity.darkTheme)
+                        iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor + "_dark", "drawable", getActivity().getPackageName()));
+                    else
+                        iconImage.setImageResource(getResources().getIdentifier("ic_launcher_" + MainActivity.themeColor, "drawable", getActivity().getPackageName()));
 
                     return false;
                 }
@@ -609,8 +660,8 @@ public class Settings extends ActionBarActivity{
             nm.notify(MainActivity.SHORTCUT_NOTIF_ID, n);
         }
 
-        private void restartNotey(){
-            Intent i = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName() );
+        private void restartNotey() {
+            Intent i = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName());
             Intent i2 = new Intent(getActivity(), Settings.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             i2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -621,7 +672,7 @@ public class Settings extends ActionBarActivity{
         private void setLauncherIcon() {
             //loop through all 38 activity alias and disable them
             String[] activityArray = getResources().getStringArray(R.array.mainactivity_icon_alias_array_names);
-            for(String s : activityArray) {
+            for (String s : activityArray) {
                 getActivity().getPackageManager().setComponentEnabledSetting(
                         new ComponentName("thomas.jonathan.notey", s),
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
@@ -629,7 +680,8 @@ public class Settings extends ActionBarActivity{
 
             //get which activity to enable
             String enabledActivity;
-            if(MainActivity.darkTheme) enabledActivity = "thomas.jonathan.notey.MainActivity-" + MainActivity.themeColor + "_dark";
+            if (MainActivity.darkTheme)
+                enabledActivity = "thomas.jonathan.notey.MainActivity-" + MainActivity.themeColor + "_dark";
             else enabledActivity = "thomas.jonathan.notey.MainActivity-" + MainActivity.themeColor;
 
             //enable it

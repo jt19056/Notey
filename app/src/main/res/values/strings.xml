@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.4.1</string>
+    <string name="version" translatable="false">2.4.2.b1</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -75,6 +75,7 @@
     <string name="numbered_list">Numbered list</string>
     <string name="default_note_type">Default Note Type</string>
     <string name="default_note_type_summary">What type of note to start Notey with.</string>
+    <string name="default_led_color">Default LED Color</string>
 
     <!-- About strings -->
     <string name="about">About</string>
@@ -167,6 +168,7 @@
     <string name="Days">Days</string>
     <string name="from_now">from now.</string>
     <string name="less_than_a_minute">less than a minute</string>
+    <string name="led_color">LED Color</string>
 
     <!-- Other -->
     <string name="undo">Undo</string>

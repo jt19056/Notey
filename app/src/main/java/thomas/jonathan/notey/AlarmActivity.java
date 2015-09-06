@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
+import com.rey.material.widget.FloatingActionButton;
 import com.rey.material.widget.Spinner;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
@@ -34,7 +35,6 @@ import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -54,6 +54,8 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     private int id;
     private Uri alarm_uri;
     private DiscreteSeekBar seekBar;
+    private FloatingActionButton ledFab;
+    private String ledColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,15 +105,20 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         wake_cb = (CheckBox) findViewById(R.id.alarm_wake);
         sound_tv = (TextView) findViewById(R.id.alarm_sound);
         sound_iv = (ImageView) findViewById(R.id.alarm_sound_btn);
-        ImageView repeat_iv = (ImageView) findViewById(R.id.alarm_repeat_iv);
         recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
+        ledFab = (FloatingActionButton) findViewById(R.id.led_fab);
 
+        //LED fab stuffs
+        String defaultLEDColor = sharedPref.getString("pref_default_led_color", "md_blue_500"); //default is blue
+        ledFab.setBackgroundColor(getResources().getColor(getResources().getIdentifier(defaultLEDColor, "color", getPackageName())));
+
+        //set up seekbar
         setUpSeekbar();
         setUpRecurrenceSpinner();
-
         int color = getResources().getColor(getResources().getIdentifier(MainActivity.accentColor, "color", getPackageName()));
         seekBar.setScrubberColor(color);
         seekBar.setThumbColor(color, color);
+
         //dark theme stuffs
         if(MainActivity.darkTheme){
             wake_cb.setTextColor(getResources().getColor(R.color.md_grey_400));
@@ -161,6 +168,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         set_btn.setOnClickListener(this);
         cancel_btn.setOnClickListener(this);
         alarm_delete.setOnClickListener(this);
+        ledFab.setOnClickListener(this);
 
         //long click listener to delete icon. toast will appear saying what the button does
         View.OnLongClickListener listener = new View.OnLongClickListener() {
@@ -176,7 +184,13 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             vibrate_cb.setChecked(true);
         if (id != -1 && sharedPref.getBoolean("wake" + Integer.toString(id), true))
             wake_cb.setChecked(true);
+        if(id != -1 && sharedPref.getString("led" + Integer.toString(id), null) != null){
+            String led = sharedPref.getString("led" + Integer.toString(id), MainActivity.themeColor); //default is the theme color
+            ledFab.setBackgroundColor(getResources().getColor(getResources().getIdentifier(led, "color", getPackageName())));
+        }
         if (id != -1) {
+
+            //alarm sounds
             String temp_string = sharedPref.getString("sound" + Integer.toString(id), getString(R.string.none));
             alarm_uri = Uri.parse(temp_string);
 
@@ -300,6 +314,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             editor.remove("wake" + Integer.toString(id)).apply();
             editor.remove("sound" + Integer.toString(id)).apply();
             editor.remove("repeat" + Integer.toString(id)).apply();
+            editor.remove("led" + Integer.toString(id)).apply();
 
             //cancel the alarm pending intent
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -361,6 +376,28 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
                     else Toast.makeText(getApplicationContext(), getString(R.string.repeat_every) + days + getString(R.string.days), Toast.LENGTH_SHORT).show();
                     break;
             }
+        } else if (view.getId() == R.id.led_fab){
+            final MaterialDialog md = new MaterialDialog.Builder(this)
+                .customView(R.layout.led_chooser_dialog, false)
+                .title(R.string.led_color)
+                .build();
+
+            md.show();
+
+            String colors[] = getResources().getStringArray(R.array.icon_colors_array_pro);
+            for (int i = 0; i < colors.length; i++) {
+                int id = getResources().getIdentifier("icon_button_bt_float" + Integer.toString(i), "id", getPackageName());
+                final FloatingActionButton newFab = (FloatingActionButton) md.findViewById(id);
+
+                newFab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ledColor = v.getTag().toString();
+                        ledFab.setBackgroundColor(getResources().getColor(getResources().getIdentifier(ledColor, "color", getPackageName())));
+                        md.dismiss();
+                    }
+                });
+            }
         }
     }
 
@@ -372,6 +409,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
             editor.putBoolean("vibrate" + Integer.toString(id), vibrate_cb.isChecked());
             editor.putBoolean("wake" + Integer.toString(id), wake_cb.isChecked());
             editor.putInt("repeat" + Integer.toString(id), repeatTime);
+            editor.putString("led" + Integer.toString(id), ledColor);
             if (alarm_uri != null)
                 editor.putString("sound" + Integer.toString(id), alarm_uri.toString());
 

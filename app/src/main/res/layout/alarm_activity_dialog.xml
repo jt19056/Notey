@@ -171,6 +171,7 @@
             android:id="@+id/alarm_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:padding="4dp"
             android:text=""
             android:enabled="false"
@@ -178,6 +179,18 @@
             android:background="?android:selectableItemBackground"
             android:textAppearance="?android:attr/textAppearanceMedium"
             />
+
+        <com.rey.material.widget.FloatingActionButton
+            android:id="@+id/led_fab"
+            style="@style/FloatingActionButton"
+            app:fab_elevation="2dp"
+            app:fab_radius="16dp"
+            app:rd_rippleAnimDuration="500"
+            app:rd_delayClick="untilRelease"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <LinearLayout

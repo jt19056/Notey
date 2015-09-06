@@ -45,13 +45,11 @@
             android:summary="@string/update_to_match"/>
 
         <com.jenzz.materialpreference.Preference
-            android:enabled="false"
             android:key="pref_accent"
             android:summary="@string/accent_color_summary"
             android:title="@string/accent_color" />
 
         <com.jenzz.materialpreference.Preference
-            android:enabled="false"
             android:key="pref_default_icon_color"
             android:summary="@string/default_icons_color_summary"
             android:title="@string/default_icons_color" />
@@ -65,15 +63,16 @@
             android:title="@string/default_note_type"
             android:summary="@string/default_note_type_summary"/>
 
+        <com.jenzz.materialpreference.Preference android:key="pref_default_led_color"
+            android:title="@string/default_led_color"/>
+
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"
-            android:enabled="false"
             android:key="pref_shortcut"
             android:summary="@string/shortcut_summary"
             android:title="@string/shortcut" />
 
         <com.jenzz.materialpreference.SwitchPreference
-            android:enabled="true"
             android:key="pref_cm_quick_tile"
             android:summary="@string/cm_quick_tile_summary"
             android:title="@string/cm_quick_tile" />

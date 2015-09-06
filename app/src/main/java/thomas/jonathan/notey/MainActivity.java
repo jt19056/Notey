@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private EditText et, et_title;
     private PopupMenu mPopupMenu;
     private int imageButtonNumber = 1, priority;
-    public static int id = (int) (Math.random() * 10000);
+    public static int id;
     private boolean pref_expand;
     private boolean pref_swipe;
     private boolean impossible_to_delete = false;
@@ -124,6 +124,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
         Fabric.with(this, new Crashlytics());
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        id = (int) (Math.random() * 10000);
 
         themeStuffBeforeSetContentView();
         setContentView(R.layout.main_activity_dialog);

@@ -36,13 +36,11 @@ public class AlarmService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public void onCreate() {
-        // TODO Auto-generated method stub
         super.onCreate();
     }
 
@@ -109,7 +107,7 @@ public class AlarmService extends Service {
             infoIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //activity is being called outside of an activity (this is a service). so this flag must let android know we are positive we want this activity to start.
             startActivity(infoIntent);
 
-            flashNotificationLED();
+            flashNotificationLED(NoteID);
 
             stopSelf();
         }catch (CursorIndexOutOfBoundsException e){ //*edit: fixed but kept just in case* after a user deletes a repeating alarm, it will try to call AlarmService (not sure why at the moment), but there's nothing in the database. this catches that and prevents the user from seeing any crash.
@@ -144,9 +142,10 @@ public class AlarmService extends Service {
         wakeLock = null;
     }
 
-    private void flashNotificationLED() {
+    private void flashNotificationLED(int NoteID) {
+        String ledColor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("led" + Integer.toString(NoteID), "md_blue_500");
         Notification notif = new Notification();
-        notif.ledARGB = Color.CYAN;
+        notif.ledARGB = getResources().getColor(getResources().getIdentifier(ledColor, "color", getPackageName()));
         notif.flags = Notification.FLAG_SHOW_LIGHTS;
         notif.ledOnMS = 1000;
         notif.ledOffMS = 500;
@@ -155,7 +154,6 @@ public class AlarmService extends Service {
 
     @Override
     public void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
     }
 
