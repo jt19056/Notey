@@ -114,6 +114,23 @@
 
                 android:background="@drawable/rectangle_pre_lollipop"
                 android:padding="8dp"/>
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/info_repeat_text"
+                android:layout_below="@id/info_alarm_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textSize="@dimen/material_text_subhead"
+                android:clickable="false"
+                android:onClick="onClick"
+                android:gravity="center"
+                android:maxLines="1"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+
+                android:background="@drawable/rectangle_pre_lollipop"
+                android:padding="8dp"/>
         </RelativeLayout>
 
     </LinearLayout>

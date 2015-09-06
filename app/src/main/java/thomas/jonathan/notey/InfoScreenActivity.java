@@ -10,10 +10,8 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -157,6 +155,19 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             editIntent.putExtra("doEditAlarmActivity", true);
             startActivity(editIntent);
             finish();
+        } else if (view.getId() == R.id.info_repeat_text) {
+            Intent editIntent = new Intent(this, MainActivity.class);
+            editIntent.putExtra("editNotificationID", id);
+            editIntent.putExtra("editNote", noteText.getText().toString());
+            editIntent.putExtra("editLoc", spinnerLocation);
+            editIntent.putExtra("editButton", imageButtonNumber);
+            editIntent.putExtra("editTitle", noteTitle);
+            editIntent.putExtra("editAlarm", alarm_time);
+            editIntent.putExtra("editRepeat", repeat_time);
+            editIntent.putExtra("editAlarmPendingIntent", alarmPendingIntent);
+            editIntent.putExtra("doEditAlarmActivity", true);
+            startActivity(editIntent);
+            finish();
         }
     }
 
@@ -166,6 +177,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
         noteText = (TextView) findViewById(R.id.info_note_text);
         TextView alarmText = (TextView) findViewById(R.id.info_alarm_text);
+        TextView repeatText = (TextView) findViewById(R.id.info_repeat_text);
         noteText.setMovementMethod(new ScrollingMovementMethod());
         TextView titleText = (TextView) findViewById(R.id.info_title_text);
         titleText.setMovementMethod(new ScrollingMovementMethod());
@@ -207,6 +219,9 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 alarmText.setVisibility(View.GONE);
                 alarmText.setClickable(false);
                 alarmText.setOnClickListener(null);
+                repeatText.setVisibility(View.GONE);
+                repeatText.setClickable(false);
+                repeatText.setOnClickListener(null);
             } else {
                 DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.getDefault());
                 DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault());
@@ -215,6 +230,40 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                 alarmText.setText(getString(R.string.alarm) + ": " + dateFormat.format(date) + ", " + timeFormat.format(date));
                 alarmText.setClickable(true);
                 alarmText.setOnClickListener(this);
+                //whether or not to display the repeat time text
+                if(repeat_time != 0){
+                    repeatText.setVisibility(View.VISIBLE);
+                    repeatText.setClickable(true);
+                    repeatText.setOnClickListener(this);
+                    //minutes
+                    if(repeat_time <= 45) {
+                        repeatText.setText(getString(R.string.repeat_every) + repeat_time + getString(R.string.minutes));
+                    }
+                    //hours
+                    else if (repeat_time >= 60 && repeat_time <= 720){
+                        int hours = repeat_time/60;
+                        //display "hour" or "hours" for the toast
+                        if(hours == 1)
+                            repeatText.setText(getString(R.string.repeat_every) + hours + getString(R.string.hour));
+                        else repeatText.setText(getString(R.string.repeat_every) + hours + getString(R.string.hours));
+
+                    }
+                    //days
+                    else if (repeat_time >= 1440){
+                        int days = repeat_time/60/24;
+                        //display "day" or "days" for the toast
+                        if(days == 1)
+                            repeatText.setText(getString(R.string.repeat_every) + days + getString(R.string.day));
+                        else repeatText.setText(getString(R.string.repeat_every) + days + getString(R.string.days));
+
+                    }
+                    //else idk what happened, just hide the text box
+                    else {
+                        repeatText.setVisibility(View.GONE);
+                        repeatText.setClickable(false);
+                        repeatText.setOnClickListener(null);
+                    }
+                }
             }
 
             //if dark theme, set backgrounds for the two text boxes
@@ -224,11 +273,16 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                     titleText.setBackgroundResource(R.drawable.rectangle_dark);
                     noteText.setBackgroundResource(R.drawable.rectangle_dark);
                     alarmText.setBackgroundResource(R.drawable.rectangle_dark);
-                }
-                else{
+                    repeatText.setBackgroundResource(R.drawable.rectangle_dark);
+                } else {
                     titleText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    titleText.setPadding(8, 8, 8, 8);
                     noteText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    noteText.setPadding(8, 8, 8, 8);
                     alarmText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    alarmText.setPadding(8, 8, 8, 8);
+                    repeatText.setBackgroundResource(R.drawable.rectangle_pre_lollipop_dark);
+                    repeatText.setPadding(8, 8, 8, 8);
                 }
             }
 
@@ -355,6 +409,8 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/" + fontString + ".ttf");
         Typeface fontBold = Typeface.createFromAsset(getAssets(), "fonts/" + fontString + "-Bold.ttf");
         noteText.setTypeface(font);
+        alarmText.setTypeface(font);
+        repeatText.setTypeface(font);
         titleText.setTypeface(fontBold);
         mainTitle.setTypeface(Typeface.createFromAsset(getAssets(), "ROBOTO-REGULAR.ttf"));
     }
@@ -402,7 +458,7 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
         //initialize theme preferences
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
-        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_blue_500");
+        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_pink_500");
         MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
 
 
