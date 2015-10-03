@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 
+import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.common.Crash;
 
 public class NotificationBuild extends BroadcastReceiver {
@@ -33,6 +34,7 @@ public class NotificationBuild extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
+        Fabric.with(context, new Crashlytics());
         NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         NoteyNote notey = new NoteyNote();
