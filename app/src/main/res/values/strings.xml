@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.4.2.b1</string>
+    <string name="version" translatable="false">2.4.2.b2</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->
@@ -121,6 +121,11 @@
     <string name="bell">Bell</string>
     <string name="reply_arrow">Reply arrow</string>
     <string name="spinner">Spinner</string>
+    <string name="android">Android</string>
+    <string name="cake">Cake</string>
+    <string name="football">Footbll</string>
+    <string name="lines">Lines</string>
+    <string name="pin">Pin</string>
 
     <!-- Icons -->
     <string name="check">Check</string>

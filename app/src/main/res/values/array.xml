@@ -109,6 +109,11 @@
         <item>@string/bell</item>
         <item>@string/reply_arrow</item>
         <item>@string/spinner</item>
+        <item>@string/android</item>
+        <item>@string/cake</item>
+        <item>@string/football</item>
+        <item>@string/lines</item>
+        <item>@string/pin</item>
     </string-array>
     <string-array name="dashclock_pro_icon_values">
         <item>topIcon</item>
@@ -138,6 +143,11 @@
         <item>notifications</item>
         <item>reply</item>
         <item>toys</item>
+        <item>android</item>
+        <item>cake_variant</item>
+        <item>football</item>
+        <item>format_align_left</item>
+        <item>pin</item>
     </string-array>
 
     <string-array name="recurrence_array">
@@ -245,6 +255,11 @@
         <item>ic_notifications_</item>
         <item>ic_reply_</item>
         <item>ic_toys_</item>
+        <item>ic_android_</item>
+        <item>ic_cake_variant_</item>
+        <item>ic_football_</item>
+        <item>ic_format_align_left_</item>
+        <item>ic_pin_</item>
     </string-array>
 
     <string-array name="icon_color_names_pro">

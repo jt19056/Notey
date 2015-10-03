@@ -263,6 +263,10 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
                         repeatText.setClickable(false);
                         repeatText.setOnClickListener(null);
                     }
+                } else {
+                    repeatText.setVisibility(View.GONE);
+                    repeatText.setClickable(false);
+                    repeatText.setOnClickListener(null);
                 }
             }
 
@@ -300,8 +304,12 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
 
                     String iconColor, replaceMe;
                     if(n.getIconName().contains("shopping") || n.getIconName().contains("note") || n.getIconName().contains("attach") || n.getIconName().contains("brightness") ||
-                            n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music")) {
+                            n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music") ||
+                            n.getIconName().contains("cake")) {
                         iconColor = n.getIconName().split("_")[3];
+                    }
+                    else if (n.getIconName().contains("format")){
+                        iconColor = n.getIconName().split("_")[4];
                     }
                     else{
                         iconColor = n.getIconName().split("_")[2];
