@@ -18,7 +18,7 @@ Write yourself a notification reminder and send it to the status bar and notific
 
 • Alarms - Set a time to be reminded of your note.
 
-• 25 different icons and 15 different color choices - make important notes stand out from the rest. 
+• 30 different icons and 15 different color choices - make important notes stand out from the rest. 
 
 • DashClock Widget support.
 
