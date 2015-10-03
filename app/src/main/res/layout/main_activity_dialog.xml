@@ -199,7 +199,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_note_add_white_36dp"
                     android:tag="ic_note_add_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -216,7 +215,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_shopping_cart_white_36dp"
                     android:tag="ic_shopping_cart_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -233,7 +231,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_mood_white_36dp"
                     android:tag="ic_mood_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -250,7 +247,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_assignment_white_36dp"
                     android:tag="ic_assignment_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -267,7 +263,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_attach_money_white_36dp"
                     android:tag="ic_attach_money_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -284,7 +279,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_book_white_36dp"
                     android:tag="ic_book_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -301,7 +295,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_brightness_low_white_36dp"
                     android:tag="ic_brightness_low_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -318,7 +311,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_call_white_36dp"
                     android:tag="ic_call_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -335,7 +327,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_directions_car_white_36dp"
                     android:tag="ic_directions_car_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -352,7 +343,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_event_white_36dp"
                     android:tag="ic_event_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -369,7 +359,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_flag_white_36dp"
                     android:tag="ic_flag_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -386,7 +375,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_flash_on_white_36dp"
                     android:tag="ic_flash_on_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -403,7 +391,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_bar_white_36dp"
                     android:tag="ic_bar_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -420,7 +407,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_local_florist_white_36dp"
                     android:tag="ic_local_florist_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -437,7 +423,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_music_note_white_36dp"
                     android:tag="ic_music_note_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -454,7 +439,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_notifications_white_36dp"
                     android:tag="ic_notifications_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -471,7 +455,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_reply_white_36dp"
                     android:tag="ic_reply_" />
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -488,9 +471,88 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:visibility="gone"
                     android:src="@drawable/ic_toys_white_36dp"
                     android:tag="ic_toys_" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_imageButton26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleColor="@color/md_grey_500"
+                app:mrl_rippleHover="false"
+                app:mrl_ripplePersistent="true">
+                <ImageButton
+                    android:id="@+id/imageButton26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_android_white_36dp"
+                    android:tag="ic_android_" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_imageButton27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleColor="@color/md_grey_500"
+                app:mrl_rippleHover="false"
+                app:mrl_ripplePersistent="true">
+                <ImageButton
+                    android:id="@+id/imageButton27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_cake_variant_white_36dp"
+                    android:tag="ic_cake_variant_" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_imageButton28"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleColor="@color/md_grey_500"
+                app:mrl_rippleHover="false"
+                app:mrl_ripplePersistent="true">
+                <ImageButton
+                    android:id="@+id/imageButton28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_football_white_36dp"
+                    android:tag="ic_football_" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_imageButton29"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleColor="@color/md_grey_500"
+                app:mrl_rippleHover="false"
+                app:mrl_ripplePersistent="true">
+                <ImageButton
+                    android:id="@+id/imageButton29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_format_align_left_white_36dp"
+                    android:tag="ic_format_align_left_" />
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple_imageButton30"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mrl_rippleColor="@color/md_grey_500"
+                app:mrl_rippleHover="false"
+                app:mrl_ripplePersistent="true">
+                <ImageButton
+                    android:id="@+id/imageButton30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_pin_white_36dp"
+                    android:tag="ic_pin_" />
             </com.balysv.materialripple.MaterialRippleLayout>
         </TableRow>
     </HorizontalScrollView>

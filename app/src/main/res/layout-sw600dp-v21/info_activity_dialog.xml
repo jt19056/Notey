@@ -134,7 +134,7 @@
                 android:clickable="false"
                 android:onClick="onClick"
                 android:gravity="center"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
 

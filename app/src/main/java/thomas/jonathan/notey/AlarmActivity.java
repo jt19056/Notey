@@ -39,13 +39,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import io.fabric.sdk.android.Fabric;
+
 public class AlarmActivity extends FragmentActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     public static final String DATEPICKER_TAG = "datepicker", TIMEPICKER_TAG = "timepicker";
     private final Calendar calendar = Calendar.getInstance();
     private TextView date_tv;
     private TextView time_tv;
     private TextView sound_tv;
-    private TextView led_tv;
     private ImageView sound_iv;
     private Spinner recurrenceSpinner;
     private int year, month, day, hour, minute, repeatTime = 0, spinnerSelectedValue;
@@ -61,6 +62,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         themeStuffBeforeSetContentView();
         setContentView(R.layout.alarm_activity_dialog);
@@ -105,7 +107,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         vibrate_cb = (CheckBox) findViewById(R.id.alarm_vibrate);
         wake_cb = (CheckBox) findViewById(R.id.alarm_wake);
         sound_tv = (TextView) findViewById(R.id.alarm_sound);
-        led_tv = (TextView) findViewById(R.id.alarm_led_tv);
+        TextView led_tv = (TextView) findViewById(R.id.alarm_led_tv);
         sound_iv = (ImageView) findViewById(R.id.alarm_sound_btn);
         recurrenceSpinner = (Spinner) findViewById(R.id.reccurence_spinner);
         ledFab = (FloatingActionButton) findViewById(R.id.led_fab);
@@ -113,6 +115,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
         //LED fab stuffs
         String defaultLEDColor = sharedPref.getString("pref_default_led_color", "md_blue_500"); //default is blue
         ledFab.setBackgroundColor(getResources().getColor(getResources().getIdentifier(defaultLEDColor, "color", getPackageName())));
+        ledColor = defaultLEDColor; //initialize ledColor to the default color
 
         //set up seekbar
         setUpSeekbar();

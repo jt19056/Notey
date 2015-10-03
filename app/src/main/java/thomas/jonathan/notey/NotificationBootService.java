@@ -29,6 +29,7 @@ import java.util.Locale;
 
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
+import io.fabric.sdk.android.Fabric;
 
 /* This service is used to restore all the notifications stored in the database*/
 public class NotificationBootService extends IntentService {
@@ -45,6 +46,7 @@ public class NotificationBootService extends IntentService {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onStart(Intent intent, int startId) {
+        Fabric.with(this, new Crashlytics());
         MySQLiteHelper db = new MySQLiteHelper(this);
         List<NoteyNote> allNoteys = db.getAllNoteys();
 
@@ -181,8 +183,12 @@ public class NotificationBootService extends IntentService {
                 //get icon color
                 String iconColor;
                 if(n.getIconName().contains("shopping") || n.getIconName().contains("note") || n.getIconName().contains("attach") || n.getIconName().contains("brightness") ||
-                        n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music")) {
+                        n.getIconName().contains("directions") || n.getIconName().contains("flash") || n.getIconName().contains("local") || n.getIconName().contains("music") ||
+                        n.getIconName().contains("cake")) {
                     iconColor = n.getIconName().split("_")[3];
+                }
+                else if (n.getIconName().contains("format")){
+                    iconColor = n.getIconName().split("_")[4];
                 }
                 else{
                     iconColor = n.getIconName().split("_")[2];

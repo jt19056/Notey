@@ -10,6 +10,7 @@
   <string name="impossibleToDeleteAtSend">Вы сделали невозможной для удаления эту запись. Пожалуйста, пройдите в настройки и измените этот параметр.</string>
   <string name="title">Название</string>
   <string name="quick_note">Добавить новую заметку</string>
+  <string name="new...">Новое&#8230;</string>
   <string name="notifications">Уведомления</string>
   <string name="display">Дисплей</string>
   <string name="other">Дополнительно</string>
@@ -60,6 +61,15 @@
   <string name="accent_color_summary">Выберите ваш цветовой акцент.</string>
   <string name="default_icons_color">Цвет иконок по умолчанию</string>
   <string name="default_icons_color_summary">Цвет иконок будет показан при первом запуске приложения.</string>
+  <string name="cm_quick_tile">СМ быстрая плитка</string>
+  <string name="cm_quick_tile_summary">Enable CyanogenMod Quick Tile</string>
+  <string name="empty_note">Empty note</string>
+  <string name="bullet_list">Bullet list</string>
+  <string name="numbered_list">Numbered list</string>
+  <string name="default_note_type">Default Note Type</string>
+  <string name="default_note_type_summary">What type of note to start Notey with.</string>
+  <string name="default_led_color">Default LED Color</string>
+  <string name="font">Font</string>
   <string name="about">О приложении</string>
   <string name="changelog">Что изменилось</string>
   <string name="changelogSummary">Все изменения сделанные в начале.</string>
@@ -141,6 +151,7 @@
   <string name="Days">дней</string>
   <string name="from_now">с текущего времени.</string>
   <string name="less_than_a_minute">меньше минуты</string>
+  <string name="led_color">LED Color:</string>
   <string name="undo">Отмена</string>
   <string name="share">Поделиться</string>
   <string name="none">Нет</string>

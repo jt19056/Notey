@@ -13,17 +13,17 @@
     </notice>
     <notice>
         <name>Crashlytics</name>
-        <url>http://try.crashlytics.com/</url>
+        <url>http://try.crashlytics.com</url>
     </notice>
     <notice>
         <name>CyanogenMod Platform SDK</name>
-        <url>https://github.com/CyanogenMod/cm_platform_sdk/</url>
+        <url>https://github.com/CyanogenMod/cm_platform_sdk</url>
         <copyright>Copyright (C) 2015 The CyanogenMod Project</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>DashClock API</name>
-        <url>https://code.google.com/p/dashclock/</url>
+        <url>https://code.google.com/p/dashclock</url>
         <copyright>Copyright (C) 2013 Roman Nurik</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
@@ -43,6 +43,10 @@
         <!--<url>http://developer.android.com/google/play/billing/index.html</url>-->
         <!--<license>Apache Software License 2.0</license>-->
     <!--</notice>-->
+    <notice>
+        <name>Fonts</name>
+        <url>http://www.fontsquirrel.com</url>
+    </notice>
     <notice>
         <name>Gson</name>
         <url>https://github.com/google/gson</url>

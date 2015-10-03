@@ -2,7 +2,7 @@
 <resources>
 
     <!-- General strings -->
-    <string name="version" translatable="false">2.4.2.b2</string>
+    <string name="version" translatable="false">2.4.2</string>
     <string name="app_name" translatable="false">Notey</string>
 
     <!-- MainActivity strings-->

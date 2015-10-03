@@ -67,7 +67,7 @@ public class Settings extends ActionBarActivity {
 
         MainActivity.themeColor = sharedPreferences.getString("pref_theme_color", "md_blue_500");
         MainActivity.darkTheme = sharedPreferences.getBoolean("pref_theme_dark", false);
-        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_blue_500");
+        MainActivity.accentColor = sharedPreferences.getString("pref_accent_color", "md_pink_500");
 
         //set light/dark theme
         if (MainActivity.darkTheme) {
@@ -108,7 +108,6 @@ public class Settings extends ActionBarActivity {
             final SwitchPreference pref_shortcut = (SwitchPreference) findPreference("pref_shortcut");
             //enable pro feature options
 //            if (MainActivity.proVersionEnabled) {
-            final android.preference.Preference pref_accent = findPreference("pref_accent");
             final android.preference.Preference pref_default_icon_color = findPreference("pref_default_icon_color");
             final android.preference.Preference pref_default_led_color = findPreference("pref_default_led_color");
 
@@ -152,7 +151,7 @@ public class Settings extends ActionBarActivity {
             //accent color picker dialog
             findPreference("pref_accent").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(final android.preference.Preference preference) {
-                    selectedFab = sharedPreferences.getString("pref_theme_fab", "button_bt_float6"); //fab6 is the default blue color for notey
+                    selectedFab = sharedPreferences.getString("pref_theme_fab", "button_bt_float1"); //fab2 is the default pink accent color for notey
                     selectedAccentFab = sharedPreferences.getString("pref_accent_fab", selectedFab);
                     int accentId = getResources().getIdentifier(MainActivity.accentColor, "color", getActivity().getPackageName());
 
