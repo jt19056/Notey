@@ -118,7 +118,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         //build the object
         NoteyNote notey = new NoteyNote();
-        if (cursor != null) {
+        if (cursor != null && cursor.getCount() > 0) {
             notey.setId(Integer.parseInt(cursor.getString(0)));
             notey.setNote(cursor.getString(1));
             notey.setIcon(cursor.getInt(2));
