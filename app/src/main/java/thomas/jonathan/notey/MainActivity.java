@@ -79,6 +79,7 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
     private String pref_default_note_type;
     private boolean pref_large_icons;
     private boolean pref_keyboard;
+    private boolean pref_cursor;
     private boolean settings_activity_flag;
     private boolean about_activity_flag;
     private boolean editIntentFlag = false;
@@ -560,6 +561,13 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
                 }
             }
         });
+
+        //where to place the cursor on app start. true = Title. false = Note, so do nothing
+        if (pref_cursor)
+        {
+            noteTextBoxHasFocus = false;
+            et_title.requestFocus();
+        }
     }
 
     private boolean checkForAnyIntents() {
@@ -891,7 +899,8 @@ public class MainActivity extends Activity implements OnClickListener, View.OnLo
 
         clickNotif = sharedPreferences.getString("clickNotif", "info"); //notification click action
         pref_large_icons = sharedPreferences.getBoolean("pref_large_icons", false); //icon size for notifications
-        pref_keyboard = sharedPreferences.getBoolean("pref_keyboard", true); //launch keyboardd on start
+        pref_keyboard = sharedPreferences.getBoolean("pref_keyboard", true); //launch keyboard on start
+        pref_cursor = sharedPreferences.getBoolean("pref_cursor", false); //where to place the cursor on app start. true = Title. false = Note.
 
         iconColor = defaultIconsColor;
     }
