@@ -151,8 +151,7 @@ public class Settings extends ActionBarActivity {
             //accent color picker dialog
             findPreference("pref_accent").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(final android.preference.Preference preference) {
-                    selectedFab = sharedPreferences.getString("pref_theme_fab", "button_bt_float1"); //fab2 is the default pink accent color for notey
-                    selectedAccentFab = sharedPreferences.getString("pref_accent_fab", selectedFab);
+                    selectedAccentFab = sharedPreferences.getString("pref_accent_fab", "button_bt_float2"); //fab2 is the default pink accent color for notey
                     int accentId = getResources().getIdentifier(MainActivity.accentColor, "color", getActivity().getPackageName());
 
                     final MaterialDialog md = new MaterialDialog.Builder(getActivity())
@@ -204,13 +203,13 @@ public class Settings extends ActionBarActivity {
                             public void onClick(View v) {
                                 MainActivity.accentColor = v.getTag().toString();
 
-                                //show checkmark
-                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
                                 //remove previous selected fab's checkmark
                                 FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedAccentFab, "id", getActivity().getPackageName()));
                                 oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
                                 selectedAccentFab = "button_bt_float" + Integer.toString(finalI);
+
+                                //show checkmark
+                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
                             }
                         });
                     }
@@ -535,13 +534,13 @@ public class Settings extends ActionBarActivity {
                             public void onClick(View v) {
                                 tempTheme = v.getTag().toString();
 
-                                //show checkmark
-                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
-
                                 //remove previous selected fab's checkmark
                                 FloatingActionButton oldFab = (FloatingActionButton) md.findViewById(getResources().getIdentifier(selectedFab, "id", getActivity().getPackageName()));
                                 oldFab.setIcon(getResources().getDrawable(R.drawable.md_transparent), false);
                                 selectedFab = "button_bt_float" + Integer.toString(val);
+
+                                //show checkmark
+                                newFab.setIcon(getResources().getDrawable(R.drawable.ic_check_white_36dp), false);
                             }
                         });
                     }
