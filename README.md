@@ -1,10 +1,7 @@
 # Notey
 ![graphic2 4](https://cloud.githubusercontent.com/assets/5198078/9426284/f22a2e2c-4903-11e5-984b-e6ce83d2ecbb.png)
 
-<a href="https://play.google.com/store/apps/details?id=thomas.jonathan.notey">
-  <img alt="Get it on Google Play"
-       src="https://developer.android.com/images/brand/en_generic_rgb_wo_60.png" />
-</a>
+<a href="https://play.google.com/store/apps/details?id=thomas.jonathan.notey&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="75" width="200" /></a>
 
 Write yourself a notification reminder and send it to the status bar and notification tray where your note will be until you decide to remove it. 
 
