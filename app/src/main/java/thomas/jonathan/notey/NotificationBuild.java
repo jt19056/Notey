@@ -145,7 +145,7 @@ public class NotificationBuild extends BroadcastReceiver {
 
         PendingIntent piDismiss = createOnDismissedIntent(context, id);
         PendingIntent piEdit = createEditIntent(id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context);
-        PendingIntent piShare = createShareIntent(note, id, context);
+        PendingIntent piShare = createShareIntent(note, noteTitle, id, context);
 
 
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), d);
@@ -396,10 +396,21 @@ public class NotificationBuild extends BroadcastReceiver {
         return PendingIntent.getActivity(context, id, editIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent createShareIntent(String note, int id, Context context) {
+    private PendingIntent createShareIntent(String note, String title, int id, Context context) {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, note);
+
+        // if Note is not empty, create Intent normally.  Else Note is empty, then use the Title as the text
+        if (note != null && !note.isEmpty())
+        {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, note);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+        }
+        else
+        {
+            sendIntent.putExtra(Intent.EXTRA_TEXT, title);
+        }
+
         sendIntent.setType("text/plain");
         return PendingIntent.getActivity(context, id, sendIntent, 0);
     }
