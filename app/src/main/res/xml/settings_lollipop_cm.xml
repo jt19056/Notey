@@ -17,11 +17,9 @@
             android:key="pref_expand"
             android:summary="@string/expandNotifsSummary"
             android:title="@string/expandNotifs" />
-        <com.jenzz.materialpreference.SwitchPreference
-            android:defaultValue="true"
-            android:key="pref_share_action"
-            android:summary="@string/share_button_summary"
-            android:title="@string/share_button"
+        <com.jenzz.materialpreference.Preference android:key="pref_expandable_notif_buttons"
+            android:title="@string/expandable_notif_buttons"
+            android:summary="@string/expandable_notif_buttons_summary"
             android:dependency="pref_expand"/>
         <com.jenzz.materialpreference.SwitchPreference
             android:defaultValue="false"

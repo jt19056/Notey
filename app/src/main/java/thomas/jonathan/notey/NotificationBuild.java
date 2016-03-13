@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Action;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -84,7 +85,12 @@ public class NotificationBuild extends BroadcastReceiver {
         boolean pref_expand = mPrefs.getBoolean("pref_expand", true);
         boolean pref_share_action = mPrefs.getBoolean("pref_share_action", true);
         boolean pref_use_colored_icons = mPrefs.getBoolean("pref_use_colored_icons", false);
-        
+
+        // expandable notification button prefs
+        boolean pref_expand_edit = mPrefs.getBoolean("pref_expand_edit", true);
+        boolean pref_expand_share = mPrefs.getBoolean("pref_expand_share", true);
+        boolean pref_expand_remove = mPrefs.getBoolean("pref_expand_remove", true);
+
         //add alarm to db and set it
         String noteForNotification = note;  // use a temp string to add the alarm info to the notification
         if (alarm_time != null && !alarm_time.equals("")) {  //if alarm time is valid, and if we are not in and editIntent
@@ -164,8 +170,17 @@ public class NotificationBuild extends BroadcastReceiver {
 
         db.close();
 
+        Action editAction = pref_expand_edit ? new Action(R.drawable.ic_edit_white_24dp, context.getString(R.string.edit), piEdit) : null;
+        Action shareAction = pref_expand_share ? new Action(R.drawable.ic_share_white_24dp, context.getString(R.string.share), piShare) : null;
+        Action removeAction = pref_expand_remove ? new Action(R.drawable.ic_delete_white_24dp, context.getString(R.string.remove), piDismiss) : null;
+
+        List<Action> actionList = new ArrayList<>();
+        if (editAction != null)  actionList.add(editAction);
+        if (shareAction != null) actionList.add(shareAction);
+        if (removeAction != null) actionList.add(removeAction);
+
         //build the notification!!
-        Notification n;
+        NotificationCompat.Builder n;
         if (pref_expand && pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
             n = new NotificationCompat.Builder(context)
                     .setContentTitle(noteTitle)
@@ -178,14 +193,8 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_share_white_24dp,
-                            context.getString(R.string.share), piShare) // share button
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
         }
         //same as above, but use LargeIcon instead of SetColor
         else if (pref_expand && pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //lollipop and above with expandable notifs settings_jb_kk allowed && share action button is enabled && they want the lollipop icon color
@@ -200,14 +209,8 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_share_white_24dp,
-                            context.getString(R.string.share), piShare) // share button
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
         }
         else if (pref_expand && pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 16 && MainActivity.CURRENT_ANDROID_VERSION < 21) { //jelly bean and kitkat with expandable notifs settings_jb_kk allowed && share action button is enabled
             n = new NotificationCompat.Builder(context)
@@ -221,14 +224,8 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_share_white_24dp,
-                            context.getString(R.string.share), piShare) // share button
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
         }
         // same as above, but without share action button. lollipop only
         else if (pref_expand && !pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) {
@@ -243,12 +240,8 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
         }
         //same as above, but use LargeIcon instead of SetColor
         else if (pref_expand && !pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) {
@@ -263,12 +256,8 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
         }
         // same as above, but without share action button. jelly bean and kitkat.
         else if (pref_expand && !pref_share_action && MainActivity.CURRENT_ANDROID_VERSION >= 16 && MainActivity.CURRENT_ANDROID_VERSION < 21) {
@@ -283,13 +272,10 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .addAction(R.drawable.ic_edit_white_24dp,
-                            context.getString(R.string.edit), piEdit) //edit button on notification
-                    .addAction(R.drawable.ic_delete_white_24dp,
-                            context.getString(R.string.remove), piDismiss) //remove button
-                    .build();
-        } else if (!pref_expand && MainActivity.CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
+                    .setPriority(priority);
+            n.mActions.addAll(actionList);
+        }
+        else if (!pref_expand && MainActivity.CURRENT_ANDROID_VERSION >= 21 && !pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
             n = new NotificationCompat.Builder(context)
                     .setContentTitle(noteTitle)
                     .setContentText(note)
@@ -300,8 +286,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .build();
+                    .setPriority(priority);
         }
         //same as above, but use LargeIcon instead of SetColor
         else if (!pref_expand && MainActivity.CURRENT_ANDROID_VERSION >= 21 && pref_use_colored_icons) { //not expandable, but still able to set priority. lollipop only.
@@ -315,8 +300,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .build();
+                    .setPriority(priority);
         } 
         else if (!pref_expand && MainActivity.CURRENT_ANDROID_VERSION >= 16 && MainActivity.CURRENT_ANDROID_VERSION < 21) { //not expandable, but still able to set priority. jb and kitkat.
             n = new NotificationCompat.Builder(context)
@@ -329,8 +313,7 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setOngoing(!pref_swipe)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setAutoCancel(false)
-                    .setPriority(priority)
-                    .build();
+                    .setPriority(priority);
         } 
         else { //if api < 16. they cannot have expandable notifs or any type of priority
             n = new NotificationCompat.Builder(context)
@@ -342,11 +325,10 @@ public class NotificationBuild extends BroadcastReceiver {
                     .setAutoCancel(false)
                     .setContentIntent(onNotifClickPI(clickNotif, note, noteTitle, id, imageButtonNumber, alarm_time, repeat_time, bulletListFlag, numberedListFlag, numberedListCounter, context))
                     .setDeleteIntent(piDismiss)
-                    .setOngoing(!pref_swipe)
-                    .build();
+                    .setOngoing(!pref_swipe);
         }
 
-        nm.notify(id, n);
+        nm.notify(id, n.build());
 
         // save all the info of the notification. this is for undo notification re-building
         list = Arrays.asList(

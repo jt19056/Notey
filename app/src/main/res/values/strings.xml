@@ -79,6 +79,8 @@
     <string name="font">Font</string>
     <string name="default_cursor">Default Cursor to \'Title\'</string>
     <string name="default_cursor_summary">Default the text cursor to \'Title\' instead of \'Note\'</string>
+    <string name="expandable_notif_buttons">Expandable Notification Buttons</string>
+    <string name="expandable_notif_buttons_summary">Which buttons to show for expandable notifications</string>
 
 
     <!-- About strings -->

@@ -300,4 +300,11 @@
         <item>SF Burlington Script</item>
         <item>Ubuntu</item>
     </string-array>
+
+    <!-- expandable notification buttons -->
+    <string-array name="expandable_notif_buttons_array">
+        <item>@string/edit</item>
+        <item>@string/share</item>
+        <item>@string/remove</item>
+    </string-array>
 </resources>

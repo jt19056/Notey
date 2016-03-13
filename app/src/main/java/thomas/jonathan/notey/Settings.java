@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -24,12 +25,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
 import com.jenzz.materialpreference.Preference;
 import com.jenzz.materialpreference.SwitchPreference;
 import com.rey.material.widget.CheckBox;
 import com.rey.material.widget.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
@@ -110,6 +116,7 @@ public class Settings extends ActionBarActivity {
 //            if (MainActivity.proVersionEnabled) {
             final android.preference.Preference pref_default_icon_color = findPreference("pref_default_icon_color");
             final android.preference.Preference pref_default_led_color = findPreference("pref_default_led_color");
+            final android.preference.Preference pref_expandable_notif_buttons = findPreference("pref_expandable_notif_buttons");
 
             // Create new note shortcut in the notification tray
             pref_shortcut.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -313,6 +320,70 @@ public class Settings extends ActionBarActivity {
                             }
                         });
                     }
+                    return false;
+                }
+            });
+
+            //expandable notification buttons
+            pref_expandable_notif_buttons.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(android.preference.Preference preference) {
+                    // get sharedPref values for the buttons
+                    boolean edit = sharedPreferences.getBoolean("pref_expand_edit", true);
+                    boolean share = sharedPreferences.getBoolean("pref_expand_share", true);
+                    boolean remove = sharedPreferences.getBoolean("pref_expand_remove", true);
+
+                    // set to array to be highlighted upon dialog open
+                    List<Integer> myList = new ArrayList<>();
+                    if (edit) myList.add(0);
+                    if (share) myList.add(1);
+                    if (remove) myList.add(2);
+
+                    // convert list to array, if the size is > 0
+                    Integer[] array = (myList.size() == 0) ? null : myList.toArray(new Integer[myList.size()]);
+
+                    final MaterialDialog md = new MaterialDialog.Builder(getActivity())
+                            .title(R.string.expandable_notif_buttons)
+                            .items(R.array.expandable_notif_buttons_array)
+                            .itemsCallbackMultiChoice(array, new MaterialDialog.ListCallbackMultiChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
+                                    return true; // allow selection
+                                }
+                            })
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    Integer[] selectedIndices = dialog.getSelectedIndices();
+
+                                    // save the shared prefs
+                                    if (selectedIndices != null && selectedIndices.length > 0)
+                                    {
+                                        List<Integer> integerList = Arrays.asList(selectedIndices);
+
+                                        if (integerList.contains(0)) editor.putBoolean("pref_expand_edit", true).apply();
+                                        else editor.putBoolean("pref_expand_edit", false).apply();
+
+                                        if (integerList.contains(1)) editor.putBoolean("pref_expand_share", true).apply();
+                                        else editor.putBoolean("pref_expand_share", false).apply();
+
+                                        if (integerList.contains(2)) editor.putBoolean("pref_expand_remove", true).apply();
+                                        else editor.putBoolean("pref_expand_remove", false).apply();
+
+                                    }
+                                    else // none selected, set false to all their sharedPrefs
+                                    {
+                                        editor.putBoolean("pref_expand_edit", false).apply();
+                                        editor.putBoolean("pref_expand_share", false).apply();
+                                        editor.putBoolean("pref_expand_remove", false).apply();
+                                    }
+                                }
+                            })
+                            //.alwaysCallMultiChoiceCallback()
+                            .positiveText(R.string.ok)
+                            .build();
+
+                    md.show();
                     return false;
                 }
             });
