@@ -629,7 +629,7 @@ public class AlarmActivity extends FragmentActivity implements View.OnClickListe
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout radialPickerLayout, int h, int m) {
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int h, int m, int s) {
         hour = h;
         minute = m;
 

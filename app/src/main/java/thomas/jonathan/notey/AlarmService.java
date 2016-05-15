@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
+import android.renderscript.RenderScript;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -63,21 +64,25 @@ public class AlarmService extends Service {
 
             //play sound?
             String alarm_uri = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("sound" + Integer.toString(NoteID), "None");
-            Notification notif = null;
+            NotificationCompat.Builder notif = null;
             if (alarm_uri.contains("alarm_alert")) {
                 Uri alert = Uri.parse("android.resource://thomas.jonathan.notey/" + R.raw.alarm_beep);
-                notif = new Notification();
-                notif.sound = alert;
-                notif.flags = Notification.FLAG_INSISTENT;
+                notif = new NotificationCompat.Builder(getBaseContext());
+                notif.setSmallIcon(R.drawable.md_transparent); // we don't want to show any icon
+                notif.setSound(alert);
 
-                nm.notify(LED_SOUND_ID, notif);
+                Notification notification = notif.build();
+                notification.flags  = Notification.FLAG_INSISTENT; // INSISTENT flag to keep the alarm beep ringing
+
+                nm.notify(LED_SOUND_ID, notification);
             }
             else if (alarm_uri.contains("notification_sound")) {
                 Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                notif = new Notification();
-                notif.sound = alert;
+                notif = new NotificationCompat.Builder(getBaseContext());
+                notif.setSmallIcon(R.drawable.md_transparent); // we don't want to show any icon
+                notif.setSound(alert);
 
-                nm.notify(LED_SOUND_ID, notif);
+                nm.notify(LED_SOUND_ID, notif.build());
             }
 
             //intent for info screen popup
@@ -90,12 +95,21 @@ public class AlarmService extends Service {
             infoIntent.putExtra("infoAlarm", n.getAlarm());
             infoIntent.putExtra("infoRepeat", PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getInt("repeat" + Integer.toString(NoteID), 0));
             infoIntent.putExtra("infoAlarmPendingIntent", createAlarmPI(n.getId()));
-            infoIntent.putExtra("infoNotif", notif);
+
+            if (notif != null)
+            {
+                infoIntent.putExtra("infoNotif", notif.build());
+            }
+            else
+            {
+                infoIntent.putExtra("infoNotif", "");
+            }
 
             //vibrate for two 250ms bursts if the checkbox was checked
             if (sharedPref.getBoolean("vibrate" + Integer.toString(NoteID), true)) {
                 Notification vib_only_notif = new NotificationCompat.Builder(this)
                         .setVibrate(new long[]{0, 250, 250, 250, 250})
+                        .setSmallIcon(R.drawable.md_transparent) // we don't want to show any icon
                         .build();
                 nm.notify(VIBRATE_NOTIFICATION_ID, vib_only_notif);
             }
@@ -140,12 +154,10 @@ public class AlarmService extends Service {
 
     private void flashNotificationLED(int NoteID) {
         String ledColor = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("led" + Integer.toString(NoteID), "md_blue_500");
-        Notification notif = new Notification();
-        notif.ledARGB = getResources().getColor(getResources().getIdentifier(ledColor, "color", getPackageName()));
-        notif.flags = Notification.FLAG_SHOW_LIGHTS;
-        notif.ledOnMS = 1000;
-        notif.ledOffMS = 500;
-        nm.notify(LED_NOTIFICATION_ID, notif);
+        NotificationCompat.Builder notif = new NotificationCompat.Builder(getBaseContext());
+        notif.setLights(getResources().getColor(getResources().getIdentifier(ledColor, "color", getPackageName())), 1000, 500);
+        notif.setSmallIcon(R.drawable.md_transparent); // we don't want to show any icon
+        nm.notify(LED_NOTIFICATION_ID, notif.build());
     }
 
     @Override

@@ -194,7 +194,16 @@ public class InfoScreenActivity extends Activity implements OnClickListener {
             String infoAlarm = i.getExtras().getString("infoAlarm");
             int infoRepeat = i.getExtras().getInt("infoRepeat");
             PendingIntent infoAlarmPI = (PendingIntent) i.getExtras().get("infoAlarmPendingIntent");
-            notification = (Notification) i.getExtras().get("infoNotif");
+
+            Object notifObj = i.getExtras().get("infoNotif");
+            if (notifObj != null)
+            {
+                String notifString = notifObj.toString();
+
+                if (notifString != null && !notifString.equals("")) {
+                    notification = (Notification) i.getExtras().get("infoNotif");
+                }
+            }
 
             id = infoID;
             spinnerLocation = infoLoc;
